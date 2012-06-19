@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, Examples of nodes metrics</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/animManager.js"></script>
+
+<br />
+There are 4 methods to access the basic metrics of the nodes fetched by the get:<br />
+WA.get.width(): gets or set the width of the nodes. Contrary to the CSSwidth method that returns the style sheet size, this one will always return the real size in pixel of the node.<br />
+WA.get.height(): gets or set the height of the nodes. Contrary to the CSSheight method that returns the style sheet size, this one will always return the real size in pixel of the node.<br />
+WA.get.left(): gets or set the left position of the nodes. Contrary to the CSSleft method that returns the style sheet position, this one will always return the real position in pixel of the node.<br />
+WA.get.top(): gets or set the top position of the nodes. Contrary to the CSStop method that returns the style sheet position, this one will always return the real position in pixel of the node.<br />
+<br />
+For the 4 methods, when a string is passed as parameter, the value is directly put into the style property, meanwhile any numeric value is added with 'px' at the end then sent to the property.
+
+Let's play with some objects:<br />
+
+<div class="code">
+function test1()
+{
+  // Let's modify some positions and sizes
+  // 1. 50px more to d1
+  var w1 = parseInt(WA.get('#d1').width(), 10);
+  WA.get('#d1').width( (w1 + 50) + 'px');
+  // 2. d2 fixed to 80px height
+  WA.get("#d2").height(80); // same as .height('80px');
+  // 3. d3 corner moved at 30%
+  WA.get("#d3").left('30%');
+  // 4. lets print the top of d4 in document and in example container
+  alert('Top of d4 (yellow) in document: '+WA.get('#d4').top()
+        +' and in example container: '+WA.get('#d4').top(undefined, WA.toDOM('test1')));
+}
+</div>
+<span class="button" onclick="test1();">Show the result</span>
+<div id="test1" class="result" style="position: relative; height: 200px;">
+  <div id="d1" class="cd1" style="position: absolute; top: 50px; left: 50px; height: 50px; width: 50px; background-color: red;"></div>
+  <div id="d2" class="cd2" style="position: absolute; top: 70px; left: 70px; height: 50px; width: 50px; background-color: green;"></div>
+  <div id="d3" class="cd3" style="position: absolute; top: 90px; left: 90px; height: 50px; width: 50px; background-color: blue;"></div>
+  <div id="d4" class="cd1" style="position: absolute; top: 110px; left: 110px; height: 50px; width: 50px; background-color: #ffaa00;"></div>
+</div>
+
+<br />
+
+<script type="text/javascript">
+
+function test1()
+{
+  // Let's modify some positions and sizes
+  // 1. 50px more to d1
+  var w1 = parseInt(WA.get('#d1').width(), 10);
+  WA.get('#d1').width( (w1 + 50) + 'px');
+  // 2. d2 fixed to 80px height
+  WA.get("#d2").height(80); // same as .height('80px');
+  // 3. d3 corner moved at 30%
+  WA.get("#d3").left('30%');
+  // 4. lets print the top of d4 in document and in example container
+  alert('Top of d4 (yellow) in document: '+WA.get('#d4').top()
+        +' and in example container: '+WA.get('#d4').top(undefined, WA.toDOM('test1')));
+}
+
+</script>
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

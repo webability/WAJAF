@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_elementlab">
+
+  <container type="separatorContainer" height="max" auto="no">
+    <zone size="150">
+      <element type="htmlElement"><![CDATA[
+The lab permits you to create an element and test all the standard element methods. <b>UNDER CONSTRUCTION</b>
+]]></element>
+
+      <element type="textElement"><![CDATA[Type:]]></element>
+      <element type="lovfieldElement" id="type">
+        <option id="htmlElement">htmlElement</option>
+        <option id="textElement">textElement</option>
+        <option id="imageElement">imageElement</option>
+        <option id="codeElement">codeElement</option>
+        <option id="buttonElement">buttonElement</option>
+      </element>
+      <element type="buttonElement" id="create">Create
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  $('typename').innerHTML = $E('type').getValues();
+  $E('type').hide();
+  $E('create').hide();
+  $E('typename').show();
+  $E('destroy').show();
+  $E('hide').show();
+  $E('show').show();
+  $E('setanchor').show();
+  $E('setposition').show();
+  $E('setsize').show();
+
+  self.createTree('lab', {tag:'element', attributes:{type:$E('type').getValues(), id:'labelement'}, data:'Element content'});
+}
+]]></code>
+        </event>
+      </element>
+      <element type="textElement" id="typename" display="none"></element>
+      <element type="buttonElement" id="destroy" display="none">Destroy
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  $E('type').show();
+  $E('create').show();
+  $E('typename').hide();
+  $E('destroy').hide();
+  $E('hide').hide();
+  $E('show').hide();
+  $E('setanchor').hide();
+  $E('setposition').hide();
+  $E('setsize').hide();
+
+  self.destroyNode('labelement');
+}
+]]></code>
+        </event>
+      </element>
+      <element type="buttonElement" id="hide" display="none">Hide
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  $E('labelement').hide();
+}
+]]></code>
+        </event>
+      </element>
+      <element type="buttonElement" id="show" display="none">Show
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  $E('labelement').show();
+}
+]]></code>
+        </event>
+      </element>
+
+      <element type="htmlElement"></element>
+      <element type="textElement"><![CDATA[Anchor:]]></element>
+      <element type="textElement"><![CDATA[Left:]]></element>
+      <element type="textfieldElement" id="anchorleft" width="40">0</element>
+      <element type="textElement"><![CDATA[Top:]]></element>
+      <element type="textfieldElement" id="anchortop" width="40">0</element>
+      <element type="buttonElement" id="setanchor" display="none">Set
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  var al = $E('anchorleft').getValues();
+  var at = $E('anchortop').getValues();
+  $E('labelement').setAnchor(al, at);
+}
+]]></code>
+        </event>
+      </element>
+
+      <element type="htmlElement"></element>
+      <element type="textElement"><![CDATA[Position:]]></element>
+      <element type="textElement"><![CDATA[Left:]]></element>
+      <element type="textfieldElement" id="posleft" width="40">0</element>
+      <element type="textElement"><![CDATA[Top:]]></element>
+      <element type="textfieldElement" id="postop" width="40">0</element>
+      <element type="buttonElement" id="setposition" display="none">Set
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  var al = $E('posleft').getValues();
+  var at = $E('postop').getValues();
+  $E('labelement').setPosition(al, at);
+}
+]]></code>
+        </event>
+      </element>
+
+      <element type="htmlElement"></element>
+      <element type="textElement"><![CDATA[Size:]]></element>
+      <element type="textElement"><![CDATA[Width:]]></element>
+      <element type="textfieldElement" id="width" width="40">0</element>
+      <element type="textElement"><![CDATA[Height:]]></element>
+      <element type="textfieldElement" id="height" width="40">0</element>
+      <element type="buttonElement" id="setsize" display="none">Set
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  var al = $E('width').getValues();
+  var at = $E('height').getValues();
+  $E('labelement').setSize(al, at);
+}
+]]></code>
+        </event>
+      </element>
+    </zone>
+
+    <zone id="lab" size="*">
+    </zone>
+  </container>
+
+</application>

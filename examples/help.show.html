@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, Examples of Animation of nodes</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/soundManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/animManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/helpManager.js"></script>
+
+<style>
+.helpalt { background-color: yellow; border: 2px solid red; padding: 5px; }
+
+.helpfull { }
+
+.helpfull .box { width: 300px; height: 300px; position: absolute; }
+
+.helpfull .blt { left: 123px; top: 0px; }
+.helpfull .brt { left: 0px; top: 0px; }
+.helpfull .blb { left: 123px; top: 0px; }
+.helpfull .brb { left: 0px; top: 0px; }
+
+.helpfull .tl { width: 25px; height: 25px; position: absolute; left: 0px; top: 0px; background-position: 0px 0px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .t { width: 250px; height: 25px; position: absolute; left: 25px; top: 0px; background-position: -25px 0px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .tr { width: 25px; height: 25px; position: absolute; right: 0px; top: 0px; background-position: -675px 0px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .l { width: 25px; height: 250px; position: absolute; left: 0px; top: 25px; background-position: 0px -25px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .r { width: 25px; height: 250px; position: absolute; right: 0px; top: 25px; background-position: -675px -25px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .bl { width: 25px; height: 25px; position: absolute; left: 0px; bottom: 0px; background-position: 0px -675px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .b { width: 250px; height: 25px; position: absolute; left: 25px; bottom: 0px; background-position: -25px -675px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .br { width: 25px; height: 25px; position: absolute; right: 0px; bottom: 0px; background-position: -675px -675px; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .previous { cursor: pointer; width: 16px; height: 16px; position: absolute; right: 60px; top: 5px; background-image: url('../skins/4gl/help-previous.png'); }
+.helpfull .next { cursor: pointer; width: 16px; height: 16px; position: absolute; right: 40px; top: 5px; background-image: url('../skins/4gl/help-next.png'); }
+.helpfull .close { cursor: pointer; width: 16px; height: 16px; position: absolute; right: 20px; top: 5px; background-image: url('../skins/4gl/help-close.png'); }
+.helpfull .text { width: 250px; height: 250px; position: absolute; left: 25px; top: 25px; background-color: white; overflow: auto; }
+
+.helpfull .circle { width: 100px; height: 50px; position: absolute; background-image: url('../skins/4gl/help-circle.png'); }
+.helpfull .clt { left: 0px; top: 0px; }
+.helpfull .crt { left: 325px; top: 0px; }
+.helpfull .clb { left: 0px; top: 250px; }
+.helpfull .crb { left: 325px; top: 250px; }
+
+.helpfull .pointer { width: 25px; height: 33px; position: absolute; background-image: url('../skins/4gl/help-box.png'); }
+.helpfull .plt { left: 100px; top: 30px; background-position: -350px -700px; }
+.helpfull .prt { left: 299px; top: 30px; background-position: -200px -700px; }
+.helpfull .plb { left: 100px; top: 240px; background-position: -300px -700px; }
+.helpfull .prb { left: 299px; top: 240px; background-position: -250px -700px; }
+</style>
+
+There is help on the following elements, we put also help on the navigation of the page.<br />
+<br />
+Help is <span id="helpindicator" style="cursor: pointer; padding: 0px 10px; border: 1px solid blue;" onclick="changehelp();">LIGHT</span> (click to change)<br />
+<br />
+When help is ON, wait 4 seconds on the elements to enter in interactive help.<br />
+<br />
+&nbsp;<input type="button" id="showhide" value="hide/show the division" onclick="hideshowdiv();" /><br />
+<br />
+
+<div id="div1" style="border: 1px solid blue; margin: 10px; height: 200px; background-color: #eeeeff;">Division with help</div>
+
+&nbsp;<input type="button" id="button1" value="Button with help" /><br />
+
+&nbsp;<input type="text" id="text1" value="Field with help" /><br />
+
+
+<script>
+
+function hideshowdiv()
+{
+  if (WA.toDOM('div1').style.display == 'none')
+    WA.toDOM('div1').style.display = '';
+  else
+    WA.toDOM('div1').style.display = 'none';
+}
+
+// we setup local demo sound manager
+WA.Managers.sound.setFlashManager('../skin/flash/soundmanager2.swf');
+// we redefine the links
+WA.Managers.help.soundshow = '../skin/sounds/help-show.mp3';
+WA.Managers.help.soundclose = '../skin/sounds/help-close.mp3';
+
+WA.Managers.help.switchAlt();
+
+function changehelp()
+{
+  var m = WA.Managers.help.getMode();
+  m++;
+  if (m > 2) m = 0;
+  switch(m)
+  {
+    case 2: WA.Managers.help.switchOn(); WA.toDOM('helpindicator').innerHTML = 'ON'; break;
+    case 1: WA.Managers.help.switchAlt(); WA.toDOM('helpindicator').innerHTML = 'LIGHT'; break;
+    case 0: WA.Managers.help.switchOff(); WA.toDOM('helpindicator').innerHTML = 'OFF'; break;
+  }
+}
+
+WA.Managers.help.addHelp('helpindicator', {summary:'click to change the Help switch',title:'Help switch',description:'You can click this button to change the help behaviour:<br /><b>OFF</b>: No help is presented<br /><b>LIGHT</b>: Only the fast over help is presented<br /><b>ON</b>: the fast over help is presented and the full interactive help is activated if you stay 4 second over the same element.<br /><br />Lets write something long<br />to make an overflow<br />into the help box.<br /><br />Lets write something long<br />to make an overflow<br />into the help box.<br /><br />Lets write something long<br />to make an overflow<br />into the help box.<br /><br />Lets write something long<br />to make an overflow<br />into the help box.<br /><br />Lets write something long<br />to make an overflow<br />into the help box.<br />'});
+
+WA.Managers.help.addHelp('showhide', {summary:'Show or hide the division',title:'Button',description:'You can show or hide the division by clicking on this button.'});
+
+WA.Managers.help.addHelp('div1', {summary:'Division containing anything',title:'Special division',description:'You can hide this division click the button before it. Hidden elements do not diisplay their help box.'});
+
+WA.Managers.help.addHelp('button1', {summary:'Any button',title:'Any button',description:'This is the description of the behaviour of the button'});
+
+WA.Managers.help.addHelp('text1', {summary:'Any field',title:'Any field',description:'This is the description of the behaviour of the field'});
+
+WA.Managers.help.addHelp('code', {summary:'Type or modify the code in this area',title:'Code',description:'You can modify the code to make any try you want and test the code in this area. Once modified, just click the Run button below and watch the result o the right.'});
+
+WA.Managers.help.addHelp('sendcode', {summary:'Send the modified code to try it',title:'Send the code',description:'When you have modified your code to make a try, just click this button.'});
+
+</script>
+
+
+<br /><br />
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

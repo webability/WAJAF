@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, Examples of Animation of nodes</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/soundManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/animManager.js"></script>
+
+Animated sprites:<br />
+Move character 1 with arrows.<br />
+Move character 2 with W,A,S,D.<br />
+<br />
+<div id="arena" style="position: relative; width: 400px; height: 400px; border: 1px solid black;">
+
+<div id="sprite1" style="z-index: 2; position: absolute; top: 175px; left: 186px;" ></div>
+<div id="sprite2" style="z-index: 2; position: absolute; top: 105px; left: 106px;" ></div>
+
+</div>
+
+<div id="debug"></div>
+
+<br />
+<small>Music and sounds by URU Live</small>
+
+<script>
+
+WA.Managers.sound.setFlashManager('../skins/flash/soundmanager2.swf');
+WA.Managers.sound.addSound('bgmusic', '../skins/sounds/psnlGalleryMusic.mp3', true, true);
+
+var count = 1;
+var running = false;
+var d = {up:0,down:0,left:0,right:0};
+var d2 = {up:0,down:0,left:0,right:0};
+var xpeople = 165, ypeople = 186;
+var npeople = WA.toDOM('sprite1');
+var xpeople2 = 105, ypeople2 = 106;
+var npeople2 = WA.toDOM('sprite2');
+
+var sp1 = WA.Managers.anim.createAnimator(
+  'sprite1', npeople,
+  '../skins/images/animator/01.png',
+  {
+    's1': {x:0,y:0,w:32,h:48},
+    's2': {x:32,y:0,w:32,h:48},
+    's3': {x:64,y:0,w:32,h:48},
+    's4': {x:96,y:0,w:32,h:48},
+    'w1': {x:0,y:48,w:32,h:48},
+    'w2': {x:32,y:48,w:32,h:48},
+    'w3': {x:64,y:48,w:32,h:48},
+    'w4': {x:96,y:48,w:32,h:48},
+    'e1': {x:0,y:96,w:32,h:48},
+    'e2': {x:32,y:96,w:32,h:48},
+    'e3': {x:64,y:96,w:32,h:48},
+    'e4': {x:96,y:96,w:32,h:48},
+    'n1': {x:0,y:144,w:32,h:48},
+    'n2': {x:32,y:144,w:32,h:48},
+    'n3': {x:64,y:144,w:32,h:48},
+    'n4': {x:96,y:144,w:32,h:48},
+  },
+  {
+    'stands': [ {f:'s1',t:100000} ],
+    'standw': [ {f:'w1',t:100000} ],
+    'stande': [ {f:'e1',t:100000} ],
+    'standn': [ {f:'n1',t:100000} ],
+    'walks': [ {f:'s2',t:200,s:true,m:'walk1'}, {f:'s3',t:200}, {f:'s4',t:200,m:'walk2'}, {f:'s1',t:200} ],
+    'walkw': [ {f:'w2',t:200,s:true,m:'walk1'}, {f:'w3',t:200}, {f:'w4',t:200,m:'walk2'}, {f:'w1',t:200} ],
+    'walke': [ {f:'e2',t:200,s:true,m:'walk1'}, {f:'e3',t:200}, {f:'e4',t:200,m:'walk2'}, {f:'e1',t:200} ],
+    'walkn': [ {f:'n2',t:200,s:true,m:'walk1'}, {f:'n3',t:200}, {f:'n4',t:200,m:'walk2'}, {f:'n1',t:200} ]
+  },
+  {'walk1': '../skins/sounds/RugWalk04.mp3',
+   'walk2': '../skins/sounds/RugWalk04.mp3'
+  },
+  null
+);
+
+var sp2 = WA.Managers.anim.createAnimator(
+  'sprite2', npeople2,
+  '../skins/images/animator/02.png',
+  {
+    's1': {x:0,y:0,w:32,h:48},
+    's2': {x:32,y:0,w:32,h:48},
+    's3': {x:64,y:0,w:32,h:48},
+    's4': {x:96,y:0,w:32,h:48},
+    'w1': {x:0,y:48,w:32,h:48},
+    'w2': {x:32,y:48,w:32,h:48},
+    'w3': {x:64,y:48,w:32,h:48},
+    'w4': {x:96,y:48,w:32,h:48},
+    'e1': {x:0,y:96,w:32,h:48},
+    'e2': {x:32,y:96,w:32,h:48},
+    'e3': {x:64,y:96,w:32,h:48},
+    'e4': {x:96,y:96,w:32,h:48},
+    'n1': {x:0,y:144,w:32,h:48},
+    'n2': {x:32,y:144,w:32,h:48},
+    'n3': {x:64,y:144,w:32,h:48},
+    'n4': {x:96,y:144,w:32,h:48},
+  },
+  {
+    'stands': [ {f:'s1',t:100000} ],
+    'standw': [ {f:'w1',t:100000} ],
+    'stande': [ {f:'e1',t:100000} ],
+    'standn': [ {f:'n1',t:100000} ],
+    'walks': [ {f:'s2',t:200,s:true}, {f:'s3',t:200,m:'walk1'}, {f:'s4',t:200}, {f:'s1',t:200,m:'walk2'} ],
+    'walkw': [ {f:'w2',t:200,s:true}, {f:'w3',t:200,m:'walk1'}, {f:'w4',t:200}, {f:'w1',t:200,m:'walk2'} ],
+    'walke': [ {f:'e2',t:200,s:true}, {f:'e3',t:200,m:'walk1'}, {f:'e4',t:200}, {f:'e1',t:200,m:'walk2'} ],
+    'walkn': [ {f:'n2',t:200,s:true}, {f:'n3',t:200,m:'walk1'}, {f:'n4',t:200}, {f:'n1',t:200,m:'walk2'} ]
+  },
+  {'walk1': '../skins/sounds/StoneWalk07.mp3',
+   'walk2': '../skins/sounds/StoneWalk07.mp3'
+  },
+  null
+);
+
+function runmode(e,k,t)
+{
+  if (t == 'down')
+  {
+    WA.toDOM('arena').style.border = '1px solid red';
+    running = true;
+  }
+  else
+  {
+    WA.toDOM('arena').style.border = '1px solid black';
+    running = false;
+  }
+}
+
+function move(e,k,t)
+{
+  if (t == 'down')
+    d[k] = 1;
+  else
+    d[k] = 0;
+  WA.browser.cancelEvent(e);
+}
+
+function move2(e,k,t)
+{
+  if (k == 'a') k = 'left';
+  if (k == 'd') k = 'right';
+  if (k == 'w') k = 'up';
+  if (k == 's') k = 'down';
+  if (t == 'down')
+    d2[k] = 1;
+  else
+    d2[k] = 0;
+  WA.browser.cancelEvent(e);
+}
+
+var timeranim = null;
+var lastdir = false;
+var lastdir2 = false;
+var lastrunning = false;
+
+function movesprite()
+{
+  var xd = 0, yd = 0;
+  yd+=d['down']-d['up'];
+  xd+=d['right']-d['left'];
+  if (running)
+  {
+    xd *= 2;
+    yd *= 2;
+  }
+  if (xd != 0 && yd != 0)
+  { // we are going diagonal (*cos(pi/4))
+    xd = xd * 0.707;
+    yd = yd * 0.707;
+  }
+  xpeople += xd;
+  ypeople += yd;
+  if (xpeople < 0)
+    xpeople = 0;
+  if (ypeople < 0)
+    ypeople = 0;
+  if (xpeople > 400-32)
+    xpeople = 400-32;
+  if (ypeople > 400-48)
+    ypeople = 400-48;
+
+  npeople.style.top = ypeople + 'px';
+  npeople.style.left = xpeople + 'px';
+  npeople.style.zIndex = Math.floor(ypeople);
+
+  var dir = false;
+  if (xd > 0)
+    dir = 'walke';
+  else if (xd < 0)
+    dir = 'walkw';
+  if (yd < 0)
+    dir = 'walkn';
+  else if (yd > 0)
+    dir = 'walks';
+  if (dir != lastdir || running != lastrunning)
+  {
+    if (dir)
+    {
+      sp1.startanim(dir, running?2:1);
+    }
+    else
+    {
+      sp1.stopanim();
+    }
+    lastdir = dir;
+    lastrunning = running;
+  }
+
+  if (xd > 0)
+    sp1.setdefault('stande');
+  else if (xd < 0)
+    sp1.setdefault('standw');
+  if (yd < 0)
+    sp1.setdefault('standn');
+  else if (yd > 0)
+    sp1.setdefault('stands');
+
+  // sprite 2
+  var xd2 = 0, yd2 = 0;
+  yd2+=d2['down']-d2['up'];
+  xd2+=d2['right']-d2['left'];
+  if (running)
+  {
+    xd2 *= 2;
+    yd2 *= 2;
+  }
+  if (xd2 != 0 && yd2 != 0)
+  { // we are going diagonal (*cos(pi/4))
+    xd2 = xd2 * 0.707;
+    yd2 = yd2 * 0.707;
+  }
+  xpeople2 += xd2;
+  ypeople2 += yd2;
+  if (xpeople2 < 0)
+    xpeople2 = 0;
+  if (ypeople2 < 0)
+    ypeople2 = 0;
+  if (xpeople2 > 400-32)
+    xpeople2 = 400-32;
+  if (ypeople2 > 400-48)
+    ypeople2 = 400-48;
+
+  npeople2.style.top = ypeople2 + 'px';
+  npeople2.style.left = xpeople2 + 'px';
+  npeople2.style.zIndex = Math.floor(ypeople2);
+
+  var dir2 = false;
+  if (xd2 > 0)
+    dir2 = 'walke';
+  else if (xd2 < 0)
+    dir2 = 'walkw';
+  if (yd2 < 0)
+    dir2 = 'walkn';
+  else if (yd2 > 0)
+    dir2 = 'walks';
+  if (dir2 != lastdir2 || running != lastrunning)
+  {
+    if (dir2)
+    {
+      sp2.startanim(dir2, running?2:1);
+    }
+    else
+    {
+      sp2.stopanim();
+    }
+    lastdir2 = dir2;
+    lastrunning = running;
+  }
+
+  if (xd2 > 0)
+    sp2.setdefault('stande');
+  else if (xd2 < 0)
+    sp2.setdefault('standw');
+  if (yd2 < 0)
+    sp2.setdefault('standn');
+  else if (yd2 > 0)
+    sp2.setdefault('stands');
+
+
+  timeranim = setTimeout(movesprite, 10);
+}
+
+timeranim = setTimeout(movesprite, 30);
+
+WA.Managers.event.addKey('(shift)', runmode);
+
+WA.Managers.event.addKey('left', move);
+WA.Managers.event.addKey('right', move);
+WA.Managers.event.addKey('up', move);
+WA.Managers.event.addKey('down', move);
+
+WA.Managers.event.addKey('a', move2);
+WA.Managers.event.addKey('d', move2);
+WA.Managers.event.addKey('w', move2);
+WA.Managers.event.addKey('s', move2);
+
+</script>
+
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

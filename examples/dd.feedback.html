@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, direct access to the content of the nodes, examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/ddManager.js"></script>
+
+<br />
+<div id="container" style="z-index: 1; position: relative; left: 2.5%; width: 95%; height: 300px; border: 1px solid blue;" >
+
+  <div id="moveable" style="z-index: 2; position: absolute; left: 50px; top: 50px; width: 100px; height: 100px; border: 1px solid green; background-color: #ffffff;" >Move me</div>
+
+</div>
+
+<div id="position" style="border: 1px solid blue; margin: 10px; max-height: 20px; height: 20px; overflow: auto;">
+</div>
+
+<div id="log" style="border: 1px solid blue; margin: 10px; max-height: 300px; height: 300px; overflow: auto;">
+Log:<br />
+</div>
+
+<script>
+
+var group = null;
+
+function myfeedback(event, group, object, zone, data)
+{
+  switch(event)
+  {
+    case 'start':
+      WA.toDOM('log').innerHTML += event + ' ' + group + ' ' + object + ' ' + zone + '<br />';
+      break;
+    case 'drag':
+      WA.toDOM('position').innerHTML = 'Mouse: ' + data.xmouse + ' ' + data.ymouse + ' / Document: ' + data.dragdocumentleft + ' ' + data.dragdocumenttop + ' / Jail: ' + data.dragleft + ' ' + data.dragtop;
+      break;
+    case 'drop':
+      WA.toDOM('log').innerHTML += event + ' ' + group + ' ' + object + ' ' + zone + '<br />';
+      break;
+    case 'enterzone':
+      WA.toDOM(zone).style.border = '1px solid red';
+      WA.toDOM('log').innerHTML += event + ' ' + group + ' ' + object + ' ' + zone + '<br />';
+      break;
+    case 'exitzone':
+      WA.toDOM(zone).style.border = '1px solid blue';
+      WA.toDOM('log').innerHTML += event + ' ' + group + ' ' + object + ' ' + zone + '<br />';
+      break;
+  }
+}
+
+// By default: move shadow, Jailed.
+group = WA.Managers.dd.registerGroup('gr1', 'border', true, 'container', myfeedback);
+WA.Managers.dd.registerObject('gr1', 'moveable', 'moveable');
+
+
+</script>
+
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Function.prototype.buildFilter example</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The "filter" method allow the programmer to define if the main function will be executed or not:<br />
+<div class="code">newfunction = function.buildFilter(filterfuntion);
+</div>
+
+The "filterfunction" is a function that accept the <b>same</b> parameters of the main function and will return true if the main function can be executed, or false if not.<br />
+This function is very usefull to verify the validity of the parameters and execute the main function only if anything is correct, or execute the main function only if any special condition is met.<br />
+<br />
+Let's use a basic function that calculates the difference between 2 values:
+
+<div class="code">function test(var1, var2)
+{
+  return var2-var1;
+}
+</div>
+<span class="button" onclick="natural();">View the result of this code</span>
+<div id="natural" class="result"></div>
+
+The filter function allow the execution only if the second parameter is greater than the first parameter.<br />
+The result returned by the main function will always be undefined if the filter does not allow the execution.
+
+<div class="code">var filtertest = test.buildFilter(
+  function(v1, v2)
+    {
+      return v2 >= v1;
+    }
+);
+</div>
+<span class="button" onclick="filtercheck();">View the result of this code</span>
+<div id="filtertest" class="result"></div>
+
+<br /><br />
+
+<script type="text/javascript">
+
+// test function, returns the difference between var1 and var2
+
+function test(var1, var2)
+{
+  return var2-var1;
+}
+
+// The filter check if var2 is superior to var1 to make the operation. If not, the test is NOT called and null is returned.
+
+var filtertest = test.buildFilter(
+  function(v1, v2)
+    {
+      return v2 >= v1;
+    }
+);
+
+function natural()
+{
+  WA.get('#natural').text('Natural function: test(1,2) = ' + test(1,2) + '\nNatural function: test(2,1) = ' + test(2,1) + '\n');
+}
+
+function filtercheck()
+{
+  WA.get('#filtertest').text('Filtered function: filtertest(3,7) = ' + filtertest(3,7) + '\nFiltered function: filtertest(7,3)= ' + filtertest(7,3) + '\n');
+}
+
+</script>
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

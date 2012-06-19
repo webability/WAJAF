@@ -1,0 +1,19 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/animManager.js"></script>
+
+The animation will start when you click <span onclick="start();" style="cursor: pointer; text-decoration: underline; background-color: yellow;">here</span>.
+<div style="position: relative;">
+<div id="sprite" style="z-index: 2; position: absolute; left: 50px; top: 50px; width: 100px; height: 100px; border: 1px solid red; background-color: #ffffff;" >Sprite</div>
+</div>
+
+<script>
+
+var sp = animManager.createSprite('sprite', 'sprite', null, {autostart:false, loop:true, chain: [{type:'move',time:1000,tinit:100,tend:30},{type:'move',time:1000,tinit:30,tend:100}]});
+
+function start()
+{
+  sp.start();
+}
+
+</script>

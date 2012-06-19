@@ -1,0 +1,17 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/animManager.js"></script>
+
+The animation will autostart by javascript call.
+<div style="position: relative;">
+<div id="sprite" style="z-index: 2; position: absolute; left: 50px; top: 50px; width: 100px; height: 100px; border: 1px solid red; background-color: #ffffff;" >Sprite</div>
+</div>
+
+<script>
+
+var sp = animManager.createSprite('sprite', 'sprite', null, {autostart:false, loop:true, chain: [{type:'move',time:1000,winit:100,wend:150,hinit:100,hend:150},{type:'move',time:1000,winit:150,wend:100},{type:'move',time:1000,hinit:150,hend:100}]});
+
+sp.start();
+
+</script>
+

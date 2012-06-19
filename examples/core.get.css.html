@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, direct access to CSS examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/animManager.js"></script>
+
+<br />
+There are some basic methods to access most common CSS properties:<br />
+WA.get.CSSwidth(value) : apply the value to the width of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSwidth() : returns the CSS width of the FIRST DOM node found.<br />
+WA.get.CSSheight(value) : apply the value to the height of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSheight() : returns the CSS height of the FIRST DOM node found.<br />
+WA.get.CSSleft(value) : apply the value to the left of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSleft() : returns the CSS left of the FIRST DOM node found.<br />
+WA.get.CSStop(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSStop() : returns the CSS top of the FIRST DOM node found.<br />
+<br />
+WA.get.CSSmargin(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSmargin() : returns the CSS top of the FIRST DOM node found.<br />
+WA.get.CSSpadding(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSpadding() : returns the CSS top of the FIRST DOM node found.<br />
+WA.get.CSSborder(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSborder() : returns the CSS top of the FIRST DOM node found.<br />
+<br />
+WA.get.CSScolor(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSScolor() : returns the CSS top of the FIRST DOM node found.<br />
+WA.get.CSSbgcolor(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSbgcolor() : returns the CSS top of the FIRST DOM node found.<br />
+WA.get.CSSbg(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSbg() : returns the CSS top of the FIRST DOM node found.<br />
+<br />
+WA.get.CSSfont(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSfont() : returns the CSS top of the FIRST DOM node found.<br />
+WA.get.CSSdisplay(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSdisplay() : returns the CSS top of the FIRST DOM node found.<br />
+WA.get.CSSopacity(value) : apply the value to the top of each node. it must be a valid CSS measure.<br />
+ + WA.get.CSSopacity() : returns the CSS top of the FIRST DOM node found.<br />
+<br />
+There is also a generic method to access any other CSS properties:<br />
+WA.get.css(param, value) : apply the value to the specified parameter of each node.<br />
+ + WA.get.css(param) : returns the value of the parameter of the FIRST DOM node found.<br />
+<br />
+
+Let's play with some objects sizes:<br />
+
+<div class="code">
+function test1()
+{
+  var w = WA.get("#d1").CSSwidth();
+  WA.get("#metrics1").append('d1 (red) CSS width is ' + w + '. Lets put it to 200px.&lt;br />');
+  WA.get("#d1").CSSwidth('200px');
+
+  var h = WA.get("#d2").CSSheight();
+  WA.get("#metrics1").append('d2 (green) CSS height is ' + h + '. Lets put it to 100px.&lt;br />');
+  WA.get("#d2").CSSheight('100px');
+
+  var l = WA.get("#d3").CSSleft();
+  WA.get("#metrics1").append('d3 (blue) CSS left is ' + l + '. Lets put it to 200px.&lt;br />');
+  WA.get("#d3").CSSleft('200px');
+
+  var t = WA.get("#d4").CSStop();
+  WA.get("#metrics1").append('d4 (orange) CSS top is ' + t + '. Lets put it to 0px.&lt;br />');
+  WA.get("#d4").CSStop('0px');
+}
+</div>
+<span class="button" onclick="test1();">Show the result</span>
+<div id="test1" class="result" style="position: relative; height: 200px;">
+  <div id="metrics1" style="float: right; width: 50%; height: 150px; background-color: #ddd; color: black;"></div>
+  <div id="d1" class="cd1" style="position: absolute; top: 50px; left: 50px; height: 50px; width: 50px; background-color: red;"></div>
+  <div id="d2" class="cd2" style="position: absolute; top: 70px; left: 70px; height: 50px; width: 50px; background-color: green;"></div>
+  <div id="d3" class="cd3" style="position: absolute; top: 90px; left: 90px; height: 50px; width: 50px; background-color: blue;"></div>
+  <div id="d4" class="cd1" style="position: absolute; top: 110px; left: 110px; height: 50px; width: 50px; background-color: #ffaa00;"></div>
+</div>
+
+<br />
+
+Let's play with some objects borders and margins:<br />
+
+<div class="code">
+function test2()
+{
+  var m = WA.get("#d21").CSSmargin();
+  WA.get("#metrics2").append('d21 (red) CSS margin is ' + m + '. Lets put it to 5px.&lt;br />');
+  WA.get("#d21").CSSmargin('5px');
+
+  var h = WA.get("#d22").CSSpadding();
+  WA.get("#metrics2").append('d22 (green) CSS padding is ' + h + '. Lets put it to 5px.&lt;br />');
+  WA.get("#d22").CSSpadding('5px');
+
+  var l = WA.get("#d23").CSSborder();
+  WA.get("#metrics2").append('d23 (blue) CSS border is ' + l + '. Lets put it to 5px solid black.&lt;br />');
+  WA.get("#d23").CSSborder('5px solid black');
+}
+</div>
+<span class="button" onclick="test2();">Show the result</span>
+<div id="test2" class="result" style="position: relative; height: 200px;">
+  <div id="metrics2" style="float: right; width: 50%; height: 150px; background-color: #ddd; color: black;"></div>
+  <div id="d21" class="cd1" style="height: 50px; width: 50px; background-color: red;">d21</div>
+  <div id="d22" class="cd2" style="position: absolute; top: 70px; left: 70px; height: 50px; width: 50px; background-color: green;">d22</div>
+  <div id="d23" class="cd3" style="position: absolute; top: 90px; left: 90px; height: 50px; width: 50px; background-color: blue;">d23</div>
+  <div id="d24" class="cd1" style="position: absolute; top: 110px; left: 110px; height: 50px; width: 50px; background-color: #ffaa00;">d24</div>
+</div>
+
+<br />
+
+Let's play with some objects colors:<br />
+
+<div class="code">
+function test3()
+{
+  var w = WA.get("#d31").CSScolor();
+  WA.get("#metrics3").append('d31 (red) CSS color is ' + w + '. Lets put it to white.&lt;br />');
+  WA.get("#d31").CSScolor('white');
+
+  var h = WA.get("#d32").CSSbgcolor();
+  WA.get("#metrics3").append('d32 (green) CSS background color is ' + h + '. Lets put it to black.&lt;br />');
+  WA.get("#d32").CSSbgcolor('black');
+
+  var l = WA.get("#d33").CSSbg();
+  WA.get("#metrics3").append('d33 (blue) CSS background is ' + l + '. Lets put it to transparent and a blue border.&lt;br />');
+  WA.get("#d33").CSSbg('transparent').CSSborder('blue 1px solid');
+}
+</div>
+<span class="button" onclick="test3();">Show the result</span>
+<div id="test3" class="result" style="position: relative; height: 200px;">
+  <div id="metrics3" style="float: right; width: 50%; height: 150px; background-color: #ddd; color: black;"></div>
+  <div id="d31" class="cd1" style="position: absolute; top: 50px; left: 50px; height: 50px; width: 50px; background-color: red;"></div>
+  <div id="d32" class="cd2" style="position: absolute; top: 70px; left: 70px; height: 50px; width: 50px; background-color: green;"></div>
+  <div id="d33" class="cd3" style="position: absolute; top: 90px; left: 90px; height: 50px; width: 50px; background-color: blue;"></div>
+  <div id="d34" class="cd1" style="position: absolute; top: 110px; left: 110px; height: 50px; width: 50px; background-color: #ffaa00;"></div>
+</div>
+
+<br />
+
+Let's play with some other CSS objects properties:<br />
+
+<div class="code">
+function test4()
+{
+  var w = WA.get("#d41").CSSfont();
+  WA.get("#metrics4").append('d41 (red) CSS font is ' + w + '. Lets put it to 14px Arial bold.&lt;br />');
+  WA.get("#d41").CSSfont('bold 14px Verdana');
+
+  var h = WA.get("#d42").CSSdisplay();
+  WA.get("#metrics4").append('d42 (green) CSS display is ' + h + '. Lets put it to none.&lt;br />');
+  WA.get("#d42").CSSdisplay('none');
+
+  var l = WA.get("#d43").CSSopacity();
+  WA.get("#metrics4").append('d43 (blue) CSS opacity is ' + l + '. Lets put it to 50%.&lt;br />');
+  WA.get("#d43").CSSopacity('50');
+
+  var t = WA.get("#d43").css('z-index');
+  WA.get("#metrics4").append('d43 (blue) CSS zIndex is ' + t + '. Lets put it to 100.&lt;br />');
+  WA.get("#d43").css('z-index', '100');
+}
+</div>
+<span class="button" onclick="test4();">Show the result</span>
+<div id="test4" class="result" style="position: relative; height: 200px;">
+  <div id="metrics4" style="float: right; width: 50%; height: 150px; background-color: #ddd; color: black;"></div>
+  <div id="d41" class="cd1" style="position: absolute; top: 50px; left: 50px; height: 50px; width: 50px; background-color: red;">Font</div>
+  <div id="d42" class="cd2" style="position: absolute; top: 70px; left: 70px; height: 50px; width: 50px; background-color: green;"></div>
+  <div id="d43" class="cd3" style="position: absolute; top: 90px; left: 90px; height: 50px; width: 50px; background-color: blue;"></div>
+  <div id="d44" class="cd1" style="position: absolute; top: 110px; left: 110px; height: 50px; width: 50px; background-color: #ffaa00;"></div>
+</div>
+
+<br />
+
+<script type="text/javascript">
+
+function test1()
+{
+  var w = WA.get("#d1").CSSwidth();
+  WA.get("#metrics1").append('d1 (red) CSS width is ' + w + '. Lets put it to 200px.<br />');
+  WA.get("#d1").CSSwidth('200px');
+
+  var h = WA.get("#d2").CSSheight();
+  WA.get("#metrics1").append('d2 (green) CSS height is ' + h + '. Lets put it to 100px.<br />');
+  WA.get("#d2").CSSheight('100px');
+
+  var l = WA.get("#d3").CSSleft();
+  WA.get("#metrics1").append('d3 (blue) CSS left is ' + l + '. Lets put it to 200px.<br />');
+  WA.get("#d3").CSSleft('200px');
+
+  var t = WA.get("#d4").CSStop();
+  WA.get("#metrics1").append('d4 (orange) CSS top is ' + t + '. Lets put it to 0px.<br />');
+  WA.get("#d4").CSStop('0px');
+}
+
+function test2()
+{
+  var m = WA.get("#d21").CSSmargin();
+  WA.get("#metrics2").append('d21 (red) CSS margin is ' + m + '. Lets put it to 5px.<br />');
+  WA.get("#d21").CSSmargin('5px');
+
+  var h = WA.get("#d22").CSSpadding();
+  WA.get("#metrics2").append('d22 (green) CSS padding is ' + h + '. Lets put it to 5px.<br />');
+  WA.get("#d22").CSSpadding('5px');
+
+  var l = WA.get("#d23").CSSborder();
+  WA.get("#metrics2").append('d23 (blue) CSS border is ' + l + '. Lets put it to 5px solid black.<br />');
+  WA.get("#d23").CSSborder('5px solid black');
+}
+
+function test3()
+{
+  var w = WA.get("#d31").CSScolor();
+  WA.get("#metrics3").append('d31 (red) CSS color is ' + w + '. Lets put it to white.<br />');
+  WA.get("#d31").CSScolor('white');
+
+  var h = WA.get("#d32").CSSbgcolor();
+  WA.get("#metrics3").append('d32 (green) CSS background color is ' + h + '. Lets put it to black.<br />');
+  WA.get("#d32").CSSbgcolor('black');
+
+  var l = WA.get("#d33").CSSbg();
+  WA.get("#metrics3").append('d33 (blue) CSS background is ' + l + '. Lets put it to transparent and a blue border.<br />');
+  WA.get("#d33").CSSbg('transparent').CSSborder('blue 1px solid');
+}
+
+function test4()
+{
+  var w = WA.get("#d41").CSSfont();
+  WA.get("#metrics4").append('d41 (red) CSS font is ' + w + '. Lets put it to 14px Arial bold.<br />');
+  WA.get("#d41").CSSfont('bold 14px Verdana');
+
+  var h = WA.get("#d42").CSSdisplay();
+  WA.get("#metrics4").append('d42 (green) CSS display is ' + h + '. Lets put it to none.<br />');
+  WA.get("#d42").CSSdisplay('none');
+
+  var l = WA.get("#d43").CSSopacity();
+  WA.get("#metrics4").append('d43 (blue) CSS opacity is ' + l + '. Lets put it to 50%.<br />');
+  WA.get("#d43").CSSopacity('50');
+
+  var t = WA.get("#d43").css('z-index');
+  WA.get("#metrics4").append('d43 (blue) CSS zIndex is ' + t + '. Lets put it to 100.<br />');
+  WA.get("#d43").css('z-index', '100');
+}
+
+</script>
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

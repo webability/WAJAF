@@ -1,0 +1,70 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ddManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/space3dManager.js"></script>
+
+<style>
+.cloud span
+{
+  font-weight: bold;
+  background-color: #ffee66;
+  border: 1px solid black;
+}
+.cloud span:hover
+{
+  background-color: #ffaa55;
+}
+</style>
+
+<h2>Word Cloud</h2>
+
+<div id="scene" class="cloud" style="border: 1px solid red; overflow: hidden; height: 250px; width: 350px; margin: 5%; position: relative; cursor: pointer; background-color: white;"></div>
+
+<div id="coords"></div>
+
+<script type="text/javascript">
+
+function clicked(node)
+{
+  alert('You have clicked: ' + node.innerHTML);
+}
+
+// We build the words cube (any formula to put the words equidistant on a sphere is good)
+var sz = 80;
+var pt = 95;
+var cloud =
+{
+  c0: {title:'<span onclick="clicked(this);">WAJAF</span>',x:0,y:0,z:0,color:'red',size:24},
+
+  a1: {title:'<span onclick="clicked(this);">Web 2.0</span>',x:-sz,y:-sz,z:-sz,color:'blue',size:18},
+  a2: {title:'<span onclick="clicked(this);">Internet</span>',x:sz,y:-sz,z:-sz,color:'blue',size:18},
+  a3: {title:'<span onclick="clicked(this);">Framework</span>',x:sz,y:sz,z:-sz,color:'blue',size:18},
+  a4: {title:'<span onclick="clicked(this);">Javascript</span>',x:-sz,y:sz,z:-sz,color:'blue',size:18},
+  a5: {title:'<span onclick="clicked(this);">PHP</span>',x:-sz,y:-sz,z:sz,color:'blue',size:24},
+  a6: {title:'<span onclick="clicked(this);">CRM</span>',x:sz,y:-sz,z:sz,color:'blue',size:18},
+  a7: {title:'<span onclick="clicked(this);">ERP</span>',x:sz,y:sz,z:sz,color:'blue',size:18},
+  a8: {title:'<span onclick="clicked(this);">GRP</span>',x:-sz,y:sz,z:sz,color:'blue',size:18},
+
+  b1: {title:'<span onclick="clicked(this);">Database</span>',x:pt,y:0,z:0,color:'blue',size:18},
+  b2: {title:'<span onclick="clicked(this);">Compatibility</span>',x:-pt,y:0,z:0,color:'blue',size:18},
+  b3: {title:'<span onclick="clicked(this);">Portability</span>',x:0,y:pt,z:0,color:'blue',size:18},
+  b4: {title:'<span onclick="clicked(this);">Conectivity</span>',x:0,y:-pt,z:0,color:'blue',size:18},
+  b5: {title:'<span onclick="clicked(this);">Standard</span>',x:0,y:0,z:pt,color:'blue',size:24},
+  b6: {title:'<span onclick="clicked(this);">Facility</span>',x:0,y:0,z:-pt,color:'blue',size:18},
+}
+
+var s = space3dManager.createScene('scene1', $('scene'), cloud);
+
+function moveall(tf)
+{
+  var alpha = tf / 10000;
+  var beta = tf / 20000;
+  s.setRotation(alpha, beta, 0);
+}
+
+s.startAnimation();
+s.startOver();
+s.startDrag();
+
+</script>
+

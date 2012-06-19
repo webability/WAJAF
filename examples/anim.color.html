@@ -1,0 +1,25 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/animManager.js"></script>
+
+The animation will start when you click <span onclick="start();" style="cursor: pointer; text-decoration: underline; background-color: green;">here</span>.<br />
+The animation will stop when you click <span onclick="stop();" style="cursor: pointer; text-decoration: underline; background-color: red;">here</span>.<br />
+start/stop by creating/destroying the sprite
+<div style="position: relative;">
+<div id="sprite" style="z-index: 2; position: absolute; left: 50px; top: 50px; width: 100px; height: 100px; border: 1px solid red; background-color: #ffffff;" >Sprite</div>
+</div>
+
+<script>
+
+function start()
+{
+  animManager.createSprite('sprite', 'sprite', null, {autostart:true, loop:true, chain: [{type:'move',time:1000,rinit:255,rend:255,binit:255,bend:128,ginit:255,gend:0},{type:'move',time:1000,brinit:255,brend:0,bbinit:0,bbend:255,bginit:255,bgend:0}]});
+}
+
+function stop()
+{
+  animManager.destroySprite('sprite');
+}
+
+</script>
+

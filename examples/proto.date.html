@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Date.prototype.* examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The Date object has been enhanced with 1 main method to format the date:<br />
+<b>format</b>: will format the dates with a PHP-like Date syntax.<br />
+And some functions used to help this task:<br />
+<b>setNames</b>: used to adjust the language of the days and months.<br />
+<b>isDate</b>: check if a (year/month/day) vector is a valid date.<br />
+<b>isTime</b>: check if a (hour/min/sec) vector is a valid time.<br />
+<b>isValid</b>: check if a (year/month/day/hour/min/sec/ms) vector is a valid timestamp.<br />
+<b>isLeapYear</b>: check if the Date year is a leap year.<br />
+<b>getOrdinalSuffix</b>: get the ordinal suffix of the day of the month of the Date.<br />
+<b>getMaxMonthDays</b>: get the max days of the month of the Date.<br />
+<b>getDayOfYear</b>: get the day number in the year of the Date.<br />
+<b>getWeekOfYear</b>: get the number of the week day of the Date.<br />
+<b>getGMTOffset</b>: get the GMT offset of the Date.<br />
+<b>getTimezone</b>: get the Time zone of the Date.<br />
+<br />
+setNames is a static method.<br />
+The methods isDate, isTime and isValid work on the Date object.<br />
+All the other methods work on the instances of Date.<br />
+<br />
+Note: some original ideas were taken from PHP dates, algorithm from http://www.merlyn.demon.co.uk/weekcalc.htm and structures from extJS.<br />
+<br />
+
+<br />
+Let's put the date names in spanish:<br />
+
+<div class="code">function test1()
+{
+  Date.setNames(
+    ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    ['Enero', 'Febrero', 'Mazo', 'Abril', 'Mayo', 'Junio', 'Julo', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+  );
+}
+
+function test2()
+{
+  Date.setNames(
+    ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  );
+}
+</div>
+<span class="button" onclick="test1();">Set the names in spanish</span>
+<span class="button" onclick="test2();">Set the names in english</span>
+
+<br />
+<br />
+Let's check if some dates and times are valid:<br />
+
+<div class="code">function test3()
+{
+  WA.get('#test3').text( '2009/01/31: ' + (Date.isDate(2009,1,31)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/31: ' + (Date.isDate(2009,2,31)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/30: ' + (Date.isDate(2009,2,30)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/29: ' + (Date.isDate(2009,2,29)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/28: ' + (Date.isDate(2009,2,28)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/04/31: ' + (Date.isDate(2009,4,31)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/04/30: ' + (Date.isDate(2009,4,30)?'Yes':'No') + '\n');
+
+  WA.get('#test3').append( '20:05:12: ' + (Date.isTime(20,05,12)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '24:00:00: ' + (Date.isTime(24,0,0)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '23:59:59: ' + (Date.isTime(23,59,59)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '-1:10:10: ' + (Date.isTime(-1,10,10)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '00:00:00: ' + (Date.isTime(0,0,0)?'Yes':'No') + '\n');
+
+  WA.get('#test3').append( '2009/01/01 12:00:00:000 : ' + (Date.isValid(2009,1,1,12,0,0,0)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/29 12:00:00:000 : ' + (Date.isValid(2009,2,29,12,0,0,0)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/28 23:59:59:000 : ' + (Date.isValid(2008,2,29,23,59,59,0)?'Yes':'No') + '\n');
+}
+</div>
+<span class="button" onclick="test3();">Show the result</span>
+<div id="test3" class="result"></div>
+
+<br />
+Let's work with today's date:<br />
+
+<div class="code">function test4()
+{
+  var d = new Date();
+
+  WA.get('#test4').text( 'Today is: ' + d.format('j Y-m-d') + '\n\n');
+
+  WA.get('#test4').append( (d.isLeapYear()?'Is leap':'Is not leap') + '\n');
+  WA.get('#test4').append( 'This is the '+d.getDate()+d.getOrdinalSuffix() + ' day of the month.\n');
+  WA.get('#test4').append( 'There are '+d.getMaxMonthDays() + ' days in the month.\n');
+  WA.get('#test4').append( 'This is the day number ' + d.getDayOfYear() + ' of the year.\n');
+  WA.get('#test4').append( 'This is the week number '+d.getWeekOfYear() + ' in the year.\n');
+  WA.get('#test4').append( 'The time offset is ' + d.getGMTOffset() + '\n');
+  WA.get('#test4').append( 'The time zone is ' + d.getTimezone() + '\n');
+
+  WA.get('#test4').append( 'day: ' + d.format('j d D l') + '\n');
+  WA.get('#test4').append( 'day: ' + d.format('w N S z') + '\n');
+  WA.get('#test4').append( 'week: ' + d.format('W') + '\n');
+  WA.get('#test4').append( 'month: ' + d.format('n m M F t') + '\n');
+  WA.get('#test4').append( 'year: ' + d.format('L o y Y') + '\n');
+  WA.get('#test4').append( 'hour: ' + d.format('a A g G h H') + '\n');
+  WA.get('#test4').append( 'min, sec: ' + d.format('i s u') + '\n');
+  WA.get('#test4').append( 'zone: ' + d.format('O P T Z') + '\n');
+  WA.get('#test4').append( 'ISO: ' + d.format('c') + '\n');
+  WA.get('#test4').append( 'unix: ' + d.format('U') + '\n');
+}
+</div>
+<span class="button" onclick="test4();">Show the result</span>
+<div id="test4" class="result"></div>
+
+<br /><br />
+It is highly recommended to replace the method getOrdinalSuffix with your own language method if you are going to use the ordinal representation of the day:<br />
+Example for spanish:<br />
+
+<div class="code">function test5()
+{
+  Date.prototype.getOrdinalSuffix = function()
+  {
+    switch (this.getDate())
+    {
+      case 1: case 21: case 31: return "er";
+      case 3: case 23:          return "er";
+      default:                  return "o";
+    }
+  }
+  var d = new Date();
+  WA.get('#test5').append( 'Hoy es el '+d.getDate()+d.getOrdinalSuffix() + ' día del mes.\n');
+}
+</div>
+<span class="button" onclick="test5();">Change the ordinal suffix calculation</span>
+<div id="test5" class="result"></div>
+
+<br /><br />
+
+<script type="text/javascript">
+
+function test1()
+{
+  Date.prototype.setNames(
+    ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+    ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+    ['Enero', 'Febrero', 'Mazo', 'Abril', 'Mayo', 'Junio', 'Julo', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+    ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+  );
+}
+
+function test2()
+{
+  Date.prototype.setNames(
+    ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  );
+}
+
+function test3()
+{
+  WA.get('#test3').text( '2009/01/31: ' + (Date.isDate(2009,1,31)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/31: ' + (Date.isDate(2009,2,31)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/30: ' + (Date.isDate(2009,2,30)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/29: ' + (Date.isDate(2009,2,29)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/28: ' + (Date.isDate(2009,2,28)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/04/31: ' + (Date.isDate(2009,4,31)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/04/30: ' + (Date.isDate(2009,4,30)?'Yes':'No') + '\n');
+
+  WA.get('#test3').append( '20:05:12: ' + (Date.isTime(20,05,12)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '24:00:00: ' + (Date.isTime(24,0,0)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '23:59:59: ' + (Date.isTime(23,59,59)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '-1:10:10: ' + (Date.isTime(-1,10,10)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '00:00:00: ' + (Date.isTime(0,0,0)?'Yes':'No') + '\n');
+
+  WA.get('#test3').append( '2009/01/01 12:00:00:000 : ' + (Date.isValid(2009,1,1,12,0,0,0)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/29 12:00:00:000 : ' + (Date.isValid(2009,2,29,12,0,0,0)?'Yes':'No') + '\n');
+  WA.get('#test3').append( '2009/02/28 23:59:59:000 : ' + (Date.isValid(2008,2,29,23,59,59,0)?'Yes':'No') + '\n');
+}
+
+function test4()
+{
+  var d = new Date();
+
+  WA.get('#test4').text( 'Today is: ' + d.format('l Y-m-d') + '\n\n');
+
+  WA.get('#test4').append( (d.isLeapYear()?'Is leap':'Is not leap') + '\n');
+  WA.get('#test4').append( 'This is the '+d.getDate()+d.getOrdinalSuffix() + ' day of the month.\n');
+  WA.get('#test4').append( 'There are '+d.getMaxMonthDays() + ' days in the month.\n');
+  WA.get('#test4').append( 'This is the day number ' + d.getDayOfYear() + ' of the year.\n');
+  WA.get('#test4').append( 'This is the week number '+d.getWeekOfYear() + ' in the year.\n');
+  WA.get('#test4').append( 'The time offset is ' + d.getGMTOffset() + '\n');
+  WA.get('#test4').append( 'The time zone is ' + d.getTimezone() + '\n');
+
+  WA.get('#test4').append( 'day: ' + d.format('j d D l') + '\n');
+  WA.get('#test4').append( 'day: ' + d.format('w N S z') + '\n');
+  WA.get('#test4').append( 'week: ' + d.format('W') + '\n');
+  WA.get('#test4').append( 'month: ' + d.format('n m M F t') + '\n');
+  WA.get('#test4').append( 'year: ' + d.format('L o y Y') + '\n');
+  WA.get('#test4').append( 'hour: ' + d.format('a A g G h H') + '\n');
+  WA.get('#test4').append( 'min, sec: ' + d.format('i s u') + '\n');
+  WA.get('#test4').append( 'zone: ' + d.format('O P T Z') + '\n');
+  WA.get('#test4').append( 'ISO: ' + d.format('c') + '\n');
+  WA.get('#test4').append( 'unix: ' + d.format('U') + '\n');
+}
+
+function test5()
+{
+  Date.prototype.getOrdinalSuffix = function()
+  {
+    switch (this.getDate())
+    {
+      case 1: case 21: case 31: return "er";
+      case 3: case 23:          return "er";
+      default:                  return "o";
+    }
+  };
+  var d = new Date();
+  WA.get('#test5').append( 'Hoy es el '+d.getDate()+d.getOrdinalSuffix() + ' día del mes.\n');
+}
+
+</script>
+
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,113 @@
+/* WAJAF CLASSES EXAMPLES */
+
+body
+{
+  color: #333;
+  background-color: #042238;
+  margin: 5px;
+  font-family: Lucida Sans,Verdana,Arial;
+  font-size: 12px;
+  line-height: 1.6em;
+}
+
+a { color: #4083B9; }
+a:hover { color: #6299C5; }
+a:visited { color: #2E5E85; }
+
+a.back
+{
+  background-color: #62C599;
+  border: 1px solid #40B983;
+  color: white;
+  cursor: pointer;
+  padding: 5px;
+}
+
+a.back:hover
+{
+  background-color: #DFFFF4;
+  border: 1px solid #C2EFE1;
+  color: #336699;
+}
+
+h1
+{
+  font-size: 26px;
+  font-family: "Century Gothic", "Trebuchet MS" , Arial, Helvetica, sans-serif;
+}
+
+h2
+{
+  font-size: 18px;
+  font-family: "Century Gothic", "Trebuchet MS" , Arial, Helvetica, sans-serif;
+}
+
+.container
+{
+  width: 1000px;
+  border: 2px solid #2E5E85;
+  background-color: #eee;
+  padding: 10px;
+}
+
+.code {
+    background-color: #FFFFFF;
+    border: 1px dashed #6E8C94;
+    color: #1D4A5B;
+    font-family: courier;
+    font-size: 12px;
+    margin: 10px;
+    padding: 10px;
+    white-space: pre;
+    overflow: auto;
+}
+
+.button {
+    background-color: #6299C5;
+    border: 1px solid #4083B9;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    margin-left: 10px;
+}
+
+.button:hover {
+    background-color: #DFF4FF;
+    border: 1px solid #C2E1EF;
+    color: #336699;
+}
+
+.result {
+    background-color: #f8f8f8;
+    border: 1px solid #8B946E;
+    color: #4B543E;
+    font-family: courier;
+    font-size: 12px;
+    margin: 10px;
+    padding: 10px;
+    white-space: pre;
+    overflow: auto;
+}
+
+.chart
+{
+}
+
+.chart th
+{
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid #aaaaaa;
+  padding: 3px;
+  background-color: #ccccff;
+}
+
+.chart td
+{
+  text-align: center;
+  vertical-align: top;
+  border: 1px dotted #aaaaaa;
+  padding: 3px;
+}
+
+

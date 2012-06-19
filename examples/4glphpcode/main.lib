@@ -1,0 +1,361 @@
+<?php
+
+include_once '../../lib/php/wajaf.lib';
+
+class main
+{
+  function code()
+  {
+    $a = new Xapplication('main');
+
+    $sc = new separatorContainer();
+    $sc->setWidth('max');
+    $sc->setHeight('max');
+    $sc->setMode('vertical');
+    $sc->setAuto('yes');
+
+    $scz1 = new separatorZone('header');
+    $scz1->setSize(45);
+    $this->fillheader($scz1);
+    $this->fillflags($scz1);
+    $this->fillicons($scz1);
+    $sc->add($scz1);
+
+    $scz2 = new separatorZone('workarea');
+    $scz2->setSize('*');
+    $this->fillworkarea($scz2);
+    $sc->add($scz2);
+
+    $scz3 = new separatorZone('footer');
+    $scz3->setSize(30);
+    $this->fillfooter($scz3);
+    $sc->add($scz3);
+
+    $a->add($sc);
+
+    $this->addJSCode($a);
+
+    $a->setEvent('start', "function()
+{
+  browser.setInnerHTML($('wajafversion'), WA.version);
+  timer();
+  ajaxManager.setListener(ajaxListener);
+  ddManager.setListener(ddListener);
+  $('loading').style.display = 'none';
+}
+");
+
+    return $a->compile();
+  }
+
+  function addJSCode($app)
+  {
+    $js = <<<EOF
+function addzero(num)
+{
+  if (num < 10)
+    return '0' + num;
+  return num;
+}
+
+function timer()
+{
+  var fecha=new Date();
+
+  browser.setInnerHTML($('main|single|timer'), fecha.format('l, F j, Y, H:i:s'));
+  setTimeout( function() { timer(); }, 1000 );
+}
+
+function setSound(status)
+{
+  soundManager.on = status;
+  if (status)
+    $('main|single|sound_header').className = 'buttonmenusoundon';
+  else
+    $('main|single|sound_header').className = 'buttonmenusoundoff';
+}
+
+function setHelp(status)
+{
+  switch (status)
+  {
+    case 0:
+      helpManager.switchOff();
+      $('main|single|help_header').className = 'buttonmenuhelpmute';
+      break;
+    case 1:
+      helpManager.switchAlt();
+      $('main|single|help_header').className = 'buttonmenuhelp';
+      break;
+    case 2:
+      helpManager.switchOn();
+      $('main|single|help_header').className = 'buttonmenuhelpfull';
+      break;
+  }
+}
+
+var numajax = 0;
+function ajaxListener(event)
+{
+  if (event == 'start')
+    numajax ++;
+  else if (event == 'stop')
+    numajax --;
+  if (numajax > 0)
+    $('main|single|ajaxflag').className = 'flagred';
+  else
+    $('main|single|ajaxflag').className = 'flaggreen';
+}
+
+function ddListener(event)
+{
+  if (event == 'start' || event == 'drag')
+    $('main|single|ddflag').className = 'flagred';
+  else if (event == 'stop')
+    $('main|single|ddflag').className = 'flaggreen';
+}
+EOF;
+
+    $app->add(new codeElement($js));
+  }
+
+  function fillheader($zone)
+  {
+    $html = <<<EOF
+        <img src="/wajaf/skin/images/wa5.gif" style="vertical-align: middle; height: 27px; margin-right: 10px;" alt="WAJAF v1 Examples" title="WAJAF v1 Examples" />
+        The WAJAF Examples&nbsp;-&nbsp;<span id="wajafversion" class="alttitle"></span>&nbsp;-&nbsp;Control Center with PHP classes.
+EOF;
+
+    $e = new htmlElement($html, 'header_content');
+    $e->setClassname('maintitle')->position(0, 0, '*', '*')->setHeight(28);
+    $zone->add($e);
+
+    $e = new htmlElement('', 'timer');
+    $e->setClassname('timertitle')->position(']-150', ']', 0, 28)->size(300, 20);
+    $zone->add($e);
+  }
+
+  function fillflags($zone)
+  {
+    $e = new htmlElement('', 'ajaxflag');
+    $e->setClassname('flaggreen')->position(']-50', ']', 0, 5)->size(16, 10);
+    $e->setHelp('Ajax Status flag', 'Ajax Status flag', 'The flag is green when there is no AJAX request.<br />If there is an AJAX request on the go, the flag turns red during the request.<br />');
+    $zone->add($e);
+
+    $e = new htmlElement('', 'ddflag');
+    $e->setClassname('flaggreen')->position(']-30', ']', 0, 5)->size(16, 10);
+    $e->setHelp('Drag&Drop Status flag', 'Drag&Drop Status flag', 'The flag is green when there is no D&D movement.<br />If there is a D&D movement on the go, the flag turns red during the dragging.<br />');
+    $zone->add($e);
+
+    $e = new htmlElement('', 'debugbutton');
+    $e->setClassname('flagyellow')->position(']-10', ']', 0, 5)->size(16, 10);
+    $e->setHelp('Click to open the debug console', 'Debug console', 'You can click on this button to open to debug console.<br />The debug console is a popup window. Be sure the popups are authorized in your browser to let it appear.<br />');
+    $js = <<<EOF
+function(e)
+{
+  var popupdebug = window.open('', 'debug', 'scrollbars=1,width=400,height=600');
+  popupdebug.moveTo(0,0);
+  WA.debug.Console = popupdebug.document;
+  WA.debug.Level = 1;
+}
+EOF;
+    $e->setEvent('onclick', $js);
+    $zone->add($e);
+  }
+
+  function fillicons($zone)
+  {
+    $e = new htmlElement('', 'myconfig');
+    $e->setClassname('buttonmenuconfig')->position(']-50', ']', 0, 25)->size(16, 16);
+    $e->setHelp('Click here to open the configuration screen', 'Configuration', 'You can access the configuration screen click on this button.<br />You can change here the skin of the examples dynamically.<br />');
+    $js = <<<EOF
+function(e)
+{
+  var node = \$N('index|single|app_config');
+  if (!node)
+  {
+    self.createTree('index|single|application', {tag:'zone',attributes:{id:'app_config',title:'Configuration',closeable:'yes',shortcut:'alt+c',application:'masterconfig|single'}});
+  }
+  self.getNode('index|single|application').icontainer.activateZone('app_config');
+}
+EOF;
+    $e->setEvent('onclick', $js);
+    $zone->add($e);
+
+    $e = new htmlElement('', 'help_header');
+    $e->setClassname('buttonmenuhelpfull')->position(']-30', ']', 0, 25)->size(16, 16);
+    $e->setHelp('Click to change the help status. Wait on the icon to get more information if the help is turned on full status', 'Help level:', 'This option let you change the interactive help status of the system.<br />
+  The icon <img src="/wajaf/skin/images/help-light.png" alt="Over help" title="Over help" style="vertical-align: middle;" /> is shown when the help is only showing a hint on the element.<br />
+  The icon <img src="/wajaf/skin/images/help-on.png" alt="Full help" title="Full help" style="vertical-align: middle;" /> is shown when the interactive help is in full mode. In this case, put the mouse over an element first show a rapid hint, and waiting 4 seconds will pop a help window that can be navigated.<br />
+  The icon <img src="/wajaf/skin/images/help-off.png" alt="No help" title="No help" style="vertical-align: middle;" /> desactivates all the help.<br />
+  Click on the icon to switch the interactive help mode to hint/full/none.<br />');
+    $js = <<<EOF
+function(e)
+{
+  switch (helpManager.getMode())
+  {
+    case 2: setHelp(0); break;
+    case 1: setHelp(2); break;
+    case 0: setHelp(1); break;
+  }
+}
+EOF;
+    $e->setEvent('onclick', $js);
+    $zone->add($e);
+
+    $e = new htmlElement('', 'sound_header');
+    $e->setClassname('buttonmenusoundon')->position(']-10', ']', 0, 25)->size(16, 16);
+    $e->setHelp('Click to change the sound status On or Off.', 'Sound on/off:', 'This option let you turn the sound of the system on or off.<br />
+  The icon <img src="/wajaf/skin/images/sound-on.png" alt="Sound On" title="Sound On" style="vertical-align: middle;" /> is shown when the sound is working.<br />
+  The icon <img src="/wajaf/skin/images/sound-off.png" alt="Sound Off" title="Sound Off" style="vertical-align: middle;" /> is shown when the sound is turned off.<br />
+  Click on the icon to switch the sound on or off.<br />');
+    $js = <<<EOF
+function(e)
+{
+  if (soundManager.on)
+    setSound(false);
+  else
+    setSound(true);
+}
+EOF;
+    $e->setEvent('onclick', $js);
+    $zone->add($e);
+  }
+
+  function fillworkarea($zone)
+  {
+    $sc = new separatorContainer();
+    $sc->setClassname('')->size('max', 'max')->setMode('horizontal')->setAuto('no');
+    $z1 = new separatorZone();
+    $z1->setSize(200);
+    $this->fillmenu($z1);
+    $sc->add($z1);
+
+    $z2 = new separatorZone();
+    $z2->setSize('*')->setClassname('maintab');
+    $sc->add($z2);
+
+    $tc = new tabContainer('application');
+    $tc->size('max', 'max')->setMode('top');
+    $ztc = new tabZone('controlcenter');
+    $ztc->setTitle('Dash Board');
+
+    $html = <<<EOF
+Welcome to the WebAbility Javascript Application Framework - WAJAF - v1.<br /><br />The examples work perfectly under Firefox 3+, Chrome 1+, Safari 4+, Opera 10+ and Internet Explorer 7/8.<br /><br />
+The whole examples are build on <b>XML files describing the applications</b>.<br />You can display the XML code on each example.<br /><br />
+EOF;
+
+    $e = new htmlElement($html);
+    $e->setClassname('');
+    $ztc->add($e);
+
+    $b = new buttonElement('Show the viewport source code');
+    $b->setEvent('click', "
+function(e)
+{
+  var node = \$N('viewport_source');
+  if (!node)
+  {
+    self.createTree('application', {tag:'zone',attributes:{id:'viewport_source',title:'Viewport Source',closeable:'yes',application:'main|source',params:'Source=true'}});
+  }
+  self.getNode('application').icontainer.activateZone('viewport_source');
+}
+");
+    $ztc->add($b);
+
+    $tc->add($ztc);
+    $z2->add($tc);
+
+    $zone->add($sc);
+  }
+
+  function getmenudata()
+  {
+    $data = array('row' => array(
+        array('id' => 'combined', 'template' => 'folder', 'image' => 'examplegroup.png', 'name' => 'Combined', 'father' => null, 'closeable' => true, 'loadable' => false),
+        array('id' => 'containers', 'template' => 'folder', 'image' => 'examplegroup.png', 'name' => 'Containers', 'father' => null, 'closeable' => true, 'loadable' => false),
+        array('id' => 'ex_simpleContainer', 'template' => 'example', 'image' => 'example.png', 'name' => 'simpleContainer', 'father' => 'containers', 'closeable' => false, 'loadable' => false),
+        array('id' => 'elements', 'template' => 'folder', 'image' => 'examplegroup.png', 'name' => 'Elements', 'father' => null, 'closeable' => true, 'loadable' => false)
+      )
+    );
+    return $data;
+/*
+    {row:[
+  {id:'combined', template:'folder', image:'examplegroup.png', name:'Combined', father: null, closeable: true, loadable: false},
+  {id:'containers', template:'folder', image:'examplegroup.png', name:'Containers', father: null, closeable: true, loadable: false},
+  {id:'simpleContainer', template:'example', image:'example.png', name:'simpleContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'separatorContainer', template:'example', image:'example.png', name:'separatorContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'tabContainer', template:'example', image:'example.png', name:'tabContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'expandableContainer', template:'example', image:'example.png', name:'expandableContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'treeContainer', template:'example', image:'example.png', name:'treeContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'groupContainer', template:'example', image:'example.png', name:'groupContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'elements', template:'folder', image:'examplegroup.png', name:'Elements', father: null, closeable: true, loadable: false},
+  {id:'htmlElement', template:'example', image:'example.png', name:'htmlElement', father: 'elements', closeable: false, loadable: false},
+  {id:'textElement', template:'example', image:'example.png', name:'textElement', father: 'elements', closeable: false, loadable: false},
+  {id:'imageElement', template:'example', image:'example.png', name:'imageElement', father: 'elements', closeable: false, loadable: false}
+]}
+
+*/
+  }
+
+  function fillmenu($zone)
+  {
+    $tc = new treeContainer('menu');
+    $ttc1 = new treeTemplate('folder');
+    $tc->add($ttc1);
+
+    $i = new imageElement('/wajaf/skin/images/{image}', '{name}');
+    $i->setClassname('imagemenu')->size(16,16);
+    $ttc1->add($i);
+
+    $t = new textElement('{name}');
+    $t->setClassname('textmenulink')->setHelp('Click to open/close the folder', 'Folder:', 'Click the name or the icon to open and close the folder.');
+    $t->setEvent('onclick', "function(e)
+{
+  var n = \$C('menu');
+  n.switchzone('{id}');
+}
+");
+    $ttc1->add($t);
+
+    $ttc2 = new treeTemplate('example');
+    $tc->add($ttc2);
+
+    $i = new imageElement('/wajaf/skin/images/{image}', '{name}');
+    $i->setClassname('imagemenu')->size(16,16);
+    $ttc2->add($i);
+
+    $t = new textElement('{name}');
+    $t->setClassname('textmenulink')->setHelp('Click to access the example', 'Example:', 'Click the name of the example to open it in the tabs in the right part of the viewport.');
+    $t->setEvent('onclick', "function(e)
+{
+  var node = \$N('app_example_{id}');
+  if (!node)
+  {
+    var tree = {tag:'container',attributes:{type:'tabContainer',mode:'top',width:'max',height:'max'},'0':{tag:'zone',attributes:{title:'Result',closeable:'no',application:'{id}|single',params:''}},'1':{tag:'zone',attributes:{title:'Source code',closeable:'no',application:'{id}|source',params:'Source=true'}}};
+    self.createTree('application', {tag:'zone',attributes:{id:'app_example_{id}',title:'{name}',closeable:'yes'},'0':tree});
+  }
+  self.getNode('application').icontainer.activateZone('app_example_{id}');
+}
+");
+    $ttc2->add($t);
+
+    $ds = new treeDataset(json_encode($this->getmenudata()));
+    $tc->add($ds);
+
+    $zone->add($tc);
+  }
+
+  function fillfooter($zone)
+  {
+    $html = <<<EOF
+WAJAF - The WebAbility&reg; Javascript Application Framework - &copy; 2008-2010 Philippe Thomassigny - <a href="http://www.webability.info/?P=wajaf" target="_blank">http://www.webability.info/?P=wajaf</a>
+EOF;
+
+    $e = new htmlElement($html, 'footer_content');
+    $e->setClassname('footertitle')->position(0, 0, '*', '*');
+    $zone->add($e);
+  }
+}
+
+?>

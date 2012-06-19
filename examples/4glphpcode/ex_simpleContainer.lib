@@ -1,0 +1,94 @@
+<?php
+
+include_once '../../lib/php/wajaf.lib';
+
+class ex_simpleContainer
+{
+  function code()
+  {
+    $a = new Xapplication('ex_simpleContainer');
+
+    $sc = new simpleContainer();
+    $sc->setHeight(60);
+    $scz1 = new simpleZone();
+    $this->fillbuttons($scz1);
+    $sc->add($scz1);
+    $a->add($sc);
+
+    $sc = new simpleContainer('sc');
+    $sc->setHeight(200)->setClassname('container1');
+
+    $scz1 = new simpleZone('zone1');
+    $scz1->setClassname('zone1');
+    $html = <<<EOF
+This is the first zone of the Container. You will note that the main container have a 5 pixels padding in the class, so the zone is placed into the working area.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+EOF;
+    $e = new htmlElement($html);
+    $scz1->add($e);
+    $sc->add($scz1);
+
+    $scz2 = new simpleZone('zone2');
+    $scz2->setClassname('zone2');
+    $html = <<<EOF
+This is the second zone of the Container. This zone have a 5 pixels margin, so the zone line appears to be 10 pixels from the container border.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+EOF;
+    $e = new htmlElement($html);
+    $scz2->add($e);
+    $sc->add($scz2);
+
+    $scz3 = new simpleZone('zone3');
+    $scz3->setClassname('zone3');
+    $html = <<<EOF
+This is the third zone of the Container. This zone have a 10 pixels margin and 5 pixels padding, so the zone line appears to be 15 pixels from the container border.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+EOF;
+    $e = new htmlElement($html);
+    $scz3->add($e);
+    $sc->add($scz3);
+    $a->add($sc);
+
+    return $a->compile();
+  }
+
+  function fillbuttons($zone)
+  {
+    $html = <<<EOF
+The simpleContainer example. Control the zones by code:
+EOF;
+
+    $e = new htmlElement($html);
+    $zone->add($e);
+
+    $b1 = new buttonElement('Show zone 1');
+    $b1->setEvent('click', "
+function()
+{
+  \$C('sc').showZone('zone1');
+}
+");
+    $zone->add($b1);
+
+    $b2 = new buttonElement('Show zone 2');
+    $b2->setEvent('click', "
+function()
+{
+  \$C('sc').showZone('zone2');
+}
+");
+    $zone->add($b2);
+
+    $b3 = new buttonElement('Show zone 3');
+    $b3->setEvent('click', "
+function()
+{
+  \$C('sc').showZone('zone3');
+}
+");
+    $zone->add($b3);
+  }
+
+}
+
+?>

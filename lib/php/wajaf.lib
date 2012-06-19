@@ -1,0 +1,977 @@
+<?php
+
+/* @@copyright:Begin@@ */
+/*
+    wajaf.lib, WAJAF, the WebAbility(r) Javascript Application Framework
+    Contains the WAJAF classes to build WAJAF applications in PHP
+    (c) 2008-2010 Philippe Thomassigny
+
+    This file is part of WAJAF
+
+    WAJAF is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    WAJAF is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with WAJAF.  If not, see <http://www.gnu.org/licenses/>.
+*/
+/* @@copyright:End@@ */
+
+
+/* The @@xxx:Begin@@ and @@xxx:End@@ keywords have been placed for WebAbility installation purpose. They have no other function. */
+
+// ====================================================================
+// Error class
+
+/* @@wajafError:Begin:throwables@@ */
+class wajafError extends Exception
+{
+  private $trace = null;
+  public $message = null;
+
+  function __construct($message = null)
+  {
+    $this->message = $message;
+    $this->trace = debug_backtrace();
+  }
+
+  public function __toString()
+  {
+    $error = "<table border=\"1\"><tr><td bgcolor=\"#FFDDDD\"><b>ERROR: </b></td><td bgcolor=\"#FFDDDD\">$this->message</td></tr>\n".
+     "<tr><td><b>THROWN: </b></td><td>$this->file (<b>$this->line</b>)</td></tr>\n".
+     "<tr><td valign=\"top\"><b>TRACE: </b></td><td valign=\"top\">";
+    foreach($this->trace as $k => $t)
+    {
+      if ($k) // we dont write 1rst errror since it is where we threw the object
+        $error .= "".(isset($t["file"])?$t["file"]:"No file")." (<b>".(isset($t["line"])?$t["line"]:"No line")."</b>) :: calling <font color=\"blue\">".(isset($t["class"])?$t["class"]:"").(isset($t["type"])?$t["type"]:"").(isset($t["function"])?$t["function"]:"No function")."</font><br />\n";
+    }
+    $error .= "</td></tr>\n</table>";
+    return $error;
+  }
+}
+/* @@wajafError:End@@ */
+
+// ====================================================================
+// Main Builder class
+
+/* @@wajaf:Begin:wajaf@@ */
+class wajaf extends WAClass
+{
+  protected $tagname = '';
+  protected $attributes = array();
+  protected $data = null;
+  protected $isnottext = false;
+  protected $children = array();
+  protected $summary = null;
+  protected $title = null;
+  protected $description = null;
+  protected $events = array();
+  protected $possiblechildren = array();
+
+  public function __construct($tagname)
+  {
+    $this->tagname = $tagname;
+  }
+
+  protected function registerAttributes($params)
+  {
+    foreach ($params as $p)
+      $this->attributes[$p] = null;
+  }
+
+  public function size($width, $height)
+  {
+    $this->attributes['width'] = $width;
+    $this->attributes['height'] = $height;
+    return $this;
+  }
+
+  public function position($left, $top, $right, $bottom)
+  {
+    $this->attributes['left'] = $left;
+    $this->attributes['top'] = $top;
+    $this->attributes['right'] = $right;
+    $this->attributes['bottom'] = $bottom;
+    return $this;
+  }
+
+  protected function getTagName()
+  {
+    return $this->tagname;
+  }
+
+  public function __call($name, $vars)
+  {
+    $var = strtolower(substr($name, 3));
+    if (array_key_exists($var, $this->attributes))
+    {
+      if ($name == 'get'.ucfirst($var))
+        return $this->attributes[$var];
+      elseif ($name == 'set'.ucfirst($var))
+      {
+        $this->attributes[$var] = $vars[0];
+        return $this;
+      }
+    }
+    throw new wajafError('Error, ' . $name . '(' . $vars . ') is not a valid function.');
+  }
+
+  protected function registerPossibleChildren($tags)
+  {
+    foreach ($tags as $t)
+      $this->possiblechildren[$t] = true;
+  }
+
+  public function setData($data, $isnottext = false)
+  {
+    $this->isnottext = $isnottext;
+    $this->data = $data;
+    return $this;
+  }
+
+  public function setHelp($summary, $title, $description)
+  {
+    $this->summary = $summary;
+    $this->title = $title;
+    $this->description = $description;
+    return $this;
+  }
+
+  public function add($object)
+  {
+    if (!($object instanceof wajaf))
+      throw new wajafError('Error, ' . $object->getTagName() . ' is not an instance of wajaf.');
+    if (!isset($this->possiblechildren[$object->getTagName()]))
+      throw new wajafError('Error, '.$this->tagname.' cannot have '.$object->getTagName() . ' as child.');
+    $this->children[] = $object;
+    return $this;
+  }
+
+  public function setEvent($event, $code)
+  {
+    $this->events[$event] = $code;
+    return $this;
+  }
+
+  protected function compilepre()
+  {
+    $txt = '<'.$this->tagname;
+    foreach($this->attributes as $a => $v)
+      if (isset($v))
+        $txt .= ' '.$a.'="'.$v.'"';
+    $txt .= '>';
+    if ($this->data !== null && !$this->isnottext)
+      $txt .= '<![CDATA['.$this->data.']]>';
+    else if ($this->data !== null && $this->isnottext)
+      $txt .= $this->data;
+    foreach($this->children as $c)
+      $txt .= $c->compile();
+    if ($this->summary || $this->title || $this->description)
+    {
+      $txt .= '<help>';
+      if ($this->summary)
+        $txt .= '<summary><![CDATA['.$this->summary.']]></summary>';
+      if ($this->title)
+        $txt .= '<title><![CDATA['.$this->title.']]></title>';
+      if ($this->description)
+        $txt .= '<description><![CDATA['.$this->description.']]></description>';
+      $txt .= '</help>';
+    }
+    foreach($this->events as $e => $c)
+      $txt .= '<event type="'.$e.'"><code><![CDATA['.$c.']]></code></event>';
+    return $txt;
+  }
+
+  protected function compilepost()
+  {
+    $txt = '</'.$this->tagname.'>';
+    return $txt;
+  }
+
+  public function compile()
+  {
+    return $this->compilepre() . $this->compilepost();
+  }
+
+}
+/* @@wajaf:End@@ */
+
+// ====================================================================
+// Builder classes
+
+/* @@Xapplication:Begin:wajaf@@ */
+class Xapplication extends wajaf
+{
+  public function __construct($id)
+  {
+    parent::__construct('application');
+    $this->registerAttributes( array('id', 'enforce') );
+    $this->setId($id);
+    $this->registerPossibleChildren( array('container', 'element') );
+  }
+}
+/* @@Xapplication:End@@ */
+
+/* @@Xcontainer:Begin:wajaf@@ */
+class Xcontainer extends wajaf
+{
+  public function __construct($type, $id = null)
+  {
+    parent::__construct('container');
+    $this->registerAttributes( array('type', 'id', 'display', 'style', 'classname', 'classnamezone', 'left', 'width', 'right', 'top', 'height', 'bottom', 'haslistener') );
+    $this->registerPossibleChildren( array('zone') );
+
+    $this->setType($type);
+    $this->setId($id);
+  }
+}
+/* @@Xcontainer:End@@ */
+
+/* @@Xzone:Begin:wajaf@@ */
+class Xzone extends wajaf
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('zone');
+    $this->registerAttributes( array('id', 'style', 'classname', 'application', 'params') );
+    $this->registerPossibleChildren( array('container', 'element') );
+
+    $this->setId($id);
+  }
+}
+/* @@Xzone:End@@ */
+
+/* @@Xtemplate:Begin:wajaf@@ */
+class Xtemplate extends wajaf
+{
+  public function __construct($name)
+  {
+    parent::__construct('template');
+    $this->registerAttributes( array('name') );
+    $this->setName($name);
+    $this->registerPossibleChildren( array('container', 'element') );
+  }
+}
+/* @@Xtemplate:End@@ */
+
+/* @@Xdataset:Begin:wajaf@@ */
+class Xdataset extends wajaf
+{
+  public function __construct($data)
+  {
+    parent::__construct('dataset');
+    $this->setData($data, true);
+  }
+}
+/* @@Xdataset:End@@ */
+
+/* @@Xelement:Begin:wajaf@@ */
+class Xelement extends wajaf
+{
+  public function __construct($type, $id = null)
+  {
+    parent::__construct('element');
+    $this->registerAttributes( array('type', 'id', 'display', 'style', 'classname', 'left', 'width', 'right', 'top', 'height', 'bottom') );
+
+    $this->setType($type);
+    $this->setId($id);
+  }
+}
+/* @@Xelement:End@@ */
+
+// ====================================================================
+// The containers
+
+/* @@simpleContainer:Begin:wajaf@@ */
+class simpleContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('simpleContainer', $id);
+  }
+}
+/* @@simpleContainer:End@@ */
+
+/* @@expandableContainer:Begin:wajaf@@ */
+class expandableContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('expandableContainer', $id);
+  }
+}
+/* @@expandableContainer:End@@ */
+
+/* @@separatorContainer:Begin:wajaf@@ */
+class separatorContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('separatorContainer', $id);
+    $this->registerAttributes( array('mode', 'auto') );
+  }
+}
+/* @@separatorContainer:End@@ */
+
+
+
+
+
+/* @@tabContainer:Begin:wajaf@@ */
+class tabContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('tabContainer', $id);
+    $this->registerAttributes( array('mode') );
+  }
+}
+/* @@tabContainer:End@@ */
+
+/* @@treeContainer:Begin:wajaf@@ */
+class treeContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('treeContainer', $id);
+    $this->registerPossibleChildren( array('template', 'dataset') );
+  }
+}
+/* @@treeContainer:End@@ */
+
+/* @@accordionContainer:Begin:wajaf@@ */
+class accordionContainer extends Xcontainer
+{
+  public function __construct()
+  {
+    parent::__construct('accordionContainer');
+  }
+}
+/* @@accordionContainer:End@@ */
+
+/* @@barContainer:Begin:wajaf@@ */
+class barContainer extends Xcontainer
+{
+  public function __construct()
+  {
+    parent::__construct('barContainer');
+  }
+}
+/* @@barContainer:End@@ */
+
+/* @@dblistContainer:Begin:wajaf@@ */
+class dblistContainer extends Xcontainer
+{
+  public function __construct()
+  {
+    parent::__construct('dblistContainer');
+    $this->registerPossibleChildren( array('template', 'dataset') );
+  }
+}
+/* @@dblistContainer:End@@ */
+
+/* @@dockContainer:Begin:wajaf@@ */
+class dockContainer extends Xcontainer
+{
+  public function __construct()
+  {
+    parent::__construct('dockContainer');
+  }
+}
+/* @@dockContainer:End@@ */
+
+/* @@floatingContainer:Begin:wajaf@@ */
+class floatingContainer extends Xcontainer
+{
+  public function __construct()
+  {
+    parent::__construct('floatingContainer');
+  }
+}
+/* @@floatingContainer:End@@ */
+
+/* @@gridContainer:Begin:wajaf@@ */
+class gridContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('gridContainer', $id);
+    $this->registerAttributes( array('pagination', 'maxperpage', 'mode', 'selectable', 'insertable', 'deletable', 'change', 'params') );
+    $this->registerPossibleChildren( array('template', 'dataset') );
+  }
+}
+/* @@gridContainer:End@@ */
+
+/* @@groupContainer:Begin:wajaf@@ */
+class groupContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('groupContainer', $id);
+    $this->registerAttributes( array('mode', 'authmodes', 'varkey', 'key', 'varorder', 'varmode') );
+    $this->registerPossibleChildren( array('dataset') );
+ }
+}
+/* @@groupContainer:End@@ */
+
+/* @@listContainer:Begin:wajaf@@ */
+class listContainer extends Xcontainer
+{
+  public function __construct()
+  {
+    parent::__construct('listContainer');
+    $this->registerPossibleChildren( array('template', 'dataset') );
+  }
+}
+/* @@listContainer:End@@ */
+
+/* @@matrixContainer:Begin:wajaf@@ */
+class matrixContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('matrixContainer', $id);
+    $this->registerAttributes( array('columns', 'mode', 'classnamezone') );
+    $this->registerPossibleChildren( array('template', 'dataset') );
+  }
+}
+/* @@matrixContainer:End@@ */
+
+/* @@tableContainer:Begin:wajaf@@ */
+class tableContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('tableContainer', $id);
+  }
+}
+/* @@tableContainer:End@@ */
+
+/* @@widgetContainer:Begin:wajaf@@ */
+class widgetContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('widgetContainer', $id);
+    $this->registerAttributes( array('columns', 'classnamezone') );
+    $this->registerPossibleChildren( array('template', 'dataset') );
+  }
+}
+/* @@widgetContainer:End@@ */
+
+/* @@windowContainer:Begin:wajaf@@ */
+class windowContainer extends Xcontainer
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('windowContainer', $id);
+  }
+}
+/* @@windowContainer:End@@ */
+
+// ====================================================================
+// Zones
+
+/* @@simpleZone:Begin:wajaf@@ */
+class simpleZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct($id);
+  }
+}
+/* @@simpleZone:End@@ */
+
+/* @@expandableZone:Begin:wajaf@@ */
+class expandableZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct($id);
+    $this->registerAttributes( array('title', 'closed', 'classnameselectoropen', 'classnameselectorclose', 'display') );
+  }
+}
+/* @@expandableZone:End@@ */
+
+/* @@separatorZone:Begin:wajaf@@ */
+class separatorZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct($id);
+    $this->registerAttributes( array('size', 'classnameseparator', 'display') );
+  }
+}
+/* @@separatorZone:End@@ */
+
+/* @@tabZone:Begin:wajaf@@ */
+class tabZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct($id);
+    $this->registerAttributes( array('title') );
+  }
+}
+/* @@tabZone:End@@ */
+
+/* @@groupZone:Begin:wajaf@@ */
+class groupZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct($id);
+    $this->registerAttributes( array('type') );
+  }
+}
+/* @@groupZone:End@@ */
+
+
+
+/* @@gridZone:Begin:wajaf@@ */
+class gridZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('zone');
+    $this->registerAttributes( array('title', 'application', 'size', 'sizemin', 'sizemax') );
+    $this->registerAttributes( array('selectable', 'sortable', 'sizeable', 'maskable', 'editable', 'type', 'editor') );
+    $this->registerAttributes( array('render', 'format', 'align') );
+
+    $this->setId($id);
+  }
+}
+/* @@gridZone:End@@ */
+
+/* @@widgetZone:Begin:wajaf@@ */
+class widgetZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('zone');
+    $this->registerAttributes( array('id', 'classname', 'title', 'application', 'size', 'column','params') );
+    $this->registerAttributes( array('closeable', 'sizeable', 'maskable', 'editable', 'editor') );
+    $this->registerPossibleChildren( array('container', 'element') );
+
+    $this->setId($id);
+  }
+}
+/* @@widgetZone:End@@ */
+
+// ====================================================================
+// Datasets
+
+/* @@treeDataset:Begin:wajaf@@ */
+class treeDataset extends Xdataset
+{
+  public function __construct($data)
+  {
+    parent::__construct($data);
+  }
+}
+/* @@treeDataset:End@@ */
+
+/* @@gridDataset:Begin:wajaf@@ */
+class gridDataset extends Xdataset
+{
+  public function __construct($data)
+  {
+    parent::__construct($data);
+  }
+}
+/* @@gridDataset:End@@ */
+
+
+// ====================================================================
+// Templates
+
+/* @@treeTemplate:Begin:wajaf@@ */
+class treeTemplate extends Xtemplate
+{
+  public function __construct($name)
+  {
+    parent::__construct($name);
+  }
+}
+/* @@listTemplate:End@@ */
+
+/* @@listTemplate:Begin:wajaf@@ */
+class listTemplate extends Xtemplate
+{
+  public function __construct($name)
+  {
+    parent::__construct($name);
+  }
+}
+/* @@listTemplate:End@@ */
+
+/* @@gridTemplate:Begin:wajaf@@ */
+class gridTemplate extends Xtemplate
+{
+  public function __construct($name)
+  {
+    parent::__construct('template');
+    $this->registerAttributes( array('name') );
+    $this->setName($name);
+    $this->registerPossibleChildren( array('container', 'element') );
+  }
+}
+/* @@gridTemplate:End@@ */
+
+/* @@matrixTemplate:Begin:wajaf@@ */
+class matrixTemplate extends Xtemplate
+{
+  public function __construct($name)
+  {
+    parent::__construct('template');
+    $this->registerAttributes( array('name') );
+    $this->setName($name);
+    $this->registerPossibleChildren( array('container', 'element') );
+  }
+}
+/* @@matrixTemplate:End@@ */
+
+// ====================================================================
+// Elements
+
+/* @@htmlElement:Begin:wajaf@@ */
+class htmlElement extends Xelement
+{
+  public function __construct($text, $id = null)
+  {
+    parent::__construct('htmlElement', $id);
+
+    $this->setData($text);
+  }
+}
+/* @@htmlElement:End@@ */
+
+/* @@textElement:Begin:wajaf@@ */
+class textElement extends Xelement
+{
+  public function __construct($text, $id = null)
+  {
+    parent::__construct('textElement', $id);
+
+    $this->setData($text);
+  }
+}
+/* @@textElement:End@@ */
+
+/* @@linkElement:Begin:wajaf@@ */
+class linkElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('linkElement', $id);
+  }
+}
+/* @@linkElement:End@@ */
+
+/* @@imageElement:Begin:wajaf@@ */
+class imageElement extends Xelement
+{
+  public function __construct($src, $title = null, $id = null)
+  {
+    parent::__construct('imageElement', $id);
+    $this->registerAttributes( array('src') );
+
+    $this->setSrc($src);
+    $this->setData($title);
+  }
+}
+/* @@imageElement:End@@ */
+
+/* @@codeElement:Begin:wajaf@@ */
+class codeElement extends Xelement
+{
+  public function __construct($code, $id = null)
+  {
+    parent::__construct('codeElement', $id);
+
+    $this->setData($code);
+  }
+}
+/* @@codeElement:End@@ */
+
+/* @@buttonElement:Begin:wajaf@@ */
+class buttonElement extends Xelement
+{
+  public function __construct($text, $id = null)
+  {
+    parent::__construct('buttonElement', $id);
+    $this->registerAttributes( array('status', 'value', 'link', 'action') );
+
+    $this->setData($text);
+  }
+}
+/* @@buttonElement:End@@ */
+
+
+
+
+
+
+/* @@dateselectorElement:Begin:wajaf@@ */
+class dateselectorElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('dateselectorElement');
+    $this->registerAttributes( array('link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@dateselectorElement:End@@ */
+
+/* @@hiddenElement:Begin:wajaf@@ */
+class hiddenElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('hiddenElement');
+//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@hiddenElement:End@@ */
+
+/* @@textfieldElement:Begin:wajaf@@ */
+class textfieldElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('textfieldElement');
+    $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@textfieldElement:End@@ */
+
+/* @@textareafieldElement:Begin:wajaf@@ */
+class textareafieldElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('textareafieldElement');
+//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@textareafieldElement:End@@ */
+
+/* @@lovfieldElement:Begin:wajaf@@ */
+class lovfieldElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('lovfieldElement');
+//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@lovfieldElement:End@@ */
+
+/* @@filefieldElement:Begin:wajaf@@ */
+class filefieldElement extends Xelement
+{
+  private $ExtensionsImages = array('.gif', '.jpg', '.png');
+  private $ExtensionsAudios = array('.mp3', '.wma');
+  private $ExtensionsVideos = array('.mp4', '.avi', '.wmv', '.mov');
+  private $ExtensionsDocuments = array('.pdf', '.doc', '.xls', '.ppt', '.zip', '.txt', '.csv');
+
+  private $ExtensionsAuth = null;
+  private $ExtensionsDir = '/skins/clean/extensions/'; // directory where the extensions gifs are
+  private $ExtensionsOther = 'other.png';       // put a gif link if we accept other extensions, or NULL if not
+
+  public function __construct($id = null)
+  {
+    parent::__construct('filefieldElement');
+//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+
+  public function setExtensions($auth, $dir, $other = null)
+  {
+    if ( is_string($auth) )
+    {
+      switch($auth)
+      {
+        case 'images': $this->ExtensionsAuth = $this->ExtensionsImages; break;
+        case 'audios': $this->ExtensionsAuth = $this->ExtensionsAudios; break;
+        case 'videos': $this->ExtensionsAuth = $this->ExtensionsVideos; break;
+        case 'documents': $this->ExtensionsAuth = $this->ExtensionsDocuments; break;
+        default: $this->ExtensionsAuth = null; break;
+      }
+    }
+    else
+      $this->ExtensionsAuth = $auth;
+    $this->ExtensionsDir = $dir;
+    $this->ExtensionsOther = $other;
+  }
+
+  public function getExtension($name)
+  {
+    if ($this->ExtensionsAuth)
+    {
+      foreach ($this->ExtensionsAuth as $ext)
+      {
+        if (strtolower(substr($name, -strlen($ext))) == $ext)
+        {
+          return $ext;
+        }
+      }
+    }
+    if ($this->ExtensionsOther)
+    {
+      $pos = strrpos($name,'.');
+      if ($pos === false)
+        return null;
+      return substr($name, $pos);
+    }
+    return null;
+  }
+
+  // returns the gif of the extensionm or null
+  public function getExtensionImage($extension)
+  {
+    if ($this->ExtensionsAuth && in_array($extension, $this->ExtensionsAuth))
+      return substr($extension,1).'.png';
+    return substr($extension,1).'.png';
+    return $this->ExtensionsOther;
+  }
+
+  public function processFile($temporarydir, $temporarypath)
+  {
+    $Context = $this->base->HTTPRequest->getParameter('ApplicationContext');
+
+    $tempname = $this->base->createKey(10);
+    $extension = $this->getExtension(strtolower($_FILES[$this->getId()]['name']));
+    $id = $this->getId();
+    if ($extension)
+    {
+      // 1. save the file in a temporary public directory
+      DB_File::createDirectory($temporarydir, $temporarypath);
+      move_uploaded_file($_FILES[$this->getId()]['tmp_name'], $temporarydir . $temporarypath . $tempname . $extension);
+      // 2. return the javascript to show this file, and keep the name in a temporary field
+      $gif = $this->getExtensionImage($extension);
+      $tempfullname = $tempname.$extension;
+      $truefullname = $_FILES[$this->getId()]['name'];
+
+      return <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript">
+<!--
+
+window.parent.\$E('$Context{$id}').setFile('{$this->ExtensionsDir}', '$gif', '$tempfullname', '$truefullname');
+
+// -->
+</script>
+</head>
+</html>
+EOF;
+    }
+    else
+    {
+      // 2. return the javascript to notify error
+      return <<<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<script type="text/javascript">
+<!--
+
+window.parent.\$E('$Context{$id}').setFile('/pics/', 'dot.gif', null, null);
+alert('Error: el archivo que subió no es un archivo autorizado.');
+
+// -->
+</script>
+</head>
+</html>
+EOF;
+    }
+  }
+
+}
+/* @@filefieldElement:End@@ */
+
+/* @@datefieldElement:Begin:wajaf@@ */
+class datefieldElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('datefieldElement');
+//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@datefieldElement:End@@ */
+
+/* @@settextfieldElement:Begin:wajaf@@ */
+class settextfieldElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('settextfieldElement');
+//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@settextfieldElement:End@@ */
+
+/* @@paginationElement:Begin:wajaf@@ */
+class paginationElement extends Xelement
+{
+  public function __construct($text, $id = null)
+  {
+    parent::__construct('paginationElement');
+    $this->setId($id);
+    $this->setData($text);
+  }
+}
+/* @@paginationElement:End@@ */
+
+/* @@mmcfieldElement:Begin:wajaf@@ */
+class mmcfieldElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('mmcfieldElement');
+//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
+
+    $this->setId($id);
+//    $this->registerData($text);
+  }
+}
+/* @@mmcfieldElement:End@@ */
+
+?>

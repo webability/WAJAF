@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="../../skins/css/wajaf.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/4gl.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/examples.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Standalone simpleContainer example</h1>
+
+<script language="javascript" type="text/javascript" src="../../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/ddManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/wa4glManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../containers/separatorContainer.js"></script>
+
+<div id="buttons" style="height: 90px;">
+[<span onclick="SC.show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="SC.hide();" style="cursor: pointer; color: blue;">hide container</span>]
+[<span onclick="SC.setSize(null, 100);" style="cursor: pointer; color: blue;">height: 100px</span>]
+[<span onclick="SC.setSize(null, 200);" style="cursor: pointer; color: blue;">height: 200px</span>]
+[<span onclick="SC.setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]
+[<span onclick="SC.showZone('separatorzone1');" style="cursor: pointer; color: blue;">show zone 1</span>]
+[<span onclick="SC.showZone('separatorzone2');" style="cursor: pointer; color: blue;">show zone 2</span>]
+[<span onclick="SC.showZone('separatorzone3');" style="cursor: pointer; color: blue;">show zone 3</span>]
+[<span onclick="SC.showZone(-1);" style="cursor: pointer; color: blue;">hide all zones</span>]
+[<span onclick="fill1();" style="cursor: pointer; color: blue;">fill zone 1</span>]
+[<span onclick="empty1();" style="cursor: pointer; color: blue;">empty zone 1</span>]
+<br /><br />
+[<span onclick="SC2.show();" style="cursor: pointer; color: blue;">show container 2</span>]
+[<span onclick="SC2.hide();" style="cursor: pointer; color: blue;">hide container 2</span>]
+[<span onclick="SC2.setSize(null, 100);" style="cursor: pointer; color: blue;">height 2: 100px</span>]
+[<span onclick="SC2.setSize(null, 200);" style="cursor: pointer; color: blue;">height 2: 200px</span>]
+[<span onclick="SC2.setSize(null, undefined);" style="cursor: pointer; color: blue;">height 2: none</span>]
+[<span onclick="SC2.showZone('separatorzone21');" style="cursor: pointer; color: blue;">show zone 21</span>]
+[<span onclick="SC2.showZone('separatorzone22');" style="cursor: pointer; color: blue;">show zone 22</span>]
+[<span onclick="SC2.showZone('separatorzone23');" style="cursor: pointer; color: blue;">show zone 23</span>]
+[<span onclick="SC2.showZone(-1);" style="cursor: pointer; color: blue;">hide all zones</span>]
+</div>
+<br />
+
+<h3>The two containers:</h3>
+<div id="containers" style="margin: 5px;">
+
+<div id="separatorcontainer1">
+<div id="separatorzone1">Zone 1</div>
+<div id="separatorzone2">Zone 2</div>
+</div>
+
+</div>
+
+<br />
+<div id="callback" style="height: 200px; overflow: auto; border: 2px solid red;"></div>
+
+<script type="text/javascript">
+
+var SC = null;
+var SC2 = null;
+
+function pleaseresize()
+{
+  alert('resize !');
+  SC.resize();
+  SC2.resize();
+}
+
+window.onload =
+  function()
+  {
+    // creates the standalone separator container into the body based on existing Nodes
+    SC = new WA.Managers.separator(WA.toDOM('containers'), 'separatorcontainer1', {attributes:{mode:'horizontal', auto:'no',height:100, style:"border: 1px solid black; padding: 2px; margin-bottom: 10px;"}}, notifyme);
+    SC.createZone('separatorzone1', {attributes:{size:'45'}}, notifyme);
+    SC.createZone('separatorzone2', {attributes:{size:'*'}}, notifyme);
+    SC.createZone('separatorzone3', {attributes:{size:'30'}}, notifyme);
+
+    WA.toDOM('separatorzone3').innerHTML = 'Zone 3 dynamically filled';
+
+    // creates the standalone separator container into the body , totally new
+    SC2 = new WA.Managers.separator(WA.toDOM('containers'), 'separatorcontainer2', {attributes:{mode:'horizontal', auto:'yes',height:100, style:"border: 1px solid black; padding: 1px;"}}, notifyme);
+    SC2.createZone('separatorzone21', {attributes:{classname:'zone1',size:'*'}}, notifyme);
+    SC2.createZone('separatorzone22', {attributes:{classname:'zone2',size:'*'}}, notifyme);
+    SC2.createZone('separatorzone23', {attributes:{classname:'zone3',size:'*'}}, notifyme);
+
+    WA.toDOM('separatorzone21').innerHTML = 'Zone 21 dynamically filled';
+    WA.toDOM('separatorzone22').innerHTML = 'Zone 22 dynamically filled';
+    WA.toDOM('separatorzone23').innerHTML = 'Zone 23 dynamically filled';
+  };
+
+function notifyme(type, id, other)
+{
+  // we do not listen drag or resize to not be spammed while moving sizers
+  if (type == 'drag' || type == 'resize' || type == 'pleaseresize')
+    return true;
+  var txt = '{';
+  var item = 0;
+  for (var i in other)
+    txt += (item++?',':'')+i+':'+other[i];
+  txt += '}';
+
+
+  WA.toDOM('callback').innerHTML += type + ': '+ id + ': ' + txt + '<br />';
+  return true;
+}
+
+function fill1()
+{
+  WA.toDOM('separatorzone1').innerHTML = 'Line 1<br />Line 2<br /> Line 3<br />Line 4<br />Line 5<br />';
+}
+
+function empty1()
+{
+  WA.toDOM('separatorzone1').innerHTML = 'Zone 1';
+}
+
+</script>
+
+<br /><br />
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

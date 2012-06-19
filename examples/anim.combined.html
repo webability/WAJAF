@@ -1,0 +1,51 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/animManager.js"></script>
+
+Multiple sprites on the same object with a hook function:<br />
+The color animation will start when you click <span onclick="start();" style="cursor: pointer; text-decoration: underline; background-color: yellow;">here</span>.<br />
+<span onclick="suspend();" style="cursor: pointer; text-decoration: underline; background-color: red;">Suspend</span> the movement.<br />
+<span onclick="resume();" style="cursor: pointer; text-decoration: underline; background-color: green;">Resume</span> the movement.<br />
+<div style="position: relative;">
+<div id="sprite" style="z-index: 2; position: absolute; left: 50px; top: 50px; width: 100px; height: 100px; border: 1px solid red; background-color: #ffffff;" >Sprite</div>
+</div>
+
+<script>
+
+function circle(timeframe, order)
+{
+  order.xinit = order.xend = Math.floor(100 + Math.cos(timeframe/1000)*50);
+  order.yinit = order.yend = Math.floor(100 + Math.sin(timeframe/1000)*50);
+  return order;
+}
+
+// time is 2Pi to make a full circle per animation
+var sp1 = animManager.createSprite('sprite', 'sprite', null, {autostart:true, loop:true, chain: [{type:'move',time:6283,calculate:circle}]});
+var sp2 = null;
+
+function endcolor()
+{
+  sp2 = null;
+}
+
+function start()
+{
+  if (sp2)
+    sp2.start();
+  else
+    // the sprite auto destroy when it ends since loop is false
+    sp2 = animManager.createSprite('spritecolor', 'sprite', endcolor, {autostart:true, loop:false, chain: [{type:'move',time:1000,brinit:255,brend:255,bbinit:255,bbend:0,bginit:255,bgend:0},{type:'move',time:1000,brinit:255,brend:255,bbinit:0,bbend:255,bginit:0,bgend:255}, {type:'move',time:1000,brinit:255,brend:255,bbinit:255,bbend:0,bginit:255,bgend:0},{type:'move',time:1000,brinit:255,brend:255,bbinit:0,bbend:255,bginit:0,bgend:255}]});
+}
+
+function suspend()
+{
+  sp1.suspend();
+}
+
+function resume()
+{
+  sp1.resume();
+}
+
+</script>
+

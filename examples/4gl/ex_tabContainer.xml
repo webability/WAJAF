@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_tabContainer">
+  <element type="codeElement"><![CDATA[
+var tabcount = 4;
+]]></element>
+
+  <container type="simpleContainer" height="100">
+    <zone>
+      <element type="htmlElement"><![CDATA[
+The tabContainer example. Control the zones by code:
+]]></element>
+      <element type="buttonElement">Add a zone
+        <event type="click">
+          <code><![CDATA[
+function(e)
+{
+  var n = WA.$N('tc');
+  n.newZone('tab'+tabcount, 'Tab '+tabcount, null, null, null, 'yes', null, null);
+  tabcount ++;
+}
+]]></code>
+        </event>
+      </element>
+    </zone>
+  </container>
+
+
+  <container id="tc" type="tabContainer" height="200" mode="top">
+    <zone id="zone1" title="&lt;u&gt;F&lt;/u&gt;irst zone:" shortcut="alt+f">
+      <element type="htmlElement"><![CDATA[
+<b>You can access the zone directly by pressing alt+f</b><br />
+This is the first zone of the Container. You will note that the main container have a 5 pixels padding in the class, so the zone is placed into the working area.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+  ]]></element>
+    </zone>
+
+    <zone id="zone2" title="Second zone">
+      <element type="htmlElement"><![CDATA[
+This is the second zone of the Container. This zone have a 5 pixels margin, so the zone line appears to be 10 pixels from the container border.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+  ]]></element>
+    </zone>
+
+    <zone id="zone3" title="third zone">
+      <element type="htmlElement"><![CDATA[
+This is the third zone of the Container. This zone have a 10 pixels margin and 5 pixels padding, so the zone line appears to be 15 pixels from the container border.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+  ]]></element>
+    </zone>
+  </container>
+
+</application>

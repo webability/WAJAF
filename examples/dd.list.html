@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, direct access to the content of the nodes, examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/ddManager.js"></script>
+
+<br />
+Select a value from the right tab and move it to the left, or from the left to the right.
+<br /><br />
+<div id="container" style="position: relative; left: 10px; width: 95%; height: 320px; border: 1px solid blue;" >
+
+<div id="container1" style="position: relative; width: 45%; height: 300px; border: 1px solid blue; float: left; margin: 5px;" >
+  <div id="moveable1" style="border: 1px solid green; background-color: #ffffff;" >Value 1</div>
+  <div id="moveable2" style="border: 1px solid green; background-color: #ffffff;" >Value 2</div>
+  <div id="moveable3" style="border: 1px solid green; background-color: #ffffff;" >Value 3</div>
+  <div id="moveable4" style="border: 1px solid green; background-color: #ffffff;" >Value 4</div>
+  <div id="moveable5" style="border: 1px solid green; background-color: #ffffff;" >Value 5</div>
+</div>
+
+<div id="container2" style="position: relative; width: 45%; height: 300px; border: 1px solid blue; float: right; margin: 5px;" >
+  <div id="moveable6" style="border: 1px solid green; background-color: #ffffff;" >Value 6</div>
+  <div id="moveable7" style="border: 1px solid green; background-color: #ffffff;" >Value 7</div>
+  <div id="moveable8" style="border: 1px solid green; background-color: #ffffff;" >Value 8</div>
+  <div id="moveable9" style="border: 1px solid green; background-color: #ffffff;" >Value 9</div>
+  <div id="moveable10" style="border: 1px solid green; background-color: #ffffff;" >Value 10</div>
+</div>
+
+</div>
+
+<div id="log" style="border: 1px solid blue; margin: 10px; max-height: 300px; height: 300px; overflow: auto;">
+Log:<br />
+</div>
+
+<script>
+
+var group = null;
+
+function myfeedback(event, group, object, zone, data)
+{
+  switch(event)
+  {
+    case 'drop':
+      if (zone)
+      {
+        // move the data to the new drop zone
+        WA.toDOM(zone).appendChild(WA.toDOM(object));
+        WA.toDOM(zone).style.border = '1px solid blue';
+        WA.toDOM(zone).style.backgroundColor = '';
+        // log the event
+        WA.toDOM('log').innerHTML += event + ': ' + object + ' into zone ' + zone + '<br />';
+      }
+      break;
+    case 'enterzone':
+      WA.toDOM(zone).style.border = '1px solid red';
+      WA.toDOM(zone).style.backgroundColor = '#ffffcc';
+      break;
+    case 'exitzone':
+      WA.toDOM(zone).style.border = '1px solid blue';
+      WA.toDOM(zone).style.backgroundColor = '';
+      break;
+  }
+}
+
+// By default: move shadow, Jailed.
+group = WA.Managers.dd.registerGroup('gr1', 'copy', true, 'container', myfeedback);
+WA.Managers.dd.registerObject('gr1', 'moveable1', 'moveable1');
+WA.Managers.dd.registerObject('gr1', 'moveable2', 'moveable2');
+WA.Managers.dd.registerObject('gr1', 'moveable3', 'moveable3');
+WA.Managers.dd.registerObject('gr1', 'moveable4', 'moveable4');
+WA.Managers.dd.registerObject('gr1', 'moveable5', 'moveable5');
+WA.Managers.dd.registerObject('gr1', 'moveable6', 'moveable6');
+WA.Managers.dd.registerObject('gr1', 'moveable7', 'moveable7');
+WA.Managers.dd.registerObject('gr1', 'moveable8', 'moveable8');
+WA.Managers.dd.registerObject('gr1', 'moveable9', 'moveable9');
+WA.Managers.dd.registerObject('gr1', 'moveable10', 'moveable10');
+WA.Managers.dd.registerZone('gr1', 'container1');
+WA.Managers.dd.registerZone('gr1', 'container2');
+
+
+</script>
+
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+#container
+{
+  background-color: white;
+}
+
+#pagemenu
+{
+  width: 30%;
+  float: left;
+}
+
+#pagecontent
+{
+  width: 70%;
+  float: right;
+}
+
+.title
+{
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#pagecontent b
+{
+  color: blue;
+}
+
+#pagecontent i
+{
+  color: green;
+}
+
+#pagecontent u
+{
+  color: orange;
+}
+
+

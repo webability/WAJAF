@@ -1,0 +1,40 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/drawManager.js"></script>
+
+<div style="padding: 10px;">
+
+<h1>Draw some lines</h1>
+
+<span onclick="l2.hide();" style="cursor: pointer; text-decoration: underline; background-color: green;">Hide</span> a line.<br />
+<span onclick="l2.show();" style="cursor: pointer; text-decoration: underline; background-color: green;">Show the line</span> again.<br />
+
+<span onclick="erase('l4'); l4 = null;" style="cursor: pointer; text-decoration: underline; background-color: green;">Erase</span> a line.<br />
+<span onclick="if (l4 == null) l4 = line('l4', 200, 10, 60, 130, 'green', 'scene');" style="cursor: pointer; text-decoration: underline; background-color: green;">Draw the line</span> again.<br />
+
+<div id="scene" style="border: 1px solid red; overflow: hidden; height: 250px; width: 250px; margin: 5%; position: relative; cursor: pointer; background-color: black;"></div>
+
+</div>
+
+<script type="text/javascript">
+
+var l1 = line('l1', 10, 10, 150, 130, 'red', 'scene');
+var l12 = line('l12', 10, 10, 130, 150, 'blue', 'scene');
+
+var l2 = line('l2', 200, 130, 60, 10, 'green', 'scene');
+var l22 = line('l22', 180, 150, 60, 10, 'orange', 'scene');
+
+var l3 = line('l3', 10, 130, 150, 10, 'red', 'scene');
+var l32 = line('l32', 30, 150, 150, 10, 'blue', 'scene');
+
+var l4 = line('l4', 200, 10, 60, 130, 'green', 'scene');
+var l42 = line('l42', 200, 10, 80, 150, 'yellow', 'scene');
+
+var l5 = line('l5', 10, 200, 100, 200, 'white', 'scene');
+var l52 = line('l52', 100, 210, 10, 210, 'white', 'scene');
+
+var l6 = line('l6', 50, 180, 50, 230, 'white', 'scene');
+var l62 = line('l62', 60, 230, 60, 180, 'white', 'scene');
+
+</script>
+

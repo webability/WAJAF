@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="../../skins/css/wajaf.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/4gl.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/examples.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<script language="javascript" type="text/javascript" src="../../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/ddManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/wa4glManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../containers/widgetContainer.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/htmlElement.js"></script>
+
+<h1>widgetContainer example into 4GL Context</h1>
+
+<div id="buttons" style="height: 40px;">
+[<span onclick="WA.$C('widgetcontainer|single|container1').show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="WA.$C('widgetcontainer|single|container1').hide();" style="cursor: pointer; color: blue;">hide container</span>]
+[<span onclick="WA.$C('widgetcontainer|single|container1').setSize(null, 100);" style="cursor: pointer; color: blue;">height: 100px</span>]
+[<span onclick="WA.$C('widgetcontainer|single|container1').setSize(null, 200);" style="cursor: pointer; color: blue;">height: 200px</span>]
+[<span onclick="WA.$C('widgetcontainer|single|container1').setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]
+[<span onclick="WA.$C('widgetcontainer|single|container1').showZone('zone1');" style="cursor: pointer; color: blue;">show zone 1</span>]
+[<span onclick="WA.$C('widgetcontainer|single|container1').hideZone('zone1');" style="cursor: pointer; color: blue;">hide zone 1</span>]
+[<span onclick="fill1();" style="cursor: pointer; color: blue;">fill zone 1</span>]
+[<span onclick="empty1();" style="cursor: pointer; color: blue;">empty zone 1</span>]
+[<span onclick="newzone();" style="cursor: pointer; color: blue;">New zone</span>]
+[<span onclick="disable();" style="cursor: pointer; color: blue;">Disable zone 1</span>]
+[<span onclick="enable();" style="cursor: pointer; color: blue;">Enable zone 1</span>]
+</div>
+<br />
+
+<div id="wa4glcontainer" style="min-height: 50px; background-color: #ddd;"></div>
+
+<br />
+
+<div id="debug"></div>
+
+<script type="text/javascript">
+
+var count = 5;
+
+window.onload =
+  function()
+  {
+    // this code is supposed to directly come from the server from an XML descriptor or from wajaf classes builder
+
+    var app = {
+      "tag":"application",
+      "attributes": {"id":"widgetcontainer"},
+      "0": {
+          "tag":"container",
+          "attributes": {"id":"container1","type":"widgetContainer","mode":"top"},
+          "0": {
+              "tag":"zone",
+              "attributes":{"id":"zone1",title:'<img src="/skins/images/config.png" style="vertical-align: middle;" alt="" /> <u>F</u>irst zone:',shortcut:'alt+f',closeable:'yes',opencloseable:'yes',editable:'yes'},
+              "0":{"tag":"element","attributes":{id:'zone1_editor',"type":"htmlElement"},"data":"Editor of Zone 1"},
+              "1":{"tag":"element","attributes":{id:'zone1text',"type":"htmlElement"},"data":"Zone 1"},
+               },
+          "1": {
+              "tag":"zone",
+              "attributes":{"id":"zone2",title:'Second zone:',closeable:'no'},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 2"},
+               },
+          "2": {
+              "tag":"zone",
+              "attributes":{"id":"zone3",title:'Third zone:',closeable:'yes',opencloseable:'yes',editable:'no'},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 3"},
+               },
+          "3": {
+              "tag":"zone",
+              "attributes":{"id":"zone4",title:'4th zone:',closeable:'yes',opencloseable:'no',editable:'yes'},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 4"},
+               },
+            }
+        };
+
+    WA.Managers.wa4gl.setURL('/examples.php', '/examples.js.php')
+    WA.Managers.wa4gl.startApplication('wa4glcontainer', 'widgetcontainer', 'single', app, '');
+  };
+
+function fill1()
+{
+  WA.toDOM('widgetcontainer|single|zone1text').innerHTML = 'Line 1<br />Line 2<br /> Line 3<br />Line 4<br />Line 5<br />';
+  WA.$C('widgetcontainer|single|container1').resize();
+}
+
+function empty1()
+{
+  WA.toDOM('widgetcontainer|single|zone1text').innerHTML = 'Zone 1';
+  WA.$C('widgetcontainer|single|container1').resize();
+}
+
+function newzone()
+{
+  WA.$C('widgetcontainer|single|container1').createZone('zone'+count, {
+              "tag":"zone",
+              "attributes":{"id":"zone"+count,title:'zone '+count+' in a long title :D',closeable:'yes'},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone "+count},
+               }, null );
+  count++;
+}
+
+function disable()
+{
+  WA.$C('widgetcontainer|single|container1').disablewidget('zone1');
+}
+
+function enable()
+{
+  WA.$C('widgetcontainer|single|container1').enablewidget('zone1');
+}
+
+</script>
+
+<br /><br />
+
+<button onclick="WA.toDOM('debug').innerHTML = WA.toDOM('checkit').clientWidth + ' ' + WA.toDOM('checkit').scrollWidth;" value="get width"></button>
+
+<br /><br />
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

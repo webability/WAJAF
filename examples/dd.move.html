@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, direct access to the content of the nodes, examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/ddManager.js"></script>
+
+<form onsubmit="return false;">
+<input type="checkbox" name="jail" id="jail" checked="checked" onchange="changejail(this.checked);"> Jail the object.<br />
+<b>Move:</b><br />
+<input type="radio" name="move" id="move" value="object" onchange="changemove(this.value);" checked="checked"> Object<br />
+<input type="radio" name="move" id="move" value="copy" onchange="changemove(this.value);"> Copy of object<br />
+<input type="radio" name="move" id="move" value="border" onchange="changemove(this.value);"> Border/shadow of object<br />
+</form>
+
+<div id="container" style="z-index: 1; position: relative; left: 2.5%; top: 20px; width: 95%; height: 300px; border: 1px solid blue;" >
+
+  <div id="moveable" style="z-index: 2; position: absolute; left: 50px; top: 50px; width: 100px; height: 100px; border: 1px solid green; background-color: #ffffff; cursor: pointer;" >Move me</div>
+
+</div>
+
+<script>
+
+var group = null;
+
+function changejail(data)
+{
+  group.setJail(data);
+}
+
+function changemove(data)
+{
+  group.setObjectMode('moveable', data);
+}
+
+// By default: move shadow, Jailed.
+group = WA.Managers.dd.registerGroup('gr1', 'border', true, 'container', null);
+WA.Managers.dd.registerObject('gr1', 'moveable', 'moveable', null, 'object');
+
+
+</script>
+
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

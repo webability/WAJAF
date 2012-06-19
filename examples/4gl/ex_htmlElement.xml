@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_htmlElement">
+
+  <element type="htmlElement"><![CDATA[
+This is an HTML element. We can add any <b>html tag</b> in it and it is wrapped into a division.
+  ]]></element>
+
+  <element type="htmlElement" style="margin: 10px; border: 1px solid red;"><![CDATA[
+This HTML element is into its division with a margin of 10 pixels and a red border.
+  ]]></element>
+
+  <element type="htmlElement" style="margin: 10px; padding: 10px; border: 1px solid blue; cursor: pointer;"><![CDATA[
+This HTML element have a <b>HELP BUBBLE</b> activated on it. You can also <b>click it</b>.
+  ]]>
+    <help>
+      <summary><![CDATA[Help on element]]></summary>
+      <title><![CDATA[Help on element]]></title>
+      <description><![CDATA[This help bubble is only here for teaching purpose. The HTML element is activated with this help.<br />]]></description>
+    </help>
+    <event type="onclick">
+      <code><![CDATA[
+function click(e)
+{
+  alert('You have clicked the element.');
+}
+      ]]></code>
+    </event>
+  </element>
+
+</application>

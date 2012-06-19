@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="/wajaf/skin/css/4gl.css" type="text/css" />
+<link rel="stylesheet" href="/wajaf/skin/css/examples.css" type="text/css" />
+
+<script language="javascript" type="text/javascript" src="/wajaf/examples/4gl/js.php?JS=wajaf.js"></script>
+
+<h3>Lab for elements in standalone mode</h3>
+
+<form>
+  <select><option>htmlElement</option></select>
+</form>
+
+<div id="buttons"">
+<h3>Orders</h3>
+[<span onclick="E1.show();" style="cursor: pointer; color: blue;">show element</span>]
+[<span onclick="E1.hide();" style="cursor: pointer; color: blue;">hide element</span>]<br />
+<br />
+<h3>Element 2: creating node:</h3>
+[<span onclick="E2.show();" style="cursor: pointer; color: blue;">show element</span>]
+[<span onclick="E2.hide();" style="cursor: pointer; color: blue;">hide element</span>]<br />
+</div>
+
+<br />
+
+<h3>The two link Elements:</h3>
+<div id="elements" style="border: 1px solid blue; margin: 5px;">
+
+<a href="http://www.webability.info" id="element1" target="_blank">Go to the WebAbility portal</a>
+
+</div>
+
+<h3>The events listener:</h3>
+<div id="callback" style="height: 200px; overflow: auto; border: 1px solid blue; margin: 5px;"></div>
+<br />
+
+
+<script type="text/javascript">
+
+var E1 = null;
+var E2 = null;
+
+on('load', window,
+  function()
+  {
+    // creates the standalone simple container into the body based on existing Nodes
+    E1 = new linkElement('elements', 'element1', {attributes:{style:'border: 1px dotted red; margin: 3px; padding: 3px;'}}, notifyme);
+
+    // creates the standalone simple container into the body , totally new
+    E2 = new linkElement('elements', 'element2', {attributes:{},data:'The second link is here'}, notifyme);
+  }, true);
+
+function notifyme(type, id, other)
+{
+  if (type == 'click' && id == 'element1')
+    alert('You have clicked the first link');
+  if (type == 'click' && id == 'element2')
+    alert('You have clicked the second link');
+
+  var txt = '{';
+  var item = 0;
+  for (var i in other)
+    txt += (item++?',':'')+i+':'+other[i];
+  txt += '}';
+
+  $('callback').innerHTML += type + ': '+ id + ': ' + txt + '<br />';
+  return true;
+}
+
+
+</script>

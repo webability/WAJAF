@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Core Attributes example</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The Core has 2 basic attributes:<br />
+- The version.<br />
+- The running flag.<br />
+<br />
+Let's show the attributes:<br />
+
+<div class="code">function test1()
+{
+  WA.get('#test1').text( 'Version of WAJAF: ' + WA.version + '\n' );
+  WA.get('#test1').append( 'Is WAJAF already running? ' + (WA.running?'Yes':'No, wait some milliseconds then try again' + '\n' );
+}
+</div>
+<span class="button" onclick="test1();">Show the result</span>
+<div id="test1" class="result"></div>
+
+
+<script type="text/javascript">
+
+function test1()
+{
+  WA.get('#test1').text( 'Version of WAJAF: ' + WA.version + '\n' );
+  WA.get('#test1').append( 'Is WAJAF already running? ' + (WA.running?'Yes':'No, wait some milliseconds then try again') + '\n' );
+}
+
+</script>
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

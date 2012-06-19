@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_containerlab">
+
+  <container type="separatorContainer" height="max" auto="no">
+    <zone size="150">
+      <element type="htmlElement"><![CDATA[
+The lab permits you to create a container and test all the standard container methods. <b>UNDER CONSTRUCTION</b>
+]]></element>
+      <element type="buttonElement">Button 1
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  alert('Button 1');
+}
+]]></code>
+        </event>
+      </element>
+      <element type="buttonElement">Button 2
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  alert('Button 1');
+}
+]]></code>
+        </event>
+      </element>
+      <element type="buttonElement">Button 3
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  alert('Button 1');
+}
+]]></code>
+        </event>
+      </element>
+    </zone>
+
+    <zone id="lab" size="*">
+    </zone>
+  </container>
+
+</application>

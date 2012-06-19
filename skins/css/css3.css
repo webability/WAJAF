@@ -1,0 +1,47 @@
+#container
+{
+  background-color: black;
+  padding: 10px;
+  color: yellow;
+}
+
+#pagemenu
+{
+  border-bottom: 1px solid red;
+  margin: 10px;
+}
+
+#pagemenu a
+{
+  color: cyan;
+}
+
+#pagecontent
+{
+}
+
+#pagecontent:first-letter
+{
+  color: red;
+  font-size: 18px;
+}
+
+.title
+{
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#pagecontent b
+{
+}
+
+#pagecontent i
+{
+}
+
+#pagecontent u
+{
+}
+
+

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="../../skins/css/wajaf.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/4gl.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/examples.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Standalone simpleContainer example</h1>
+
+<script language="javascript" type="text/javascript" src="../../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/wa4glManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../containers/simpleContainer.js"></script>
+
+
+<div id="buttons"">
+<h3>Container 1: based on existing nodes:</h3>
+[<span onclick="SC1.show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="SC1.hide();" style="cursor: pointer; color: blue;">hide container</span>]<br />
+[<span onclick="SC1.setSize(null, 100);" style="cursor: pointer; color: blue;">height: 100px</span>]
+[<span onclick="SC1.setSize(null, 200);" style="cursor: pointer; color: blue;">height: 200px</span>]
+[<span onclick="SC1.setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]<br />
+[<span onclick="SC1.showZone('simplezone1_1');" style="cursor: pointer; color: blue;">show zone 1</span>]
+[<span onclick="SC1.showZone('simplezone1_2');" style="cursor: pointer; color: blue;">show zone 2</span>]
+[<span onclick="SC1.showZone('simplezone1_3');" style="cursor: pointer; color: blue;">show zone 3</span>]<br />
+[<span onclick="SC1.showZone(-1);" style="cursor: pointer; color: blue;">hide all zones</span>]
+[<span onclick="fill1();" style="cursor: pointer; color: blue;">fill zone 1</span>]
+[<span onclick="empty1();" style="cursor: pointer; color: blue;">empty zone 1</span>]
+<br />
+<h3>Container 2: creating nodes:</h3>
+[<span onclick="SC2.show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="SC2.hide();" style="cursor: pointer; color: blue;">hide container</span>]<br />
+[<span onclick="SC2.setSize(null, 120);" style="cursor: pointer; color: blue;">height: 120px</span>]
+[<span onclick="SC2.setSize(null, 160);" style="cursor: pointer; color: blue;">height: 160px</span>]
+[<span onclick="SC2.setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]<br />
+[<span onclick="SC2.showZone('simplezone2_1');" style="cursor: pointer; color: blue;">show zone 1</span>]
+[<span onclick="SC2.showZone('simplezone2_2');" style="cursor: pointer; color: blue;">show zone 2</span>]
+[<span onclick="SC2.showZone('simplezone2_3');" style="cursor: pointer; color: blue;">show zone 3</span>]<br />
+[<span onclick="SC2.showZone(-1);" style="cursor: pointer; color: blue;">hide all zones</span>]
+</div>
+
+<br />
+
+<h3>The two containers:</h3>
+<div id="containers" style="position: relative; border: 1px solid blue; margin: 5px;">
+
+<div id="simplecontainer1">
+<div id="simplezone1_1">Zone 1</div>
+<div id="simplezone1_2">Zone 2</div>
+<div style="clear: both;"></div>
+</div>
+
+</div>
+
+<h3>The events listener:</h3>
+<div id="callback" style="height: 200px; overflow: auto; border: 1px solid blue; margin: 5px;"></div>
+<br />
+
+
+<script type="text/javascript">
+
+var SC1 = null;
+var SC2 = null;
+
+WA.Managers.event.on('load', window,
+  function()
+  {
+    // creates the standalone simple container into the body based on existing Nodes
+    SC1 = new WA.Containers.simpleContainer('containers', 'simplecontainer1', {attributes:{classname:'mycontainer',classnamezone:'zone1'}}, notifyme);
+    SC1.createZone('simplezone1_1', {attributes:{classname:'zone1'}}, notifyme);
+    SC1.createZone('simplezone1_2', {attributes:{classname:'zone2'}}, notifyme);
+    SC1.createZone('simplezone1_3', {attributes:{classname:'zone3'}}, notifyme);
+
+    WA.toDOM('simplezone1_3').innerHTML = 'Zone 3 dynamically filled';
+
+    // creates the standalone simple container into the body , totally new
+    SC2 = new WA.Containers.simpleContainer('containers', 'simplecontainer2', {attributes:{classname:'mycontainer',classnamezone:'zone1'}}, notifyme);
+    SC2.createZone('simplezone2_1', {attributes:{classname:'zone1'}}, notifyme);
+    SC2.createZone('simplezone2_2', {attributes:{classname:'zone2'}}, notifyme);
+    SC2.createZone('simplezone2_3', {attributes:{classname:'zone3'}}, notifyme);
+
+    WA.toDOM('simplezone2_1').innerHTML = 'Zone 21 dynamically filled';
+    WA.toDOM('simplezone2_2').innerHTML = 'Zone 22 dynamically filled';
+    WA.toDOM('simplezone2_3').innerHTML = 'Zone 23 dynamically filled';
+  }, true);
+
+function notifyme(type, id, other)
+{
+  var txt = '{';
+  var item = 0;
+  for (var i in other)
+    txt += (item++?',':'')+i+':'+other[i];
+  txt += '}';
+
+
+  WA.toDOM('callback').innerHTML += type + ': '+ id + ': ' + txt + '<br />';
+  return true;
+}
+
+function fill1()
+{
+  WA.toDOM('simplezone1_1').innerHTML = 'Line 1<br />Line 2<br /> Line 3<br />Line 4<br />Line 5<br />';
+}
+
+function empty1()
+{
+  WA.toDOM('simplezone1_1').innerHTML = 'Zone 1';
+}
+
+</script>
+
+<br /><br />
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_groupContainer">
+
+  <!-- Note important: the min-width of the container should be always: max field size + 480px (help size) -->
+  <container type="groupContainer" id="myform" style="min-width: 880px;" mode="4" authmodes="1234" varkey="key" key="1" varorder="order" varmode="mode">
+    <zone type="field">
+      <element type="textfieldElement" id="fullname" size="400" minlength="3" maxlength="50" minwords="2" maxwords="10" format="^[a-zA-Z0-9\s]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" help="12">
+        Your full name:
+        <defaultvalue></defaultvalue>
+        <help>Help: This field must have a min length of 3 chars, max length of 50 chars, min 2 words, max 10 words, and can be only a-z, A-Z, 0-9 and spaces</help>
+        <statusnotnull>The value must not be null</statusnotnull>
+        <statusbadformat>The value has a bad format</statusbadformat>
+        <statustooshort>The value is too short (3 chars min)</statustooshort>
+        <statustoolong>The value is too long (50 chars max)</statustoolong>
+        <statustoofewwords>The value has too few words (2 words min)</statustoofewwords>
+        <statustoomanywords>The value has to much words (10 words max)</statustoomanywords>
+        <statuscheck>The field has an error by user check validity (fill with your error)</statuscheck>
+      </element>
+    </zone>
+    <zone type="field">
+      <element type="textfieldElement" id="address1" size="400" minlength="3" maxlength="150" minwords="2" maxwords="20" format="^[a-zA-Z0-9\s,\.#]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" help="12">
+        Your address (line 1):
+        <defaultvalue></defaultvalue>
+        <help>Help: This field must have a min length of 3 chars, max length of 150 chars, min 2 words, max 20 words, and can be only a-z, A-Z, 0-9, coma, dot, #  and spaces</help>
+        <statusnotnull>The value must not be null</statusnotnull>
+        <statusbadformat>The value has a bad format</statusbadformat>
+        <statustooshort>The value is too short (3 chars min)</statustooshort>
+        <statustoolong>The value is too long (150 chars max)</statustoolong>
+        <statustoofewwords>The value has too few words (2 words min)</statustoofewwords>
+        <statustoomanywords>The value has to much words (20 words max)</statustoomanywords>
+        <statuscheck>The field has an error by user check validity (fill with your error)</statuscheck>
+      </element>
+    </zone>
+    <zone type="field">
+      <element type="textfieldElement" id="address2" size="400" minlength="3" maxlength="150" minwords="2" maxwords="20" format="^[a-zA-Z0-9\s,\.#]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" help="12">
+        Your address (line 2):
+        <defaultvalue></defaultvalue>
+        <help>Help: This field must have a min length of 3 chars, max length of 150 chars, min 2 words, max 20 words, and can be only a-z, A-Z, 0-9, coma, dot, # and spaces</help>
+        <statusnotnull>The value must not be null</statusnotnull>
+        <statusbadformat>The value has a bad format</statusbadformat>
+        <statustooshort>The value is too short (3 chars min)</statustooshort>
+        <statustoolong>The value is too long (150 chars max)</statustoolong>
+        <statustoofewwords>The value has too few words (2 words min)</statustoofewwords>
+        <statustoomanywords>The value has to much words (20 words max)</statustoomanywords>
+        <statuscheck>The field has an error by user check validity (fill with your error)</statuscheck>
+      </element>
+    </zone>
+    <zone type="field">
+      <element type="textareafieldElement" id="comments" areawidth="400" areaheight="150" minlength="" maxlength="4000" minwords="" maxwords="" visible="1234" info="34" disabled="" readonly="" notnull="" help="12">
+        Some comments:
+        <defaultvalue></defaultvalue>
+        <help>Help: Any comments, anotate them here. This field accept any character, up to 4000 characters.</help>
+        <statustoolong>The value is too long (4000 chars max)</statustoolong>
+        <statuscheck>The field has an error by user check validity (fill with your error)</statuscheck>
+      </element>
+    </zone>
+    <zone type="field">
+      <element type="hiddenfieldElement" id="hiddenparam">
+        <defaultvalue>defult value</defaultvalue>
+      </element>
+    </zone>
+    <zone type="control">
+      <element type="buttonElement" action="first" visible="4">First record</element>
+      <element type="buttonElement" action="previous" visible="4">Previous record</element>
+      <element type="buttonElement" action="next" visible="4">Next record</element>
+      <element type="buttonElement" action="last" visible="4">Last record</element>
+      <element type="buttonElement" action="insert" visible="4">New record</element>
+      <element type="buttonElement" action="update" visible="4">Update this record</element>
+      <element type="buttonElement" action="delete" visible="4">Delete this record</element>
+
+      <element type="buttonElement" action="submit" visible="123">Send to server</element>
+      <element type="buttonElement" action="reset" visible="123">Undo changes</element>
+      <element type="buttonElement" action="view" visible="123">Cancel and back to the list</element>
+    </zone>
+    <alertmessage>Error, the data have not been sent to the server. Please check the fields in red to correct them.</alertmessage>
+    <servermessage>Error, the server has responded: </servermessage>
+    <titleinsert>Insert a new record</titleinsert>
+    <titleupdate>Update the record</titleupdate>
+    <titledelete>Delete the record</titledelete>
+    <titleview>View the record</titleview>
+    <insertok>The record has been inserted successfully</insertok>
+    <updateok>The record has been updated successfully</updateok>
+    <deleteok>The record has been deleted successfully</deleteok>
+  </container>
+
+</application>

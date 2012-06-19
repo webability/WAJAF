@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_buttonElement">
+
+  <container type="simpleContainer">
+    <zone>
+      <element type="htmlElement"><![CDATA[
+The buttonElement example. <br />
+The buttons should be rounded only on Chrome, Safari (-webkit-border), and Firefox (-moz-border)<br />
+Other browsers will be rounded until they support CSS3. (or redefine the css at your needs :D)<br />
+Click the button (no predefined action):
+]]></element>
+      <element type="buttonElement">Normal button
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  alert('You have clicked Normal button');
+}
+]]></code>
+        </event>
+      </element>
+
+      <element type="buttonElement" status="disabled">Normal button disabled</element>
+
+      <element type="htmlElement"><![CDATA[
+Some buttons with predefined actions:
+]]></element>
+
+      <element type="buttonElement" action="confirm">Confirm</element>
+      <element type="buttonElement" action="cancel">Cancel</element>
+      <element type="buttonElement" action="info">Info</element>
+      <element type="buttonElement" action="insert">Insert</element>
+      <element type="buttonElement" action="update">Update</element>
+      <element type="buttonElement" action="delete">Delete</element>
+      <element type="buttonElement" action="view">View</element>
+      <element type="buttonElement" action="clear">Clear</element>
+      <element type="buttonElement" action="reset">Reset</element>
+      <element type="buttonElement" action="submit">Submit</element>
+      <element type="buttonElement" action="previous">Previous</element>
+      <element type="buttonElement" action="next">Next</element>
+      <element type="buttonElement" action="first">First</element>
+      <element type="buttonElement" action="last">Last</element>
+
+      <element type="htmlElement"><![CDATA[
+Same buttons disabled:
+]]></element>
+
+      <element type="buttonElement" action="confirm" status="disabled">Confirm</element>
+      <element type="buttonElement" action="cancel" status="disabled">Cancel</element>
+      <element type="buttonElement" action="info" status="disabled">Info</element>
+      <element type="buttonElement" action="insert" status="disabled">Insert</element>
+      <element type="buttonElement" action="update" status="disabled">Update</element>
+      <element type="buttonElement" action="delete" status="disabled">Delete</element>
+      <element type="buttonElement" action="view" status="disabled">View</element>
+      <element type="buttonElement" action="clear" status="disabled">Clear</element>
+      <element type="buttonElement" action="reset" status="disabled">Reset</element>
+      <element type="buttonElement" action="submit" status="disabled">Submit</element>
+      <element type="buttonElement" action="previous" status="disabled">Previous</element>
+      <element type="buttonElement" action="next" status="disabled">Next</element>
+      <element type="buttonElement" action="first" status="disabled">First</element>
+      <element type="buttonElement" action="last" status="disabled">Last</element>
+
+    </zone>
+  </container>
+
+</application>

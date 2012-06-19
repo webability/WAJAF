@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="config">
+
+  <element id="header_content" type="htmlElement" classname="maintitle" left="*" top="*" height="28"><![CDATA[
+Some config stuff.]]>
+  </element>
+
+</application>

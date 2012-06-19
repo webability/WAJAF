@@ -1,0 +1,41 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ajaxManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ondemandManager.js"></script>
+
+Loading a javascript library:<br />
+<br />
+
+<input type="button" onclick="loadjs('/wajaf/skin/js/js1.js')" value="Load javascript file #1">
+<input type="button" onclick="loadjs('/wajaf/skin/js/js2.js')" value="Load javascript file #2">
+<br />
+<input type="button" onclick="loadjs('/wajaf/skin/js/does_not_exists.js')" value="Try to load non existing file">
+<br />
+<br />
+<input type="button" onclick="thetest();" value="Try the test function">
+
+<script type="text/javascript">
+
+function thetest()
+{
+  alert('This is the default preloaded function');
+}
+
+function loaded(r)
+{
+  alert('The new script has been loaded');
+}
+
+function loadjs(file)
+{
+  var j = ondemandManager.loadJS(file, loaded, true);
+  if (j === true)
+    alert('The script is already loaded');
+  else if (j === false)
+    alert('The script is beeing loaded');
+  else
+    alert('The script was asked for loading');
+}
+
+</script>
+

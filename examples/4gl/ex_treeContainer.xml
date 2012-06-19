@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_treeContainer">
+
+  <element type="htmlElement"><![CDATA[
+PlaceHolder for treeContainer example in 4GL framework.
+  ]]></element>
+
+</application>

@@ -1,0 +1,12 @@
+<?php
+
+class ex_dommaskContainer
+{
+
+  function form()
+  {
+    return json_encode( array('success' => true ));
+  }
+}
+
+?>

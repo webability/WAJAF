@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>soundManager examples - Play some sounds</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/soundManager.js"></script>
+
+<br /><br /><br />
+<span id="status" style="background-color: red;">Status</span><br />
+<br />
+<input type="button" onclick="play1();" value="Play sound 1"/>
+<input type="button" onclick="pause1();" value="Pause sound 1"/>
+<input type="button" onclick="stop1();" value="Stop sound 1"/>
+<input type="button" onclick="play2();" value="Play sound 2"/>
+<input type="button" onclick="play3();" value="Play sound 3"/>
+<br />
+<input type="button" onclick="volume(0);" value="Volume 0"/>
+<input type="button" onclick="volume(25);" value="Volume 25"/>
+<input type="button" onclick="volume(50);" value="Volume 50"/>
+<input type="button" onclick="volume(75);" value="Volume 75"/>
+<input type="button" onclick="volume(100);" value="Volume 100"/>
+<br />
+<input type="button" onclick="pan(-100);" value="Pan -100"/>
+<input type="button" onclick="pan(-50);" value="Pan -50"/>
+<input type="button" onclick="pan(0);" value="Pan 0"/>
+<input type="button" onclick="pan(50);" value="Pan 50"/>
+<input type="button" onclick="pan(100);" value="Pan 100"/>
+<br /><br />
+<div id="log" style="border: 1px solid red;"></div>
+
+
+<script type="text/javascript">
+
+function play1()
+{
+  WA.Managers.sound.startSound('str1');
+}
+
+function pause1()
+{
+  WA.Managers.sound.pauseSound('str1');
+}
+
+function stop1()
+{
+  WA.Managers.sound.stopSound('str1');
+}
+
+function play2()
+{
+  WA.Managers.sound.startSound('str2');
+}
+
+function play3()
+{
+  WA.Managers.sound.startSound('str3');
+}
+
+function volume(v)
+{
+  WA.Managers.sound.setVolume('str1', v);
+}
+
+function pan(p)
+{
+  WA.Managers.sound.setPan('str1', p);
+}
+
+function hook(msg)
+{
+  WA.toDOM('log').innerHTML += msg + '<br />';
+  if (msg == 'ready')
+    WA.toDOM('status').style.backgroundColor = 'green';
+}
+
+// this should be called before the page onload since the sound manager is setup onload
+// Putting the line in the streaming js code is normally enough since onload is called after all the page is loaded including this code execution.
+WA.Managers.sound.setHook(hook);
+WA.Managers.sound.setFlashManager('../skins/flash/soundmanager2.swf');
+
+// add the sounds to get them ready to call
+WA.Managers.sound.addSound('str1', '../skins/sounds/ahnyCathedralMusic.mp3');
+WA.Managers.sound.addSound('str2', '../skins/sounds/help-show.mp3');
+WA.Managers.sound.addSound('str3', '../skins/sounds/tab-change.mp3');
+
+</script>
+
+
+<br /><br />
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

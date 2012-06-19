@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get, Examples of Animation of nodes</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/animManager.js"></script>
+
+<br />
+There are 9 basic animations methods:<br />
+WA.get.() : will animate all the found nodes with the specified script.<br />
+WA.get.fadeIn(speed, callback): fade in the nodes. speed is in ms, or the values 'slow', 'medium', 'fast'. callback will be hit when the animation ends. The fade in applies directly on the opacity of the node. If the node is hidden, not visible or so, it will become visible. Only 'display' and 'opacity' are modified during the operation.<br />
+WA.get.fadeOut = function(s, f) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.fadeOut(_nodes[i], s, f); return self; }<br />
+WA.get.openV = function(s, f, h) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.openV(_nodes[i], s, h, f); return self; }<br />
+WA.get.closeV = function(s, f, h) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.closeV(_nodes[i], s, h, f); return self; }<br />
+WA.get.openH = function(s, f, w) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.openH(_nodes[i], s, w, f); return self; }<br />
+WA.get.closeH = function(s, f, w) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.closeH(_nodes[i], s, w, f); return self; }<br />
+WA.get.open = function(s, f, w, h) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.open(_nodes[i], s, w, h, f); return self; }<br />
+WA.get.close = function(s, f, w, h) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.close(_nodes[i], s, w, h, f); return self; }<br />
+WA.get.move = function(s, x, y, f, l, t) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nod<br />
+<br />
+There is also a generic animation method:<br />
+WA.get.anim() : will animate all the found nodes with the specified script.<br />
+<br />
+
+Let's play with some objects:<br />
+
+<div class="code">
+function test1()
+{
+}
+</div>
+<span class="button" onclick="test1();">CloseV red square</span>
+<span class="button" onclick="test2();">OpenV red square</span>
+<div id="test1" class="result" style="position: relative; height: 200px;">
+  <div id="d1" class="cd1" style="position: absolute; top: 50px; left: 50px; height: 50px; width: 50px; background-color: red;"></div>
+  <div id="d2" class="cd2" style="position: absolute; top: 70px; left: 70px; height: 50px; width: 50px; background-color: green;"></div>
+  <div id="d3" class="cd3" style="position: absolute; top: 90px; left: 90px; height: 50px; width: 50px; background-color: blue;"></div>
+  <div id="d4" class="cd1" style="position: absolute; top: 110px; left: 110px; height: 50px; width: 50px; background-color: #ffaa00;"></div>
+</div>
+
+<br />
+
+<script type="text/javascript">
+
+function test1()
+{
+  WA.get('#d1').closeV(1000);
+}
+
+function test2()
+{
+  WA.get('#d1').openV(1000, null, 50);
+}
+
+</script>
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

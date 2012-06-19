@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>WAJAF Examples Center</title>
+  <meta name="Generator" content="WAJAF v1 - www.webability.info - (c) 1999-2010, Ing. Philippe Thomassigny C." />
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=8" />
+  <link rel="stylesheet" href="../prettify/prettify.css" type="text/css" />
+  <script language="javascript" type="text/javascript" src="../prettify/prettify.js"></script>
+  <script language="javascript" type="text/javascript" src="js.php?JS=wajaf.js"></script>
+</head>
+
+<body>
+
+<div id="loading" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 50000; background-color: white;"><div id="loadingdata" style="position: absolute; left: 40%; top: 40%; border: 2px solid #99bbe8; padding: 10px; font-size: 28px; font-family: Verdana; text-align: center; color: #1663b7; width: 200px; height: 100px; background-color: #dfe8f6;"><img src="../../skins/images/loader.gif" style="vertical-align: middle; margin-top: 10px; margin-bottom: 10px;" /><br />Loading...</div></div>
+
+<div id="wa4glcontainer" style="position: absolute; left: 0px; top: 0px; overflow: hidden; border: 1px solid blue;"></div>
+
+<script type="text/javascript">
+
+// we set routes for all the managers
+WA.Managers.sound.setFlashManager('../../skins/flash/soundmanager2.swf');
+WA.Managers.help.soundshow = '../../skins/sounds/help-show.mp3';
+WA.Managers.help.soundclose = '../../skins/sounds/help-close.mp3';
+// sound will contain all the default sounds we are going to use in the containers and elements if needed.
+WA.Managers.sound.tabcontainersoundopen = '../../skins/sounds/tab-open.mp3';
+WA.Managers.sound.tabcontainersoundchange = '../../skins/sounds/tab-change.mp3';
+WA.Managers.sound.tabcontainersoundclose = '../../skins/sounds/tab-close.mp3';
+WA.Managers.wa4gl.setURL('app.php', 'js.php');
+
+window.onload =
+  function()
+  {
+/*
+    // we load the debug system
+    var popupdebug = window.open('', 'debug', 'scrollbars=1,width=400,height=600');
+    popupdebug.moveTo(0,0);
+    WA.debug.Console = popupdebug.document;
+    WA.debug.Level = 1;
+*/
+    // we load the styles sheets with the manager so we can play with dynamic skins reload
+    WA.Managers.ondemand.loadCSS('../../skins/css/reset.css', null, true);
+    WA.Managers.ondemand.loadCSS('../../skins/css/4gl.css', null, true);
+    WA.Managers.ondemand.loadCSS('../../skins/css/control.css', null, true);
+
+    // we laod the main app dispatcher
+    WA.Managers.wa4gl.startApplication('wa4glcontainer', 'main', 'single', '', 'full');
+  };
+</script>
+
+</body>
+
+</html>

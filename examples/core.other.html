@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Objects and Nodes methods examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The core contains some extra methods for all purpose need:<br />
+<i>For objects:</i><br />
+WA.extend: Will extends an object from another (inheritance).<br />
+WA.clone: Will clone an object and all its children.<br />
+WA.sizeof: Will calculates the size (number of attributes) of an object.<br />
+For DOM nodes:<br />
+WA.createDomNode: Will create a DOM Node of specified type, and apply classname if defined.<br />
+WA.getDomNode: Will get the DOM node of the specified Id.<br />
+WA.toDOM: Will get the DOM node from a string ID or a node itself.<br />
+<br />
+Let's play with some objects:<br />
+
+<div class="code">
+// A basic people object with name, age, sex as atributes.
+function people(n,a,s)
+{
+  this.name = n;
+  this.age = a;
+  this.sex = s;
+}
+// Some methods of the class, methods to extend should be declared as prototypes.
+people.prototype.setname = function(n) { this.name = n; }
+people.prototype.setage = function(a) { this.age = a; }
+people.prototype.setsex = function(s) { this.sex = s; }
+people.prototype.getname = function() { return this.name; }
+people.prototype.getage = function() { return this.age; }
+people.prototype.getsex = function() { return this.sex; }
+people.prototype.print = function() { return this.name + ' = age: ' + this.age + ', sex: ' + this.sex; }
+
+// An extended class
+// C or PHP could be like:
+// class employee extends people {}
+function employee(n,a,s, pos,sal)
+{
+  this.position = pos;
+  this.salary = sal;
+  employee.sourceconstructor.call(this, n,a,s);
+
+  this.setposition = function(p) { this.position = p; }
+  this.setsalary = function(s) { this.salary = s; }
+  this.getposition = function() { return this.position; }
+  this.getsalary = function() { return this.salary; }
+  this.print = function() { return employee.source.print.call(this) + ', position: ' + this.position + ', salary: ' + this.salary; }
+}
+// We extend the employee from people
+// employee will inherit all the attributes and prototyped methods from people
+WA.extend(employee, people);
+
+function test1()
+{
+  // lets create some employees
+  WA.get('#test1').append('&lt;b&gt;e1 is the director, e2 is a subdirector, e3 is a clerc:&lt;/b&gt;\n');
+  var e1 = new employee('Fred', 45, 'Male', 'director', 10000);
+  var e2 = new employee('Silvia', 37, 'Female', 'sub-director', 8000);
+  var e3 = new employee('Gladis', 29, 'Female', 'clerc', 6000);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('&lt;b&gt;Let\'s the subdirector fired:&lt;/b&gt;\n');
+  e2.setposition('fired');
+  e2.setsalary(0);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('&lt;b&gt;Let\'s promote the clerc to subdirector:&lt;/b&gt;\n');
+  e3.setposition('sub-director');
+  e3.setsalary(8000);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('&lt;b&gt;Our new subdirector is just getting older, happy birthday:&lt;/b&gt;\n');
+  e3.setage(e3.getage()+1);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('&lt;b&gt;Our new subdirector is excellent, let\'s raise her salary by 800:&lt;/b&gt;\n');
+  e3.setsalary(e3.getsalary()+800);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('&lt;b&gt;Let\'s clone Gladis, she is very good at work:&lt;/b&gt;\n');
+  var e4 = WA.clone(e3);
+  e4.setsex('Cloned');
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n' + e4.print() + '\n');
+
+  WA.get('#test1').append('&lt;b&gt;Size of (attributes in) our employee object:&lt;/b&gt;');
+  WA.get('#test1').append(' ' + WA.sizeof(e1) + '\n');
+}
+</div>
+<span class="button" onclick="test1();">Show the result</span>
+<div id="test1" class="result">
+</div>
+
+<br />
+Let's play with some DOM nodes:<br />
+
+<div class="code">function test2()
+{
+  // 1. Lets create some nodes
+  var n1 = WA.createDomNode('div', 'title1', '');
+  var n2 = WA.createDomNode('div', 'body1', '');
+  var n3 = WA.createDomNode('p', 'text1', '');
+
+  // 2. lets fill the nodes
+  n1.innerHTML = 'The new One Page Applications:';
+  n3.innerHTML = 'Web 3.0 tendency, the One Page Application is the edge techology slowly invading the Internet high-end systems.';
+
+  // 3. lets append the childs finding the father nodes
+  WA.getDomNode('test2').appendChild(n1);
+  WA.getDomNode('test2').appendChild(n2);
+  n2.appendChild(n3);
+
+  // 4. Lets access the nodes, we "don't know" (as in a variable for instance) if we access with the ID or with the DOMNode directly
+  WA.toDOM('title1').style.color = 'red';
+  WA.toDOM(n1).style.fontSize = '14px';
+  WA.toDOM(n2).style.border = '1px solid #ccf';
+  WA.toDOM('text1').style.backgroundColor = '#fd8';
+}
+</div>
+<span class="button" onclick="test2();">Show the result</span>
+<div id="test2" class="result">
+</div>
+
+<br />
+
+<script type="text/javascript">
+
+// A basic people object with name, age, sex as atributes.
+function people(n,a,s)
+{
+  this.name = n;
+  this.age = a;
+  this.sex = s;
+}
+// Some methods of the class, methods to extend should be declared as prototypes.
+people.prototype.setname = function(n) { this.name = n; }
+people.prototype.setage = function(a) { this.age = a; }
+people.prototype.setsex = function(s) { this.sex = s; }
+people.prototype.getname = function() { return this.name; }
+people.prototype.getage = function() { return this.age; }
+people.prototype.getsex = function() { return this.sex; }
+people.prototype.print = function() { return this.name + ' = age: ' + this.age + ', sex: ' + this.sex; }
+
+// An extended class
+// C or PHP could be like:
+// class employee extends people {}
+function employee(n,a,s, pos,sal)
+{
+  this.position = pos;
+  this.salary = sal;
+  employee.sourceconstructor.call(this, n,a,s);
+
+  this.setposition = function(p) { this.position = p; }
+  this.setsalary = function(s) { this.salary = s; }
+  this.getposition = function() { return this.position; }
+  this.getsalary = function() { return this.salary; }
+  this.print = function() { return employee.source.print.call(this) + ', position: ' + this.position + ', salary: ' + this.salary; }
+}
+// We extend the employee from people
+// employee will inherit all the attributes and prototyped methods from people
+WA.extend(employee, people);
+
+function test1()
+{
+  // lets create some employees
+  WA.get('#test1').append('<b>e1 is the director, e2 is a subdirector, e3 is a clerc:</b>\n');
+  var e1 = new employee('Fred', 45, 'Male', 'director', 10000);
+  var e2 = new employee('Silvia', 37, 'Female', 'sub-director', 8000);
+  var e3 = new employee('Gladis', 29, 'Female', 'clerc', 6000);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('<b>Let\'s the subdirector fired:</b>\n');
+  e2.setposition('fired');
+  e2.setsalary(0);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('<b>Let\'s promote the clerc to subdirector:</b>\n');
+  e3.setposition('sub-director');
+  e3.setsalary(8000);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('<b>Our new subdirector is just getting older, happy birthday:</b>\n');
+  e3.setage(e3.getage()+1);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('<b>Our new subdirector is excellent, let\'s raise her salary by 800:</b>\n');
+  e3.setsalary(e3.getsalary()+800);
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n');
+
+  WA.get('#test1').append('<b>Let\'s clone Gladis, she is very good at work:</b>\n');
+  var e4 = WA.clone(e3);
+  e4.setsex('Cloned');
+  WA.get('#test1').append(e1.print() + '\n' + e2.print() + '\n' + e3.print() + '\n' + e4.print() + '\n');
+
+  WA.get('#test1').append('<b>Size of (attributes in) our employee object:</b>');
+  WA.get('#test1').append(' ' + WA.sizeof(e1) + '\n');
+}
+
+function test2()
+{
+  // 1. Lets create some nodes
+  var n1 = WA.createDomNode('div', 'title1', '');
+  var n2 = WA.createDomNode('div', 'body1', '');
+  var n3 = WA.createDomNode('p', 'text1', '');
+
+  // 2. lets fill the nodes
+  n1.innerHTML = 'The new One Page Applications:';
+  n3.innerHTML = 'Web 3.0 tendency, the One Page Application is the techology slowly invading the Internet high-end systems.';
+
+  // 3. lets append the childs finding the father nodes
+  WA.getDomNode('test2').appendChild(n1);
+  WA.getDomNode('test2').appendChild(n2);
+  n2.appendChild(n3);
+
+  // 4. Lets access the nodes, we "don't know" (as in a variable for instance) if we access with the ID or with the DOMNode directly
+  WA.toDOM('title1').style.color = 'red';
+  WA.toDOM(n1).style.fontSize = '14px';
+  WA.toDOM(n2).style.border = '1px solid #ccf';
+  WA.toDOM('text1').style.backgroundColor = '#fd8';
+}
+
+</script>
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_simpleContainer">
+
+  <container type="simpleContainer" height="60">
+    <zone>
+      <element type="htmlElement"><![CDATA[
+The simpleContainer example. Control the zones by code:
+]]></element>
+      <element type="buttonElement">Show zone 1
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  WA.$N('sc').showZone('zone1');
+}
+]]></code>
+        </event>
+      </element>
+      <element type="buttonElement">Show zone 2
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  WA.$N('sc').showZone('zone2');
+}
+]]></code>
+        </event>
+      </element>
+      <element type="buttonElement">Show zone 3
+        <event type="click">
+          <code><![CDATA[
+function()
+{
+  WA.$N('sc').showZone('zone3');
+}
+]]></code>
+        </event>
+      </element>
+    </zone>
+  </container>
+
+
+  <container id="sc" type="simpleContainer" height="200" classname="container1">
+    <zone id="zone1" classname="zone1">
+      <element type="htmlElement"><![CDATA[
+This is the first zone of the Container. You will note that the main container have a 5 pixels padding in the class, so the zone is placed into the working area.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+  ]]></element>
+    </zone>
+
+    <zone id="zone2" classname="zone2">
+      <element type="htmlElement"><![CDATA[
+This is the second zone of the Container. This zone have a 5 pixels margin, so the zone line appears to be 10 pixels from the container border.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+  ]]></element>
+    </zone>
+
+    <zone id="zone3" classname="zone3">
+      <element type="htmlElement"><![CDATA[
+This is the third zone of the Container. This zone have a 10 pixels margin and 5 pixels padding, so the zone line appears to be 15 pixels from the container border.<br />
+The WAJAF <b>will respect</b> any CSS directive you may create on the contruction of the elements.<br />
+  ]]></element>
+    </zone>
+  </container>
+
+</application>

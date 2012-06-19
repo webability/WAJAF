@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>eventManager page loading and unloading examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+
+The code will hook a page load and a page unload listener:<br />
+<br />
+There are only 1 possible event called upon page load.<br />
+The event is called once the full page has been loaded (HTML code and JS code).<br />
+This event may be called before load the images and style sheets.<br />
+<br />
+There are 2 events called upon a page unload:
+1. the beforeFlush event will happen when the user fires an event to quit the page (browser close, URL change, click on a link, etc.). The method may return a string to display to the user and ask a question.<br />In this case, the user may disaple the exit of the page.<br />
+This event should be used to ask to the user if he wants to exit the page (for example if he did not saved a data, etc.)<br />
+2. the afterFlush event will happen once the user has accepted the exit of the page and after unloading all the other managers.<br />
+This event should me used to unload objects and data structures.<br />
+<br />
+
+<script type="text/javascript">
+
+function myonload(e)
+{
+  alert('Page fully loaded');
+}
+
+function myonbeforeunload(e)
+{
+  alert('before unload');
+  return 'The data is not saved. Do you want to exit and loose your work ?';
+}
+
+function myonunload(e)
+{
+  alert('Page is unloading: destroy objects');
+}
+
+WA.Managers.event.on('load', window, myonload, false);
+WA.Managers.event.registerBeforeFlush(myonbeforeunload);
+WA.Managers.event.registerFlush(myonunload);
+
+</script>
+
+
+<br /><br />
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>
+

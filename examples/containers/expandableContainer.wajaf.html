@@ -1,0 +1,71 @@
+<link rel="stylesheet" href="/wajaf/skin/css/4gl.css" type="text/css" />
+<link rel="stylesheet" href="/wajaf/skin/css/examples.css" type="text/css" />
+
+<script language="javascript" type="text/javascript" src="/wajaf/examples/4gl/js.php?JS=wajaf.js,expandableContainer.js,htmlElement.js"></script>
+
+<h1>expandableContainer on 4gl container</h1>
+
+<div id="buttons" style="height: 40px;">
+[<span onclick="$C('expandablecontainer|single|container1').show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="$C('expandablecontainer|single|container1').hide();" style="cursor: pointer; color: blue;">hide container</span>]
+[<span onclick="$C('expandablecontainer|single|container1').setSize(null, 100);" style="cursor: pointer; color: blue;">height: 100px</span>]
+[<span onclick="$C('expandablecontainer|single|container1').setSize(null, 200);" style="cursor: pointer; color: blue;">height: 200px</span>]
+[<span onclick="$C('expandablecontainer|single|container1').setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]
+[<span onclick="$C('expandablecontainer|single|container1').showZone('zone1');" style="cursor: pointer; color: blue;">show zone 1</span>]
+[<span onclick="$C('expandablecontainer|single|container1').hideZone('zone1');" style="cursor: pointer; color: blue;">hide zone 1</span>]
+[<span onclick="fill1();" style="cursor: pointer; color: blue;">fill zone 1</span>]
+[<span onclick="empty1();" style="cursor: pointer; color: blue;">empty zone 1</span>]
+</div>
+<br />
+
+<div id="wa4glcontainer" style="min-height: 50px; background-color: #aaaaaa;"></div>
+
+<br />
+
+<script type="text/javascript">
+
+var SC = null;
+
+window.onload =
+  function()
+  {
+    // this code is supposed to directly come from the server from an XML descriptor or from wajaf classes builder
+    var app = {
+      "tag":"application",
+      "attributes": {"id":"expandablecontainer"},
+      "0": {
+          "tag":"container",
+          "attributes": {"id":"container1","type":"expandableContainer"},
+          "0": {
+              "tag":"zone",
+              "attributes":{"id":"zone1",title:'<u>F</u>irst zone:',shortcut:'alt+f'},
+              "0":{"tag":"element","attributes":{id:'zone1text',"type":"htmlElement"},"data":"Zone 1"},
+               },
+          "1": {
+              "tag":"zone",
+              "attributes":{"id":"zone2",title:'Second zone:'},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 2"},
+               },
+          "2": {
+              "tag":"zone",
+              "attributes":{"id":"zone3",title:'Third zone:'},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 3"},
+               },
+            }
+        };
+
+    wa4glManager.startApplication('wa4glcontainer', 'expandablecontainer', 'single', app, '');
+
+  };
+
+function fill1()
+{
+  $('expandablecontainer|single|zone1text').innerHTML = 'Line 1<br />Line 2<br /> Line 3<br />Line 4<br />Line 5<br />';
+}
+
+function empty1()
+{
+  $('expandablecontainer|single|zone1text').innerHTML = 'Zone 1';
+}
+
+</script>

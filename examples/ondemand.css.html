@@ -1,0 +1,49 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ajaxManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ondemandManager.js"></script>
+
+Loading a style sheet:<br />
+Will apply only on this simulated page:<br />
+Loading more than 1 style at the same time may have unexpected results since the classes are additive.<br />
+<br />
+
+<input type="button" onclick="loadcss('/wajaf/skin/css/css1.css')" value="Load CSS #1">
+<input type="button" onclick="loadcss('/wajaf/skin/css/css2.css')" value="Load CSS #2">
+<input type="button" onclick="loadcss('/wajaf/skin/css/css3.css')" value="Load CSS #3">
+<br />
+<input type="button" onclick="unloadcss('/wajaf/skin/css/css1.css')" value="Unload CSS #1">
+<input type="button" onclick="unloadcss('/wajaf/skin/css/css2.css')" value="Unload CSS #2">
+<input type="button" onclick="unloadcss('/wajaf/skin/css/css3.css')" value="Unload CSS #3">
+<br />
+<br />
+
+<div id="container" style="height: 400px; position: relative; border: 1px solid blue; width: 90%; margin-left: 10px;">
+<span class="title">Title of the content.</span><br />
+<div id="pagemenu">
+<a href="#">Menu option 1</a>
+<a href="#">Menu option 2</a>
+<a href="#">Menu option 3</a>
+</div>
+<div id="pagecontent">
+Lorem ipsum dolor sit amet, consectetur <b>adipisicing elit</b>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea <i>commodo</i> consequat. Duis aute irure dolor in <u>reprehenderit</u> in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</div>
+</div>
+
+<br />
+
+
+<script type="text/javascript">
+
+function loadcss(file)
+{
+  var j = ondemandManager.loadCSS(file, null, true);
+}
+
+function unloadcss(file)
+{
+  var j = ondemandManager.unload(file);
+}
+
+</script>
+

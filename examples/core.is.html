@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Core is* examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+All the is* methods are used to test the type of a variable:<br />
+isDefined: returns true if the variable is not undefined.<br />
+isEmpty: returns true if the variable is empty: empty means undefined, null, empty array or empty string.<br />
+isBool: returns true if the variable is a boolean.<br />
+isNumber: returns true if the variable is numero, integer or float.<br />
+isString: returns true if the variable is a string or a String object.<br />
+isArray: returns true if the variable is an array.<br />
+isObject: returns true if the variable is an object. It includes String(), Date(), {}. etc. Note than Javasript consider null as an object too.<br />
+isFunction: returns true if the variable is a function.<br />
+isDate: return true if the variable is a Date object.<br />
+isDOM: return true if the variable is a DOM node object.<br />
+All the functions return true/false. True means the variable match the specified type by the is* method.<br />
+<br />
+Chart of is* methods testing some variables (See the code after the chart):<br />
+<br />
+
+<script type="text/javascript">
+
+var fctnames = ['isDefined', 'isEmpty', 'isBool', 'isNumber', 'isString',
+    'isArray', 'isObject', 'isFunction', 'isDate','isDOM'];
+
+var fct = [WA.isDefined, WA.isEmpty, WA.isBool, WA.isNumber, WA.isString,
+    WA.isArray, WA.isObject, WA.isFunction, WA.isDate,WA.isDOM];
+
+var datanames = ['undefined', 'null','[]','{}','""','true','0','123','123.45','"string"',
+    '[1,2,3]','{id:1}','fct()','Date()','document.body', 'String()'
+];
+
+var data = [undefined, null, [], {}, '', true, 0, 123, 123.45, 'string',
+    [1,2,3], {id:1}, function() {}, new Date(), document.body, new String("abc")];
+
+document.write('<table border="1" class="chart" style="text-align: center;"><tr><td></td>');
+for (var j=0, m = fct.length; j<m; j++)
+{
+  document.write('<th>');
+  document.write( fctnames[j] );
+  document.write('</th>');
+}
+document.write('</tr>');
+for (var j=0, m = data.length; j<m; j++)
+{
+  document.write('<tr><th style="text-align: right;">'+datanames[j]+'</th>');
+  for (var i=0, l = fct.length; i<l; i++)
+  {
+    document.write( (fct[i](data[j]) ? '<td style="background-color: #bfb;">Yes</td>' : '<td style="background-color: #fbb;">No</td>') );
+  }
+  document.write('</tr>');
+}
+document.write('</table>');
+
+</script>
+
+<br /><br />
+here is the code of the full test:<br />
+<br />
+
+<div class="code">
+var fctnames = ['isDefined', 'isEmpty', 'isBool', 'isNumber', 'isString',
+    'isArray', 'isObject', 'isFunction', 'isDate','isDOM'];
+
+var fct = [WA.isDefined, WA.isEmpty, WA.isBool, WA.isNumber, WA.isString,
+    WA.isArray, WA.isObject, WA.isFunction, WA.isDate,WA.isDOM];
+
+var datanames = ['undefined', 'null','[]','{}','""','true','0','123','123.45','"string"',
+    '[1,2,3]','{id:1}','fct()','Date()','document.body'
+];
+
+var data = [undefined, null, [], {}, '', true, 0, 123, 123.45, 'string',
+    [1,2,3], {id:1}, function() {}, new Date(), document.body];
+
+document.write('&lt;table border="1" class="chart" style="text-align: center;"&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;');
+for (var j=0, m = fct.length; j&lt;m; j++)
+{
+  document.write('&lt;td&gt;');
+  document.write( fctnames[j] );
+  document.write('&lt;/td&gt;');
+}
+document.write('&lt;/tr&gt;');
+for (var j=0, m = data.length; j&lt;m; j++)
+{
+  document.write('&lt;tr&gt;&lt;td style="text-align: right;"&gt;'+datanames[j]+'&lt;/td&gt;');
+  for (var i=0, l = fct.length; i&lt;l; i++)
+  {
+    document.write( (fct[i](data[j]) ? '&lt;td style="background-color: #bfb;"&gt;Yes&lt;/td&gt;' :
+       '&lt;td style="background-color: #fbb;"&gt;No&lt;/td&gt;') );
+  }
+  document.write('&lt;/tr&gt;');
+}
+document.write('&lt;/table&gt;');
+
+</div>
+
+<br /><br />
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

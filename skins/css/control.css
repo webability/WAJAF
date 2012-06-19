@@ -1,0 +1,287 @@
+/* Native XHTML elements */
+body
+{
+  color: black;
+  background-color: white;
+  font-family: Arial, Helvetica;
+  font-size: 12px;
+  line-height: 1.2em;
+}
+
+a:link
+{
+  color: #0000aa;
+  text-decoration: none;
+}
+
+a:active
+{
+  color: #0000ff;
+  text-decoration: underline;
+}
+
+a:visited
+{
+  color: #0000aa;
+  text-decoration: underline;
+}
+
+a:hover
+{
+  color: #ff0000;
+  text-decoration: underline;
+}
+
+/* structural elements */
+#main\|single\|
+{
+  background-color: #dfe8f6;
+}
+
+#main\|single\|header
+{
+  background-color: #c6d9f1;
+  overflow: hidden;
+}
+
+#main\|single\|workarea
+{
+  background-color: transparent;
+  border: 0px;
+  -moz-box-shadow: none; -webkit-box-shadow: none; box-shadow: none;
+  overflow: hidden;
+}
+
+#main\|single\|footer
+{
+  background-color: #c6d9f1;
+}
+
+/* used standart classes */
+.maintitle
+{
+  font-size: 16px;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+.alttitle
+{
+  color: #dd0000;
+  font-size: 16px;
+}
+
+.flaggreen
+{
+  background-color: #66ff66;
+  border: 1px solid blue;
+}
+
+.flagred
+{
+  background-color: #ff6666;
+  border: 1px solid blue;
+}
+
+.flagyellow
+{
+  background-color: yellow;
+  border: 1px solid blue;
+  cursor: pointer;
+}
+
+.timertitle
+{
+  color: #333333;
+  font-size: 12px;
+  text-align: right;
+}
+
+.buttonmenuconfig
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-image: url('../../skins/images/config.png');
+}
+
+.buttonmenuhelp
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-image: url('../../skins/images/help-light.png');
+}
+
+.buttonmenuhelpfull
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-image: url('../../skins/images/help-on.png');
+}
+
+.buttonmenuhelpmute
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-image: url('../../skins/images/help-off.png');
+}
+
+.buttonmenusoundon
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-image: url('../../skins/images/sound-on.png');
+}
+
+.buttonmenusoundoff
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-image: url('../../skins/images/sound-off.png');
+}
+
+.buttonmenudisconnect
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  background-image: url('/skins/master/icons/disconnect.png');
+}
+
+.footertitle
+{
+  font-size: 12px;
+  padding-left: 10px;
+  font-weight: bold;
+}
+
+/* tree index */
+.imagemenu
+{
+  vertical-align: middle;
+}
+
+.treedata
+{
+  white-space: nowrap;
+}
+
+.textmenulink
+{
+  padding: 3px;
+  cursor: pointer;
+}
+
+.textmenulink:hover
+{
+  background-color: #ccccff;
+}
+
+/* general titles */
+
+
+
+
+
+
+/* Examples basic classes */
+.container1
+{
+  padding: 5px;
+  border: 1px dotted #ffaaaa;
+  min-width: 300px;
+  overflow: hidden;
+}
+
+.zone1
+{
+  border: 1px dashed #66bb66;
+  overflow: hidden;
+}
+
+.zone2
+{
+  border: 3px dashed #aaaaff;
+  margin: 5px;
+  overflow: hidden;
+}
+
+.zone3
+{
+  border: 2px solid #aaffff;
+  margin: 10px;
+  padding: 5px;
+  overflow: hidden;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+.simplebox
+{
+  background-color: white;
+  border: 10px Solid #aa0000;
+}
+
+.buttonmenu
+{
+  border: 0px;
+  cursor: pointer;
+  margin-left: 1px;
+  margin-right: 1px;
+  vertical-align: middle;
+}
+
+.introcenter
+{
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000088;
+  margin: 10px;
+}
+
+.blocktitle
+{
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  background-color: #dddddd;
+  vertical-align: middle;
+  padding-top: 5px;
+  height: 20px;
+  border: 1px solid #888888;
+}
+
+.textmenu
+{
+  margin-left: 2px;
+  margin-right: 2px;
+}
+
+
+*/

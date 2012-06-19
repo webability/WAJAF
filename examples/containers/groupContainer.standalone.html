@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="../../skins/css/wajaf.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/4gl.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/examples.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Standalone groupContainer example</h1>
+
+<script language="javascript" type="text/javascript" src="../../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/wa4glManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../containers/groupContainer.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/titleElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/errorElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/statusElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/extraElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/helpElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/buttonElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/hiddenfieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/textfieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/textareafieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/lovfieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/filefieldElement.js"></script>
+
+
+<div id="buttons"">
+<h3>Lets build a full form with any type of fields:</h3>
+</div>
+
+<br />
+
+<form id="groupcontainer1">
+<span id="maintitle">Capture your data:</span>
+
+<table>
+<tr><td><span id="title1">Name:</span></td>
+    <td><input type="text" name="field1" id="field1" /></td>
+</tr>
+<tr><td><span id="title4">Sex:</span></td>
+    <td></td>
+</tr>
+<tr><td><span id="title3">Notes:</span></td>
+    <td></td>
+</tr>
+<tr><td><span id="title1">:</span></td>
+    <td></td>
+</tr>
+<tr><td></td>
+    <td><input type="submit" id="submit1" value="Send to server" /></td>
+</tr>
+
+</table>
+</form>
+
+<br />
+
+<h3>The events listener:</h3>
+<div id="callback" style="height: 200px; overflow: auto; border: 1px solid blue; margin: 5px;"></div>
+<br />
+
+
+<script type="text/javascript">
+
+var SC1 = null;
+var SC2 = null;
+
+WA.Managers.event.on('load', window,
+  function()
+  {
+    // creates the standalone group container into the body based on existing Nodes
+    SC1 = new WA.Containers.groupContainer('containers', 'groupcontainer1', {attributes:{classname:'mycontainer',classnamezone:'zone1'}}, notifyme);
+    SC1.createZone('groupzone1_1', {attributes:{classname:'zone1'}}, notifyme);
+
+
+  }, true);
+
+function notifyme(type, id, other)
+{
+  var txt = '{';
+  var item = 0;
+  for (var i in other)
+    txt += (item++?',':'')+i+':'+other[i];
+  txt += '}';
+
+
+  WA.toDOM('callback').innerHTML += type + ': '+ id + ': ' + txt + '<br />';
+  return true;
+}
+
+function fill1()
+{
+  WA.toDOM('groupzone1_1').innerHTML = 'Line 1<br />Line 2<br /> Line 3<br />Line 4<br />Line 5<br />';
+}
+
+function empty1()
+{
+  WA.toDOM('groupzone1_1').innerHTML = 'Zone 1';
+}
+
+</script>
+
+<br /><br />
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

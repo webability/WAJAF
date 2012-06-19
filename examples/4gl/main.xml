@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="main">
+
+  <container type="separatorContainer" width="max" height="max" mode="vertical" auto="yes">
+    <zone id="header" size="45">
+
+      <element id="header_content" type="htmlElement" classname="maintitle" left="0" top="*" height="28"><![CDATA[
+        <img src="../../skins/images/wa5.gif" style="vertical-align: middle; height: 27px; margin-right: 10px;" alt="WAJAF v1 Examples" title="WAJAF v1 Examples" />
+        The WAJAF Examples&nbsp;-&nbsp;<span id="wajafversion" class="alttitle"></span>&nbsp;-&nbsp;Control Center with XML files.]]>
+      </element>
+
+      <element id="timer" type="htmlElement" classname="timertitle" width="300" height="20" right="150" top="28"></element>
+
+      <element id="ajaxflag" type="htmlElement" classname="flaggreen" width="16" height="10" right="50" top="5">
+        <help>
+          <summary><![CDATA[Ajax Status flag]]></summary>
+          <title><![CDATA[Ajax Status flag]]></title>
+          <description><![CDATA[The flag is green when there is no AJAX request.<br />If there is an AJAX request on the go, the flag turns red during the request.<br />]]></description>
+        </help>
+      </element>
+
+      <element id="ddflag" type="htmlElement" classname="flaggreen" width="16" height="10" right="30" top="5">
+        <help>
+          <summary><![CDATA[Drag&Drop Status flag]]></summary>
+          <title><![CDATA[Drag&Drop Status flag]]></title>
+          <description><![CDATA[The flag is green when there is no D&D movement.<br />If there is a D&D movement on the go, the flag turns red during the dragging.<br />]]></description>
+        </help>
+      </element>
+
+      <element id="debugbutton" type="htmlElement" classname="flagyellow" width="16" height="10" right="10" top="5">
+        <event type="onclick">
+          <code><![CDATA[
+function(e)
+{
+  var popupdebug = window.open('', 'debug', 'scrollbars=1,width=400,height=600');
+  popupdebug.moveTo(0,0);
+  WA.debug.Console = popupdebug.document;
+  WA.debug.Level = 1;
+}
+          ]]></code>
+        </event>
+        <help>
+          <summary><![CDATA[Click to open the debug console]]></summary>
+          <title><![CDATA[Debug console]]></title>
+          <description><![CDATA[You can click on this button to open the debug console.<br />The debug console is a popup window. Be sure the popups are authorized in your browser to let it appear.]]></description>
+        </help>
+      </element>
+
+      <element id="myconfig" type="htmlElement" classname="buttonmenuconfig" width="16" height="16" right="50" top="25">
+        <event type="onclick">
+          <code><![CDATA[
+function(e)
+{
+  var node = this._4gl.app.getNode('app_config');
+  if (!node)
+  {
+    this._4gl.app.getNode('application').newZone('app_config', 'Configuration', undefined, undefined, 'config|single', 'yes', 'alt+c');
+  }
+  this._4gl.app.getNode('application').activateZone('app_config');
+}
+          ]]></code>
+        </event>
+        <help>
+          <summary><![CDATA[Click here to open the configuration screen]]></summary>
+          <title><![CDATA[Configuration]]></title>
+          <description><![CDATA[You can access the configuration screen click on this button.<br />You can change here the skin of the examples dynamically.]]></description>
+        </help>
+      </element>
+      <element id="help_header" type="htmlElement" classname="buttonmenuhelpfull" width="16" height="16" right="30" top="25">
+        <event type="onclick">
+          <code><![CDATA[
+function(e)
+{
+  switch (WA.Managers.help.getMode())
+  {
+    case 2: setHelp(0); break;
+    case 1: setHelp(2); break;
+    case 0: setHelp(1); break;
+  }
+}
+          ]]></code>
+        </event>
+        <help>
+          <summary><![CDATA[Click to change the help status. Wait on the icon to get more information if the help is turned on full status.]]></summary>
+          <title><![CDATA[Help level:]]></title>
+          <description><![CDATA[This option let you change the interactive help status of the system.<br />
+  The icon <img src="../../skins/images/help-light.png" alt="Over help" title="Over help" style="vertical-align: middle;" /> is shown when the help is only showing a hint on the element.<br />
+  The icon <img src="../../skins/images/help-on.png" alt="Full help" title="Full help" style="vertical-align: middle;" /> is shown when the interactive help is in full mode. In this case, put the mouse over an element first show a rapid hint, and waiting 4 seconds will pop a help window that can be navigated.<br />
+  The icon <img src="../../skins/images/help-off.png" alt="No help" title="No help" style="vertical-align: middle;" /> desactivates all the help.<br />
+  Click on the icon to switch the interactive help mode to hint/full/none.]]></description>
+        </help>
+      </element>
+      <element id="sound_header" type="htmlElement" classname="buttonmenusoundon" width="16" height="16" right="10" top="25">
+        <event type="onclick">
+          <code><![CDATA[
+function(e)
+{
+  if (WA.Managers.sound.on)
+    setSound(false);
+  else
+    setSound(true);
+}
+          ]]></code>
+        </event>
+        <help>
+          <summary><![CDATA[Click to change the sound status On or Off.]]></summary>
+          <title><![CDATA[Sound on/off:]]></title>
+          <description><![CDATA[This option let you turn the sound of the system on or off.<br />
+  The icon <img src="../../skins/images/sound-on.png" alt="Sound On" title="Sound On" style="vertical-align: middle;" /> is shown when the sound is working.<br />
+  The icon <img src="../../skins/images/sound-off.png" alt="Sound Off" title="Sound Off" style="vertical-align: middle;" /> is shown when the sound is turned off.<br />
+  Click on the icon to switch the sound on or off.]]></description>
+        </help>
+      </element>
+
+    </zone>
+    <zone id="workarea" size="*">
+
+      <container type="separatorContainer" width="max" height="max" mode="horizontal">
+        <zone size="200" style="margin-left: 0px; margin-top: 0px;">
+
+          <container id="menu" type="treeContainer">
+
+            <template name="folder">
+              <element type="imageElement" classname="imagemenu" width="16" height="16" src="../../skins/images/{image}"><![CDATA[{name}]]></element>
+              <element type="textElement" classname="textmenulink"><![CDATA[{name}]]>
+                <help>
+                  <summary>Click to open/close the folder</summary>
+                  <title>Folder:</title>
+                  <description>Click the name or the icon to open and close the folder.</description>
+                </help>
+                <event type="onclick">
+                  <code><![CDATA[
+function(e)
+{
+  var n = this._4gl.app.getNode('menu');
+  n.switchzone('{id}');
+}
+                  ]]></code>
+                </event>
+              </element>
+            </template>
+
+            <template name="example">
+              <element type="imageElement" classname="imagemenu" width="16" height="16" src="../../skins/images/{image}"><![CDATA[{name}]]></element>
+              <element type="textElement" classname="textmenulink"><![CDATA[{name}]]>
+                <help>
+                  <summary>Click to access the example</summary>
+                  <title>Example:</title>
+                  <description>Click the name of the example to open it in the tabs in the right part of the viewport.</description>
+                </help>
+                <event type="onclick">
+                  <code><![CDATA[
+function(e)
+{
+  var node = this._4gl.app.getNode('app_example_{id}');
+  if (!node)
+  {
+    var tree = {tag:'zone',attributes:{id:'app_example_{id}',title:'{name}',closeable:'yes'},'0':{tag:'container',attributes:{type:'tabContainer',mode:'top',width:'max',height:'max'},'0':{tag:'zone',attributes:{title:'Result',closeable:'no',application:'{id}|single',params:''}},'1':{tag:'zone',attributes:{title:'Source code',closeable:'no',application:'{id}|source',params:'Source=true'}}}};
+    this._4gl.app.createTree('application', tree);
+  }
+  this._4gl.app.getNode('application').activateZone('app_example_{id}');
+}
+                  ]]></code>
+                </event>
+              </element>
+            </template>
+
+            <dataset>
+{row:[
+  {id:'combined', template:'folder', image:'examplegroup.png', name:'Combined', father: null, closeable: true, loadable: false},
+    {id:'ex_groupContainer', template:'example', image:'example.png', name:'groupContainer', father: 'combined', closeable: false, loadable: false},
+//  {id:'ex_email', template:'example', image:'example.png', name:'EMail interface', father: 'combined', closeable: false, loadable: false},
+//  {id:'ex_explorer', template:'example', image:'example.png', name:'Files explorer', father: 'combined', closeable: false, loadable: false},
+//  {id:'ex_rssfeed', template:'example', image:'example.png', name:'RSS Feeds', father: 'combined', closeable: false, loadable: false},
+//  {id:'ex_elementlab', template:'example', image:'example.png', name:'Element Lab', father: 'combined', closeable: false, loadable: false},
+//  {id:'ex_containerlab', template:'example', image:'example.png', name:'Container Lab', father: 'combined', closeable: false, loadable: false},
+  {id:'containers', template:'folder', image:'examplegroup.png', name:'Containers', father: null, closeable: true, loadable: false},
+  {id:'ex_simpleContainer', template:'example', image:'example.png', name:'simpleContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'ex_separatorContainer', template:'example', image:'example.png', name:'separatorContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'ex_tabContainer', template:'example', image:'example.png', name:'tabContainer', father: 'containers', closeable: false, loadable: false},
+//  {id:'ex_expandableContainer', template:'example', image:'example.png', name:'expandableContainer', father: 'containers', closeable: false, loadable: false},
+//  {id:'ex_treeContainer', template:'example', image:'example.png', name:'treeContainer', father: 'containers', closeable: false, loadable: false},
+//  {id:'ex_dommaskContainer', template:'example', image:'example.png', name:'dommaskContainer', father: 'containers', closeable: false, loadable: false},
+  {id:'elements', template:'folder', image:'examplegroup.png', name:'Elements', father: null, closeable: true, loadable: false},
+  {id:'ex_htmlElement', template:'example', image:'example.png', name:'htmlElement', father: 'elements', closeable: false, loadable: false},
+  {id:'ex_textElement', template:'example', image:'example.png', name:'textElement', father: 'elements', closeable: false, loadable: false},
+//  {id:'ex_imageElement', template:'example', image:'example.png', name:'imageElement', father: 'elements', closeable: false, loadable: false},
+  {id:'ex_buttonElement', template:'example', image:'example.png', name:'buttonElement', father: 'elements', closeable: false, loadable: false}
+]}
+            </dataset>
+          </container>
+
+        </zone>
+        <zone size="*" style="border: 0px; background-color: transparent; margin-left: 0px; margin-top: 0px;">
+          <container id="application" type="tabContainer" width="max" height="max" mode="top">
+            <zone id="controlcenter" title="Dash Board">
+              <element type="htmlElement" classname=""><![CDATA[Welcome to the WebAbility Javascript Application Framework - WAJAF - v1.<br /><br />The examples work perfectly under Firefox 3+, Chrome 1+, Safari 4+, Opera 10+ and Internet Explorer 7/8.<br /><br />
+The whole examples are build on <b>XML files describing the applications</b>.<br />You can display the XML code on each example.<br /><br />]]>
+              </element>
+              <element type="buttonElement">Show the viewport source code
+                <event type="click">
+                  <code><![CDATA[
+function(e)
+{
+  var node = this.app.getNode('viewport_source');
+  if (!node)
+  {
+    this.app.getNode('application').newZone('viewport_source', 'Viewport Source', undefined, undefined, 'main|source', 'yes', 'alt+c', 'Source=true');
+  }
+  this.app.getNode('application').activateZone('viewport_source');
+}
+        ]]></code>
+                </event>
+              </element>
+
+            </zone>
+          </container>
+        </zone>
+      </container>
+
+    </zone>
+    <zone id="footer" size="30">
+      <element id="footer_content" type="htmlElement" classname="footertitle" anchorleft="0" left="0" top="*"><![CDATA[WAJAF - The WebAbility&reg; Javascript Application Framework - &copy; 2008-2012 Philippe Thomassigny - <a href="http://www.webability.info/?P=wajaf" target="_blank">http://www.webability.info/?P=wajaf</a>]]>
+      </element>
+    </zone>
+  </container>
+
+  <element type="codeElement"><![CDATA[
+function addzero(num)
+{
+  if (num < 10)
+    return '0' + num;
+  return num;
+}
+
+function timer()
+{
+  var fecha=new Date();
+
+  WA.browser.setInnerHTML(WA.toDOM('main|single|timer'), fecha.format('l, F j, Y, H:i:s'));
+  setTimeout( function() { timer(); }, 1000 );
+}
+
+function setSound(status)
+{
+  WA.Managers.sound.on = status;
+  if (status)
+    WA.toDOM('main|single|sound_header').className = 'buttonmenusoundon';
+  else
+    WA.toDOM('main|single|sound_header').className = 'buttonmenusoundoff';
+}
+
+function setHelp(status)
+{
+  switch (status)
+  {
+    case 0:
+      WA.Managers.help.switchOff();
+      WA.toDOM('main|single|help_header').className = 'buttonmenuhelpmute';
+      break;
+    case 1:
+      WA.Managers.help.switchAlt();
+      WA.toDOM('main|single|help_header').className = 'buttonmenuhelp';
+      break;
+    case 2:
+      WA.Managers.help.switchOn();
+      WA.toDOM('main|single|help_header').className = 'buttonmenuhelpfull';
+      break;
+  }
+}
+
+var numajax = 0;
+function ajaxListener(event)
+{
+  if (event == 'start')
+    numajax ++;
+  else if (event == 'stop')
+    numajax --;
+  if (numajax > 0)
+    WA.toDOM('main|single|ajaxflag').className = 'flagred';
+  else
+    WA.toDOM('main|single|ajaxflag').className = 'flaggreen';
+}
+
+function ddListener(event)
+{
+  if (event == 'start' || event == 'drag')
+    WA.toDOM('main|single|ddflag').className = 'flagred';
+  else if (event == 'stop')
+    WA.toDOM('main|single|ddflag').className = 'flaggreen';
+}
+
+]]></element>
+  <event type="start">
+    <code><![CDATA[
+function()
+{
+  WA.browser.setInnerHTML(WA.toDOM('wajafversion'), WA.version);
+  timer();
+  WA.Managers.ajax.setListener(ajaxListener);
+  WA.Managers.dd.setListener(ddListener);
+  WA.toDOM('loading').style.display = 'none';
+}
+    ]]></code>
+  </event>
+
+
+</application>

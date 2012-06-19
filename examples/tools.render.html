@@ -1,0 +1,31 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+
+<script type="text/javascript">
+
+var i1 = 0;
+var i2 = 1234567890;
+var i3 = -1234567;
+
+document.write( 'integer formated: ' + WA.render.Integer(i1, ',') + '<br />');
+document.write( 'integer formated: ' + WA.render.Integer(i2, ',') + '<br />');
+document.write( 'integer formated: ' + WA.render.Integer(i3, ',') + '<br />');
+
+var f1 = 0;
+var f2 = 1234567890.876543;
+var f3 = -1234567.4576;
+
+document.write( 'float formated: ' + WA.render.Fixed(f1, 0, '.', ',') + '<br />');
+document.write( 'float formated: ' + WA.render.Fixed(f1, 2, '.', ',') + '<br />');
+document.write( 'float formated: ' + WA.render.Fixed(f2, 2, '.', ',') + '<br />');
+document.write( 'float formated: ' + WA.render.Fixed(f2, 4, '.', ',') + '<br />');
+document.write( 'float formated: ' + WA.render.Fixed(f3, 2, '/', '#') + '<br />');
+
+var p1 = 1234567.8901;
+
+document.write( 'the price is: ' + WA.render.Money(p1, '$ ', 2, '.', ',') + '<br />');
+document.write( 'the price is: ' + WA.render.Money(p1, 'FFr ', 2, ',', ' ') + '<br />');
+document.write( 'the price is: ' + WA.render.Money(p1, '&euro; ', 2, '.', ',') + '<br />');
+document.write( 'the price is: ' + WA.render.Money(p1, '* ', 0, ',', ' ') + '<br />');
+
+</script>
+

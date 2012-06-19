@@ -1,0 +1,173 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ddManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/space3dManager.js"></script>
+
+<div style="padding: 10px;">
+
+<h2>C-Vitamin molecule</h2>
+<h2>(Still have to refine drag&drop algorithm)</h2>
+
+<span onclick="start();" style="cursor: pointer; text-decoration: underline; background-color: green;">Start</span> the movement.<br />
+<span onclick="suspend();" style="cursor: pointer; text-decoration: underline; background-color: orange;">Suspend</span> the movement.<br />
+<span onclick="resume();" style="cursor: pointer; text-decoration: underline; background-color: orange;">Resume</span> the movement.<br />
+<span onclick="stop();" style="cursor: pointer; text-decoration: underline; background-color: red;">Stop</span> the movement.<br />
+<span onclick="startover();" style="cursor: pointer; text-decoration: underline; background-color: green;">Start</span> the mouse over.<br />
+<span onclick="stopover();" style="cursor: pointer; text-decoration: underline; background-color: red;">Stop</span> the mouse over.<br />
+<span onclick="startdrag();" style="cursor: pointer; text-decoration: underline; background-color: green;">Start</span> the dragging.<br />
+<span onclick="stopdrag();" style="cursor: pointer; text-decoration: underline; background-color: red;">Stop</span> the dragging.<br />
+<span onclick="scale(1);" style="cursor: pointer; text-decoration: underline; background-color: lime;">Scale 1</span>
+<span onclick="scale(2);" style="cursor: pointer; text-decoration: underline; background-color: lime;">Scale 2</span>
+<span onclick="scale(3);" style="cursor: pointer; text-decoration: underline; background-color: lime;">Scale 3</span><br />
+<span onclick="size();" style="cursor: pointer; text-decoration: underline; background-color: lime;">On/Off render size</span>
+<span onclick="color();" style="cursor: pointer; text-decoration: underline; background-color: lime;">On/Off render color</span><br />
+
+
+<div id="scene" style="border: 1px solid red; overflow: hidden; height: 250px; width: 250px; margin: 5%; position: relative; cursor: pointer; background-color: black;"></div>
+
+<div id="coords"></div>
+
+</div>
+
+<script type="text/javascript">
+
+// We build the vitamin C molecule:
+var molecule =
+{
+  a1: {title:'&#8226;',x:0,y:0,z:0,color:'#444',size:48},
+  a2: {title:'&#8226;',x:15.12,y:0,z:0,color:'#444',size:48},
+  a3: {title:'&#8226;',x:19.27,y:12.64,z:0,color:'#444',size:48},
+  a4: {title:'&#8226;',x:7.3,y:20.91,z:0.15,color:'#444',size:48},
+  a5: {title:'&#8226;',x:-3.82,y:13.59,z:1.13,color:'red',size:40},
+  a6: {title:'&#8226;',x:7.59,y:32.70,z:2.61,color:'red',size:40},
+  a7: {title:'&#8226;',x:31.97,y:16.90,z:2.45,color:'red',size:40},
+  a8: {title:'&#8226;',x:22.83,y:-10.55,z:3.86,color:'red',size:40},
+  a9: {title:'&#8226;',x:-3.90,y:-4.63,z:-9.07,color:'white',size:36},
+  a10: {title:'&#8226;',x:-5.65,y:-6.53,z:12.64,color:'#444',size:48},
+  a11: {title:'&#8226;',x:0.5,y:-14.75,z:16.29,color:'white',size:36},
+  a12: {title:'&#8226;',x:-6.74,y:3.97,z:22.29,color:'red',size:40},
+  a13: {title:'&#8226;',x:-20.28,y:-10.77,z:11.06,color:'#444',size:48},
+  a14: {title:'&#8226;',x:-25.43,y:-9.06,z:24.29,color:'red',size:40},
+  a15: {title:'&#8226;',x:33.83,y:16.20,z:11.87,color:'white',size:36},
+  a16: {title:'&#8226;',x:21.56,y:-17.84,z:-2.28,color:'white',size:36},
+  a17: {title:'&#8226;',x:-7.74,y:12.22,z:17.38,color:'white',size:36},
+  a18: {title:'&#8226;',x:-21.12,y:-21.10,z:7.66,color:'white',size:36},
+  a19: {title:'&#8226;',x:-25.45,y:-4.02,z:4.25,color:'white',size:36},
+  a20: {title:'&#8226;',x:-20.81,y:-1.75,z:28.30,color:'white',size:36}
+}
+
+var s = space3dManager.createScene('scene1', $('scene'), molecule);
+s.rendersize = false;
+s.draw();
+
+function start()
+{
+  s.startAnimation();
+}
+
+function suspend()
+{
+  s.suspendAnimation();
+}
+
+function resume()
+{
+  s.resumeAnimation();
+}
+
+function stop()
+{
+  s.stopAnimation();
+}
+
+function startover()
+{
+  s.startOver();
+}
+
+function stopover()
+{
+  s.stopOver();
+}
+
+function startdrag()
+{
+  s.startDrag();
+}
+
+function stopdrag()
+{
+  s.stopDrag();
+}
+
+function scale(sc)
+{
+  s.setScale(sc);
+  s.draw();
+}
+
+function size()
+{
+  s.rendersize = !s.rendersize;
+  s.draw();
+}
+
+function color()
+{
+  s.rendercolor = !s.rendercolor;
+  s.draw();
+}
+
+</script>
+
+<!--
+Vitamin C molecule from the original PDB file:
+
+COMPND    vit-c
+AUTHOR    Created by Dave Woodcock at Okanagan University College
+AUTHOR    email:djw_bcca@yahoo.ca
+AUTHOR    Revised: Wed Apr 17 12:06:06 2002  using BABEL 1.6 and/or Perl 5.0
+HETATM    1  C           1       0.000   0.000   0.000  1.00  0.00           C
+HETATM    2  C           1       1.512   0.000   0.000  1.00  0.00           C
+HETATM    3  C           1       1.927   1.264   0.000  1.00  0.00           C
+HETATM    4  C           1       0.730   2.091   0.015  1.00  0.00           C
+HETATM    5  O           1      -0.382   1.359   0.113  1.00  0.00           O
+HETATM    6  O           1       0.759   3.270   0.261  1.00  0.00           O
+HETATM    7  O           1       3.197   1.690   0.245  1.00  0.00           O
+HETATM    8  O           1       2.283  -1.055   0.386  1.00  0.00           O
+HETATM    9  H           1      -0.390  -0.463  -0.907  1.00  0.00           H
+HETATM   10  C           1      -0.565  -0.653   1.264  1.00  0.00           C
+HETATM   11  H           1       0.050  -1.475   1.629  1.00  0.00           H
+HETATM   12  O           1      -0.674   0.397   2.229  1.00  0.00           O
+HETATM   13  C           1      -2.028  -1.077   1.106  1.00  0.00           C
+HETATM   14  O           1      -2.543  -0.906   2.429  1.00  0.00           O
+HETATM   15  H           1       3.383   1.620   1.187  1.00  0.00           H
+HETATM   16  H           1       2.156  -1.784  -0.228  1.00  0.00           H
+HETATM   17  H           1      -0.774   1.222   1.738  1.00  0.00           H
+HETATM   18  H           1      -2.112  -2.110   0.766  1.00  0.00           H
+HETATM   19  H           1      -2.545  -0.402   0.425  1.00  0.00           H
+HETATM   20  H           1      -2.081  -0.175   2.830  1.00  0.00           H
+CONECT    1    2    5    9   10
+CONECT    2    1    3    3    8
+CONECT    3    2    2    4    7
+CONECT    4    3    5    6    6
+CONECT    5    1    4
+CONECT    6    4    4
+CONECT    7    3   15
+CONECT    8    2   16
+CONECT    9    1
+CONECT   10    1   11   12   13
+CONECT   11   10
+CONECT   12   10   17
+CONECT   13   10   14   18   19
+CONECT   14   13   20
+CONECT   15    7
+CONECT   16    8
+CONECT   17   12
+CONECT   18   13
+CONECT   19   13
+CONECT   20   14
+MASTER        0    0    0    0    0    0    0    0   20    0   20    0
+END
+
+-->

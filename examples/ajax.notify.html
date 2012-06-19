@@ -1,0 +1,55 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ajaxManager.js"></script>
+
+Click to <span onclick="docall();" style="cursor: pointer; text-decoration: underline; background-color: red;">create a request</span>.<br />
+Click to <span onclick="doabort();" style="cursor: pointer; text-decoration: underline; background-color: red;">abort the request</span> (be faster than the network).<br />
+<br />
+
+<div id="div1" style="position: relative; min-height: 100px; width: 95%; margin-left: auto; margin-right: auto; border: 2px solid blue;">
+Waiting...<br />
+</div>
+
+Received code from server:<br />
+<div id="div2" style="position: relative; min-height: 10px; width: 95%; margin-left: auto; margin-right: auto; border: 2px solid blue;">
+</div>
+
+<script type="text/javascript">
+
+var r = null;
+
+function loaded(rq)
+{
+  $('div2').innerHTML = rq.responseText;
+  // unlink the request
+  r = null;
+}
+
+function docall()
+{
+  if (r == null)
+  {
+    r = ajax('/?P=dataset1', 'get', null, loaded, true);
+    // be silent when an error occurs (or we get an alert by default)
+    r.addStateFeedback(nothing);
+  }
+}
+
+function doabort()
+{
+  if (r != null)
+  {
+    r.abort();
+    r = null;
+  }
+}
+
+function ajaxListener(event, data)
+{
+  $('div1').innerHTML += 'Event received: <b>' + event + '</b> '+ (data?data:'') +'<br />';
+}
+
+ajaxManager.setListener(ajaxListener);
+
+</script>
+

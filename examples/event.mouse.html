@@ -1,0 +1,28 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+
+<div id="div1" style="position: relative; height: 100px; width: 100px; margin-left: auto; margin-right: auto; top: 50px; border: 1px solid red; text-align: center; cursor: pointer;">Over me<br />Click me</div>
+
+<script type="text/javascript">
+
+function over(e)
+{
+  $('div1').style.backgroundColor = '#ffcccc';
+}
+
+function out(e)
+{
+  $('div1').style.backgroundColor = 'transparent';
+}
+
+function click(e)
+{
+  $('div1').style.backgroundColor = 'red';
+}
+
+on('mouseover', 'div1', over, false);
+on('mouseout', 'div1', out, false);
+on('click', 'div1', click, false);
+
+</script>
+

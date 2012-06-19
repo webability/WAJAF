@@ -1,0 +1,49 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ajaxManager.js"></script>
+
+Click to <span onclick="call();" style="cursor: pointer; text-decoration: underline; background-color: red;">create a request</span>.<br />
+<br />
+
+Indicator:<br />
+<div id="div1" style="position: relative; min-height: 10px; width: 95%; margin-left: auto; margin-right: auto; border: 2px solid blue;">
+There is no requests.
+</div>
+
+Last result:<br />
+<div id="div2" style="position: relative; min-height: 10px; width: 95%; margin-left: auto; margin-right: auto; border: 2px solid blue;">
+</div>
+
+<script type="text/javascript">
+
+function loaded(r)
+{
+  $('div2').innerHTML = r.responseText;
+}
+
+function call()
+{
+  ajax('/?P=dataset1', 'get', null, loaded, true);
+}
+
+var numajax = 0;
+function ajaxListener(event)
+{
+  if (event == 'start')
+    numajax ++;
+  else if (event == 'stop')
+    numajax --;
+  if (numajax == 0)
+    $('div1').innerHTML = 'There is no request.';
+  else
+    $('div1').innerHTML = 'There are '+numajax+' requests in this moment.';
+  if (numajax > 0)
+    $('div1').style.backgroundColor = '#ffdddd';
+  else
+    $('div1').style.backgroundColor = 'transparent';
+}
+
+ajaxManager.setListener(ajaxListener);
+
+</script>
+

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Internationalization of texts and messages</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The I18n library allow to manage standarized messages in any needed language.<br />
+The system is simple: One unique id, many languages for the same id. The system takes the right message for the right language.<br />
+<br />
+
+<br />
+Let's translate our messages to french:<br />
+
+<div class="code">function test1()
+{
+  // At the beginning of our application, we can setup some messages
+  WA.i18n.setEntry('message1', 'Enter the application');
+  WA.i18n.setEntry('message2', 'Exit the application');
+
+  // Somewhere int the application, we overload the french entries.
+  // There may be more messages than the already defined.
+  var fr = {
+    'message1': 'Entrer dans le programme',
+    'message2': 'Sortir du programme',
+    'message3': 'Se déplacer dans le programme'
+  }
+  // The order is not important. If we call loadMessage, they WILL always be the main ones to use
+  WA.i18n.loadMessages(fr);
+
+  // Maybe later in the application we define new messages. Even if we define them in english, they will be returned as french if they were loaded by loadMessages
+  WA.i18n.setEntry('message3', 'Move in the application');
+  WA.i18n.setEntry('message4', 'Fatal error in the application');
+
+  // In some point of our application, we use the language entries
+  WA.get('#test1').text('Message1 in a button: &lt;b&gt;' + WA.i18n.getMessage('message1') + '&lt;/b&gt;\n');
+  WA.get('#test1').append('Message2 in another button: &lt;b&gt;' + WA.i18n.getMessage('message2') + '&lt;/b&gt;\n');
+  WA.get('#test1').append('Message3 in a help: &lt;b&gt;' + WA.i18n.getMessage('message3') + '&lt;/b&gt;\n');
+  // Note the message4 has not been loaded in our french language so it takes the default english entry
+  WA.get('#test1').append('Note that message4 was not loaded by the "french array" so the english entry will be used:\n');
+  WA.get('#test1').append('Message4 in an alert: &lt;b&gt;' + WA.i18n.getMessage('message4') + '&lt;/b&gt;\n');
+  // Note the message5 has not been loaded at all so it takes the id itself
+  WA.get('#test1').append('Note that message5 was not created by either french array or english entries, so the ID will be used:\n');
+  WA.get('#test1').append('Message5 in a box: &lt;b&gt;' + WA.i18n.getMessage('message5') + '&lt;/b&gt;\n');
+
+}
+</div>
+<span class="button" onclick="test1();">Show the result</span>
+<div id="test1" class="result"></div>
+
+<script type="text/javascript">
+
+function test1()
+{
+  // At the beginning of our application, we can setup some messages
+  WA.i18n.setEntry('message1', 'Enter the application');
+  WA.i18n.setEntry('message2', 'Exit the application');
+
+  // Somewhere int the application, we overload the french entries.
+  // There may be more messages than the already defined.
+  var fr = {
+    'message1': 'Entrer dans le programme',
+    'message2': 'Sortir du programme',
+    'message3': 'Se déplacer dans le programme'
+  }
+  // The order is not important. If we call loadMessage, they WILL always be the main ones to use
+  WA.i18n.loadMessages(fr);
+
+  // Maybe later in the application we define new messages. Even if we define them in english, they will be returned as french if they were loaded by loadMessages
+  WA.i18n.setEntry('message3', 'Move in the application');
+  WA.i18n.setEntry('message4', 'Fatal error in the application');
+
+  // In some point of our application, we use the language entries
+  WA.get('#test1').text('Message1 in a button: <b>' + WA.i18n.getMessage('message1') + '</b>\n');
+  WA.get('#test1').append('Message2 in another button: <b>' + WA.i18n.getMessage('message2') + '</b>\n');
+  WA.get('#test1').append('Message3 in a help: <b>' + WA.i18n.getMessage('message3') + '</b>\n');
+  // Note the message4 has not been loaded in our french language so it takes the default english entry
+  WA.get('#test1').append('Note that message4 was not loaded by the "french array" so the english entry will be used:\n');
+  WA.get('#test1').append('Message4 in an alert: <b>' + WA.i18n.getMessage('message4') + '</b>\n');
+  // Note the message5 has not been loaded at all so it takes the id itself
+  WA.get('#test1').append('Note that message5 was not created by either french array or english entries, so the ID will be used:\n');
+  WA.get('#test1').append('Message5 in a box: <b>' + WA.i18n.getMessage('message5') + '</b>\n');
+
+}
+
+</script>
+
+<br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>
+

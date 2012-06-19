@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_textElement">
+
+  <element type="textElement"><![CDATA[
+This is an TEXT element. We can add any <b>html tag</b> in it and it is wrapped into a span.<br />
+  ]]></element>
+
+  <element type="textElement" style="color: red;"><![CDATA[
+This TEXT element is into its span in red.<br />
+  ]]></element>
+
+  <element type="textElement" style="color: blue; cursor: pointer;"><![CDATA[
+This TEXT element have a <b>HELP BUBBLE</b> activated on it. You can also <b>click it</b>.<br />
+  ]]>
+    <help>
+      <summary><![CDATA[Help on element]]></summary>
+      <title><![CDATA[Help on element]]></title>
+      <description><![CDATA[This help bubble is only here for teaching purpose. The TEXT element is activated with this help.<br />]]></description>
+    </help>
+    <event type="onclick">
+      <code><![CDATA[
+function click(e)
+{
+  alert('You have clicked the element.');
+}
+      ]]></code>
+    </event>
+  </element>
+
+  <element type="textElement" style="color: #008800;" top="100"><![CDATA[
+This TEXT element is positioned at 100 pixels from the top of its application window.<br />
+  ]]></element>
+
+</application>

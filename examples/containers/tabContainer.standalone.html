@@ -1,0 +1,95 @@
+<link rel="stylesheet" href="/wajaf/skin/css/4gl.css" type="text/css" />
+<link rel="stylesheet" href="/wajaf/skin/css/examples.css" type="text/css" />
+
+<script language="javascript" type="text/javascript" src="/wajaf/examples/4gl/js.php?JS=wajaf.js,tab2Container.js"></script>
+
+<div id="buttons"">
+<h3>Container 1: based on existing nodes:</h3>
+[<span onclick="SC1.show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="SC1.hide();" style="cursor: pointer; color: blue;">hide container</span>]<br />
+[<span onclick="SC1.setSize(null, 100);" style="cursor: pointer; color: blue;">height: 100px</span>]
+[<span onclick="SC1.setSize(null, 200);" style="cursor: pointer; color: blue;">height: 200px</span>]
+[<span onclick="SC1.setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]<br />
+[<span onclick="SC1.hideZone('tabzone1_1');" style="cursor: pointer; color: blue;">hide zone 1</span>]
+[<span onclick="SC1.showZone('tabzone1_1');" style="cursor: pointer; color: blue;">show zone 1</span>]
+[<span onclick="fill1();" style="cursor: pointer; color: blue;">fill zone 1</span>]
+[<span onclick="empty1();" style="cursor: pointer; color: blue;">empty zone 1</span>]
+<br />
+<h3>Container 2: creating nodes:</h3>
+[<span onclick="SC2.show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="SC2.hide();" style="cursor: pointer; color: blue;">hide container</span>]<br />
+[<span onclick="SC2.setSize(null, 120);" style="cursor: pointer; color: blue;">height: 120px</span>]
+[<span onclick="SC2.setSize(null, 160);" style="cursor: pointer; color: blue;">height: 160px</span>]
+[<span onclick="SC2.setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]<br />
+[<span onclick="SC2.hideZone('tabzone2_1');" style="cursor: pointer; color: blue;">hide zone 1</span>]
+[<span onclick="SC2.showZone('tabzone2_1');" style="cursor: pointer; color: blue;">show zone 1</span>]
+</div>
+
+<br />
+
+<h3>The two containers:</h3>
+<div id="containers" style="margin: 5px;">
+
+<div id="tabcontainer1">
+<div id="tabzone1_1">Zone 1</div>
+<div id="tabzone1_2">Zone 2</div>
+</div>
+
+</div>
+
+<h3>The events listener:</h3>
+<div id="callback" style="height: 200px; overflow: auto; border: 1px solid blue; margin: 5px;"></div>
+<br />
+
+
+<script type="text/javascript">
+
+var SC1 = null;
+var SC2 = null;
+
+on('load', window,
+  function()
+  {
+    // creates the standalone tab container into the body based on existing Nodes
+    SC1 = new tabContainer('containers', 'tabcontainer1', {attributes:{}}, notifyme);
+    SC1.createZone('tabzone1_1', {attributes:{title:'<u>F</u>irst zone:',shortcut:'alt+f'}}, notifyme);
+    SC1.createZone('tabzone1_2', {attributes:{title:'Second zone:'}}, notifyme);
+    SC1.createZone('tabzone1_3', {attributes:{title:'Third zone:'}}, notifyme);
+
+    $('tabzone1_3').innerHTML = 'Zone 3 dynamically filled';
+
+    // creates the standalone tab container into the body , totally new
+    SC2 = new tabContainer('containers', 'tabcontainer2', {attributes:{classname:'mycontainer',classnamezone:'zone1'}}, notifyme);
+    SC2.createZone('tabzone2_1', {attributes:{classname:'zone1',title:'Zone:'}}, notifyme);
+    SC2.createZone('tabzone2_2', {attributes:{classname:'zone2',title:'Zone:'}}, notifyme);
+    SC2.createZone('tabzone2_3', {attributes:{classname:'zone3',title:'Zone:'}}, notifyme);
+
+    $('tabzone2_1').innerHTML = 'Zone 21 dynamically filled';
+    $('tabzone2_2').innerHTML = 'Zone 22 dynamically filled';
+    $('tabzone2_3').innerHTML = 'Zone 23 dynamically filled';
+  }, true);
+
+function notifyme(type, id, other)
+{
+  var txt = '{';
+  var item = 0;
+  for (var i in other)
+    txt += (item++?',':'')+i+':'+other[i];
+  txt += '}';
+
+
+  $('callback').innerHTML += type + ': '+ id + ': ' + txt + '<br />';
+  return true;
+}
+
+function fill1()
+{
+  $('tabzone1_1').innerHTML = 'Line 1<br />Line 2<br /> Line 3<br />Line 4<br />Line 5<br />';
+}
+
+function empty1()
+{
+  $('tabzone1_1').innerHTML = 'Zone 1';
+}
+
+</script>

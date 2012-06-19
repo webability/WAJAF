@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.get: make operations on DOM Nodes examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/animManager.js"></script>
+
+The get method is a centralized method to access all the DOM nodes based on filters, and make many operations on them,
+mainly calling grouped Manager functions on all the found nodes.<br />
+<br />
+<h2>The get() method works as followed:</h2>
+1. The code will search all the nodes corresponding to the filter you give it.<br />
+There are 3 posibilities:<br />
+a - No nodes were found. The subsequent operations will do nothing.<br />
+b - There was only one node found. The subsequent operations will work directly on this node.<br />
+c - There was  more than 1 node found (from 2 to the whole DOM). The subsequent operations will work for each one of the found nodes.<br />
+2. The operation is applied to the node(s).<br />
+3. The operations can be chained.<br />
+<br />
+<h2>The parameter of get() method is a string used to search the nodes:</h2>
+"#id": If you want to find a single node by its unique id, using the CSS syntax.<br />
+".class": If you want to find a list of nodes by their class, using the CSS syntax.<br />
+"tag": If you want to find a list of nodes by their tag type, using the CSS syntax.<br />
+"!name": If you want to find a list of nodes by their name.<br />
+<br />
+<h2>Notes:</h2>
+Using the "#id" syntax will always returns only one node, the first one found in the page, even if there are more than one node with this id. This is due to the unicity rule of the ID of a Node.<br />
+Other syntaxes may return more than one node if they apply to the searched filter.<br />
+If no node corresponde to the filter, null is considered and no operation are possible as the result of get().<br />
+<br />
+
+<h2>The operations are grouped by themes:</h2>
+<br />
+<a href="core.get.nodes.html">Examples of Direct access to the nodes</a><br />
+<a href="core.get.content.html">Examples of Content of the nodes<br />
+<a href="core.get.css.html">Examples of CSS operations on the nodes<br />
+<a href="core.get.metric.html">Examples of Metrics of the nodes<br />
+<a href="core.get.anim.html">Examples of Animations on the nodes (call to animManager)<br />
+<a href="core.get.event.html">Examples of Events on the nodes (call to eventManager)<br />
+
+<br /><br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</body>
+</html>

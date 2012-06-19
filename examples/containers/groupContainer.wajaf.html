@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="../../skins/css/wajaf.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/4gl.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/examples.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WAJAF groupContainer example</h1>
+
+<script language="javascript" type="text/javascript" src="../4gl/js.php?JS=wajaf.js,groupContainer.js,buttonElement.js"></script>
+<!--
+<script language="javascript" type="text/javascript" src="../../elements/titleElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/errorElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/statusElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/extraElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/helpElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/hiddenfieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/textfieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/textareafieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/lovfieldElement.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/filefieldElement.js"></script>
+-->
+
+<div id="buttons"">
+<h3>Lets build a full form with any type of fields:</h3>
+</div>
+
+<br />
+
+<div id="wa4glcontainer" style="min-height: 50px; background-color: #aaaaaa;"></div>
+
+<br />
+
+<h3>The events listener:</h3>
+<div id="callback" style="height: 200px; overflow: auto; border: 1px solid blue; margin: 5px;"></div>
+<br />
+
+
+<script type="text/javascript">
+
+window.onload =
+  function()
+  {
+    // this code is supposed to directly come from the server from an XML descriptor or from wajaf classes builder
+    var app = {
+      "tag":"application",
+      "attributes": {"id":"groupcontainer"},
+      "0": {
+          "tag":"container",
+          "attributes": {"id":"container1","type":"groupContainer","classname":"mycontainer","classnamezone":"zone1"},
+          "0": {
+              "tag":"zone",
+              "attributes":{"id":"zone1","classname":"zone1"},
+              "0":{"tag":"element","attributes":{id:'zone1text',"type":"buttonElement"},"data":"Zone 1"},
+               },
+            }
+        };
+
+    WA.Managers.wa4gl.startApplication('wa4glcontainer', 'groupcontainer', 'single', app, '');
+
+  };
+
+</script>
+
+<br /><br />
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

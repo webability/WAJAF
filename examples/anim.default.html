@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>animManager examples - default animations</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../managers/animManager.js"></script>
+
+There are 10 default animations ready to use.<br />
+Click the buttons to try the animations applied to the red frame.<br />
+<br />
+
+<div style="line-height: 25px;">
+<span onclick="restart();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Initial state</span><br />
+
+<span onclick="fadein();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Fade in</span>
+<span onclick="fadeout();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Fade out</span>
+<span onclick="closeH();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Close Horizontal</span>
+<span onclick="openH();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Open Horizontal</span>
+<span onclick="closeV();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Close Vertical</span>
+<span onclick="openV();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Open Vertical</span>
+<span onclick="spclose();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Close</span>
+<span onclick="spopen();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Open</span>
+<span onclick="swirlout();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Swirl out</span>
+<span onclick="swirlin();" style="cursor: pointer; padding: 3px; text-decoration: underline; background-color: #ccccdd; border: 1px solid black;">Swirl in</span>
+<br />
+</div>
+
+<div id="test1" class="result" style="position: relative; height: 200px;">
+
+  <div id="sprite" style="z-index: 2; overflow: hidden; position: absolute; left: 50px; top: 50px; width: 100px; height: 100px; border: 1px solid red; background-color: #ffffff;" >Sprite</div>
+
+</div>
+
+
+<script>
+
+function restart()
+{
+  WA.toDOM('sprite').style.left = '50px';
+  WA.toDOM('sprite').style.top = '50px';
+  WA.toDOM('sprite').style.width = '100px';
+  WA.toDOM('sprite').style.height = '100px';
+  WA.toDOM('sprite').style.opacity = 1;
+  WA.toDOM('sprite').style.filter = 'alpha(opacity: 100)';
+
+}
+
+function fadein()
+{
+  WA.Managers.anim.fadein('sprite', 500, null);
+}
+
+function fadeout()
+{
+  WA.Managers.anim.fadeout('sprite', 500, null);
+}
+
+function openV()
+{
+  WA.Managers.anim.openV('sprite', 500, 100, null);
+}
+
+function closeV()
+{
+  WA.Managers.anim.closeV('sprite', 500, 100, null);
+}
+
+function openH()
+{
+  WA.Managers.anim.openH('sprite', 500, 100, null);
+}
+
+function closeH()
+{
+  WA.Managers.anim.closeH('sprite', 500, 100, null);
+}
+
+function spopen()
+{
+  WA.Managers.anim.open('sprite', 500, 100, 100, null);
+}
+
+function spclose()
+{
+  WA.Managers.anim.close('sprite', 500, 100, 100, null);
+}
+
+function swirlout()
+{
+  WA.Managers.anim.close('sprite', 500, 100, 100, null);
+  WA.Managers.anim.createSprite('swirl', 'sprite', null, {autostart:true, loop:false, chain: [{type:'move',time:628,calculate:circle}]});
+}
+
+function swirlin()
+{
+  WA.Managers.anim.open('sprite', 500, 100, 100, null);
+  WA.Managers.anim.createSprite('swirl', 'sprite', null, {autostart:true, loop:false, chain: [{type:'move',time:628,calculate:circle}]});
+}
+
+function circle(timeframe, order)
+{
+  order.xinit = order.xend = Math.floor(50 + Math.cos(timeframe/100)*50);
+  order.yinit = order.yend = Math.floor(50 + Math.sin(timeframe/100)*50);
+  return order;
+}
+
+</script>
+
+
+
+<br /><br />
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

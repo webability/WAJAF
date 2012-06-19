@@ -1,0 +1,23 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ajaxManager.js"></script>
+
+
+Loading the content of the box each 3 seconds for 4 times:<br />
+<br />
+
+<div id="div1" style="position: relative; min-height: 100px; width: 95%; margin-left: auto; margin-right: auto; border: 2px solid blue;">
+</div>
+
+<script type="text/javascript">
+
+var loading = 1;
+function loaded(r)
+{
+  $('div1').innerHTML += 'Loading: ' + (loading++) + '<br />' + r.responseText;
+}
+
+ajaxManager.createPeriodicRequest(3000, 4, '/?P=dataset1', 'get', null, loaded, true);
+
+</script>
+

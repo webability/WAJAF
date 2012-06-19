@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<a href="../index.html">Back to the index</a><br />
+<br />
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+<script type="text/javascript">
+
+var myobject = {x:1,y:56.4,str:'something written',1:null,2:undefined,sub:[7,8,9],sub2:{x:23,y:45,z:65}};
+
+for (var i in myobject)
+  document.write( i + ': ' + myobject[i] + '<br />');
+
+var jsobject = WA.JSON.encode(myobject);
+
+document.write( 'JSON object: <br />' + jsobject + '<br />');
+
+var newmyobject = WA.JSON.decode(jsobject);
+
+for (var i in newmyobject)
+  document.write( i + ': ' + newmyobject[i] + '<br />');
+
+</script>
+
+
+</body>
+</html>

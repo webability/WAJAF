@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Debug tools</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The debug tool allow you to get debug messaging while you are running your javascript application.<br />
+You may get the debug messages in the firebug window if it is installed, or in a popup window you call, or in any on-screen division.<br />
+<br />
+
+<br />
+Let's debug some mouse events:<br />
+
+<div class="code">
+
+</div>
+<span class="button" onclick="test1();">Click here to show the debug in Firebug</span>
+<span class="button" onclick="test2();">Click here to show the debug in a popup window</span>
+<span class="button" onclick="test3();">Click here to show the debug in a division</span>
+
+Move on the red rectangle to obtain debug information:<br />
+<div id="test1" class="result">
+
+</div>
+
+<script type="text/javascript">
+
+function test1()
+{
+  if (!WA.browser.isFirebug)
+  {
+    alert('Error, Firebug is not installed!');
+    return;
+  }
+}
+
+function test2()
+{
+  var popupdebug = window.open('', 'debug', 'scrollbars=1,width=400,height=600');
+  popupdebug.moveTo(0,0);
+  WA.debug.Console = popupdebug.document;
+  WA.debug.Level = 3;
+  WA.debug.explain('Debug has started');
+
+}
+
+function test3()
+{
+}
+
+</script>
+
+<br />
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

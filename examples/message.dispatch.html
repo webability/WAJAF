@@ -1,0 +1,73 @@
+<script language="javascript" type="text/javascript" src="/wajaf/system/core.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/ajaxManager.js"></script>
+<script language="javascript" type="text/javascript" src="/wajaf/managers/messageManager.js"></script>
+
+The 3 containers could be 3 chat windows on 3 different clients, or 3 different applications in the same browser.<br />
+Ajax indicator: <span id="ajax" style="background-color: green; padding: 0px 10px;">X</span> (red when there is ajax activity).<br />
+<br />
+
+<div id="container1" style="position: relative; height: 100px; overflow: auto; border: 1px solid blue; margin: 5px;" onclick="queuemessage('c1');">
+click inside me to send a message to other containers via the server.<br />
+</div>
+
+<div id="container2" style="position: relative; height: 100px; overflow: auto; border: 1px solid blue; margin: 5px;" onclick="queuemessage('c2');">
+click inside me to send a message to other containers via the server.<br />
+</div>
+
+<div id="container3" style="position: relative; height: 100px; overflow: auto; border: 1px solid blue; margin: 5px;" onclick="queuemessage('c3');">
+click inside me to send a message to other containers via the server.<br />
+</div>
+
+<script>
+
+var numajax = 0;
+function listenAjax(event)
+{
+  if (event == 'start')
+    numajax ++;
+  else if (event == 'stop')
+    numajax --;
+  if (numajax == 0)
+    $('ajax').style.backgroundColor = 'green';
+  else
+    $('ajax').style.backgroundColor = 'red';
+}
+
+function queuemessage(id)
+{
+  messageManager.add( {id:id} );
+}
+
+function listenc1(data)
+{
+  $('container1').innerHTML += data.message + '<br />';
+}
+
+function listenc2(data)
+{
+  $('container2').innerHTML += data.message + '<br />';
+}
+
+function listenc3(data)
+{
+  $('container3').innerHTML += data.message + '<br />';
+}
+
+// we listen the ajaxManager
+ajaxManager.setListener(listenAjax);
+
+// we set the url to hit each 5 seconds
+messageManager.url = '/wajaf/examples/message.php';
+messageManager.timing = 5000;
+
+// we add 3 listeners for the 3 containers
+messageManager.addListener('c1', listenc1);
+messageManager.addListener('c2', listenc2);
+messageManager.addListener('c3', listenc3);
+
+// we start the queue
+messageManager.start();
+
+</script>
+

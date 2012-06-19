@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<a href="../index.html">Back to the index</a><br />
+<br />
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+<script type="text/javascript">
+
+var att = ['isCompat', 'isOpera', 'isChrome', 'isFirefox', 'isSafari', 'isSafari2', 'isSafari3', 'isSafari4', 'isMSIE', 'isMSIE6', 'isMSIE7', 'isMSIE8', 'isWebKit', 'isGecko', 'isGecko2', 'isGecko3', 'isLinux', 'isWindows', 'isMac', 'isAir', 'isDom', 'isBoxModel', 'isSecure' ];
+
+document.write(navigator.userAgent + '<br />');
+
+for (var j=0, m = att.length; j<m; j++)
+{
+  document.write(att[j] + ': ');
+  document.write( WA.browser[att[j]]?'Yes':'No' );
+  document.write('<br />');
+}
+
+</script>
+
+</body>
+</html>

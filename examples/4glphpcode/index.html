@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+  <title>WAJAF Examples Center</title>
+  <meta name="Generator" content="WAJAF v1 - www.webability.info - (c) 1999-2010, Ing. Philippe Thomassigny C." />
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=8" />
+  <link rel="stylesheet" href="/wajaf/examples/prettify/prettify.css" type="text/css" />
+  <script language="javascript" type="text/javascript" src="/wajaf/examples/prettify/prettify.js"></script>
+  <script language="javascript" type="text/javascript" src="/wajaf/examples/4gl/js.php?JS=wajaf.js"></script>
+</head>
+
+<body>
+
+<div id="loading" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 50000; background-color: white;"><div id="loadingdata" style="position: absolute; left: 40%; top: 40%; border: 2px solid #99bbe8; padding: 10px; font-size: 28px; font-family: Verdana; text-align: center; color: #1663b7; width: 200px; height: 100px; background-color: #dfe8f6;"><img src="/wajaf/skin/images/loader.gif" style="vertical-align: middle; margin-top: 10px; margin-bottom: 10px;" /><br />Loading...</div></div>
+
+<div id="wa4glcontainer" style="position: absolute; left: 0px; top: 0px; min-height: 300px; min-width: 800px; overflow: hidden;"></div>
+
+<script type="text/javascript">
+
+// we set routes for all the managers
+soundManager.setFlashManager('/wajaf/skin/flash/soundmanager2.swf');
+helpManager.soundshow = '/wajaf/skin/sounds/help-show.mp3';
+helpManager.soundclose = '/wajaf/skin/sounds/help-close.mp3';
+wa4glManager.setURL('/wajaf/examples/4glphpcode/app.php', '/wajaf/examples/4glphpcode/js.php')
+
+window.onload =
+  function()
+  {
+/*
+    // we load the debug system
+    var popupdebug = window.open('', 'debug', 'scrollbars=1,width=400,height=600');
+    popupdebug.moveTo(0,0);
+    WA.debug.Console = popupdebug.document;
+    WA.debug.Level = 1;
+*/
+    // we load the styles sheets with the manager so we can play with dynamic skins reload
+    ondemandManager.loadCSS('/wajaf/skin/css/reset.css', null, true);
+    ondemandManager.loadCSS('/wajaf/skin/css/4gl.css', null, true);
+    ondemandManager.loadCSS('/wajaf/skin/css/control.css', null, true);
+
+    // we laod the main app dispatcher
+    wa4glManager.startApplication('wa4glcontainer', 'main', 'single', '', 'full');
+  };
+</script>
+
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-11651471-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+
+</body>
+
+</html>

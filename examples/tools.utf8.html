@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<a href="../index.html">Back to the index</a><br />
+<br />
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+<form><input id="test" type="text" style="width: 90%;" value="some characters áéíóú ñ äëïöü 日本語 • 한국어 • " />
+<input type="button" onclick="writecontent();" value="copy content" />
+</form>
+
+<div id="result" style="border: 1px solid red;"></div>
+
+<br /><br />
+
+<script type="text/javascript">
+
+function writecontent()
+{
+  // In the real world, the input values should always be UTF8 encoded when they are send over POST method
+  WA.getDomNode('result').innerHTML += WA.getDomNode('test').value + '<br />';
+  WA.getDomNode('result').innerHTML += WA.UTF8.encode(WA.getDomNode('test').value) + '<br /><br />';
+}
+
+var str = 'some characters áéíóú ñ äëïöü 日本語 • 한국어 • ';
+
+document.write( 'utf8 string: <br /><b>' + str + '</b><br />');
+
+document.write( 'decoded: <br /><b>' + WA.UTF8.decode(str) + '</b><br />');
+
+document.write( 'encoded: <br /><b>' + WA.UTF8.encode(str) + '</b><br />');
+
+// this should not work since the decoded string is not understanble by a latin procesor
+document.write( 'decoded then encoded: <br /><b>' + WA.UTF8.encode(WA.UTF8.decode(str)) + '</b><br />');
+
+document.write( 'encoded then decoded: <br /><b>' + WA.UTF8.decode(WA.UTF8.encode(str)) + '</b><br />');
+
+</script>
+
+</body>
+</html>

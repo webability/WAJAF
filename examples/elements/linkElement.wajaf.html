@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/wajaf/skin/css/4gl.css" type="text/css" />
+<link rel="stylesheet" href="/wajaf/skin/css/examples.css" type="text/css" />
+
+<script language="javascript" type="text/javascript" src="/wajaf/examples/4gl/js.php?JS=wajaf.js,linkElement.js"></script>
+
+<h1>linkElement on 4gl container</h1>
+
+<div id="buttons" style="height: 80px;">
+[<span onclick="$E('linkelement|single|element1').show();" style="cursor: pointer; color: blue;">show element</span>]
+[<span onclick="$E('linkelement|single|element1').hide();" style="cursor: pointer; color: blue;">hide element</span>]<br />
+</div>
+<br />
+
+<div id="wa4glcontainer" style="min-height: 50px; background-color: #aaaaaa;"></div>
+
+<br />
+
+<script type="text/javascript">
+
+window.onload =
+  function()
+  {
+    // this code is supposed to directly come from the server from an XML descriptor or from wajaf classes builder
+    var app = {
+      tag:"application",
+      attributes: {"id":"linkelement"},
+      "0":{tag:"element",
+           attributes:{id:'element1',"type":"linkElement",style:'background-color:cyan; border:1px solid red; margin:3px; padding:3px;'},
+           data:"Please Click Me",
+           "0":{tag:"event",
+                attributes:{type:'click'},
+                "0":{tag:'code',
+                     data:'function(e) { alert("You have clicked the link"); }'
+                    }
+               }
+           }
+     };
+
+    wa4glManager.startApplication('wa4glcontainer', 'linkelement', 'single', app, '');
+
+  };
+
+</script>

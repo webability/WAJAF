@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="../../skins/css/wajaf.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/4gl.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/examples.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Standalone buttonElement example</h1>
+
+<script language="javascript" type="text/javascript" src="../../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/wa4glManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/buttonElement.js"></script>
+
+<div id="buttons"">
+<h3>Element 1: based on existing node:</h3>
+[<span onclick="E1.show();" style="cursor: pointer; color: blue;">show element</span>]
+[<span onclick="E1.hide();" style="cursor: pointer; color: blue;">hide element</span>]<br />
+<br />
+<h3>Element 2: creating node:</h3>
+[<span onclick="E2.show();" style="cursor: pointer; color: blue;">show element</span>]
+[<span onclick="E2.hide();" style="cursor: pointer; color: blue;">hide element</span>]<br />
+</div>
+
+<br />
+
+<h3>The two button Elements:</h3>
+<div id="elements" style="border: 1px solid blue; margin: 5px;">
+
+<a href="http://www.webability.info" id="element1" target="_blank">Go to the WebAbility portal</a>
+
+</div>
+
+<h3>The events listener:</h3>
+<div id="callback" style="height: 200px; overflow: auto; border: 1px solid blue; margin: 5px;"></div>
+<br />
+
+
+<script type="text/javascript">
+
+var E1 = null;
+var E2 = null;
+
+WA.Managers.event.on('load', window,
+  function()
+  {
+    // creates the standalone simple container into the body based on existing Nodes
+    E1 = new WA.Elements.buttonElement('elements', 'element1', {attributes:{style:'border: 1px dotted red; margin: 3px; padding: 3px;'}}, notifyme);
+
+    // creates the standalone simple container into the body , totally new
+    E2 = new WA.Elements.buttonElement('elements', 'element2', {attributes:{},data:'The second link is here'}, notifyme);
+  }, true);
+
+function notifyme(type, id, other)
+{
+  if (type == 'click' && id == 'element1')
+    alert('You have clicked the first link');
+  if (type == 'click' && id == 'element2')
+    alert('You have clicked the second link');
+
+  var txt = '{';
+  var item = 0;
+  for (var i in other)
+    txt += (item++?',':'')+i+':'+other[i];
+  txt += '}';
+
+  WA.toDOM('callback').innerHTML += type + ': '+ id + ': ' + txt + '<br />';
+  return true;
+}
+
+
+</script>
+
+<br /><br />
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

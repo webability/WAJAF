@@ -1,0 +1,43 @@
+/* BOX EDITOR */
+
+.mycontainer
+{
+  margin: 2px;
+  border: 1px solid red;
+  padding: 2px;
+  background-color: #eeeeff;
+  position: relative;
+  overflow: hidden;
+}
+
+.zone1
+{
+  border: 1px solid #888800;
+  padding: 2px;
+  background-color: #ffffee;
+  overflow: hidden;
+}
+
+.zone2
+{
+  border: 1px solid #880088;
+  padding: 2px;
+  background-color: #ffeeff;
+  overflow: hidden;
+}
+
+.zone3
+{
+  margin: 1px;
+  border: 1px solid #008888;
+  padding: 1px;
+  background-color: #eeffff;
+  overflow: hidden;
+}
+
+.myelement
+{
+  border: 2px dashed #888800;
+  margin: 2px;
+  padding: 2px;
+}

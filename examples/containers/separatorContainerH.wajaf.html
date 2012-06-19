@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="../../skins/css/wajaf.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/4gl.css" type="text/css" />
+  <link rel="stylesheet" href="../../skins/css/examples.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Standalone simpleContainer example</h1>
+
+<script language="javascript" type="text/javascript" src="../../system/core.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/eventManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/ddManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../managers/wa4glManager.js"></script>
+<script language="javascript" type="text/javascript" src="../../containers/separatorContainer.js"></script>
+<script language="javascript" type="text/javascript" src="../../elements/htmlElement.js"></script>
+
+<div id="buttons" style="height: 20px;">
+[<span onclick="$C('separatorcontainer|single|container1').show();" style="cursor: pointer; color: blue;">show container</span>]
+[<span onclick="$C('separatorcontainer|single|container1').hide();" style="cursor: pointer; color: blue;">hide container</span>]
+[<span onclick="$C('separatorcontainer|single|container1').setSize(null, 100);" style="cursor: pointer; color: blue;">height: 100px</span>]
+[<span onclick="$C('separatorcontainer|single|container1').setSize(null, 200);" style="cursor: pointer; color: blue;">height: 200px</span>]
+[<span onclick="$C('separatorcontainer|single|container1').setSize(null, undefined);" style="cursor: pointer; color: blue;">height: none</span>]
+[<span onclick="fill1();" style="cursor: pointer; color: blue;">fill zone 1</span>]
+[<span onclick="empty1();" style="cursor: pointer; color: blue;">empty zone 1</span>]
+</div>
+<br />
+
+<div id="wa4glcontainer" style=" position: relative; min-height: 50px; background-color: #aaaaaa;"></div>
+
+<script type="text/javascript">
+
+var SC = null;
+
+window.onload =
+  function()
+  {
+    // this code is supposed to directly come from the server from an XML descriptor or from wajaf classes builder
+    var app = {
+      "tag":"application",
+      "attributes": {"id":"separatorcontainer"},
+      "0": {
+          "tag":"container",
+          "attributes": {"id":"container1","type":"separatorContainer","classname":"mycontainer","classnamezone":"zone1", mode:'horizontal', auto:'no', width:'max', height:'max'},
+          "0": {
+              "tag":"zone",
+              "attributes":{"id":"zone1","classname":"zone1",size:"*"},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 1"},
+               },
+          "1": {
+              "tag":"zone",
+              "attributes":{"id":"zone2","classname":"zone2",size:"*"},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 2"},
+               },
+          "2": {
+              "tag":"zone",
+              "attributes":{"id":"zone3","classname":"zone3",size:"*"},
+              "0":{"tag":"element","attributes":{"type":"htmlElement"},"data":"Zone 3"},
+               },
+            }
+        };
+
+    wa4glManager.setURL('/examples.php', '/examples.js.php')
+    wa4glManager.startApplication('wa4glcontainer', 'separatorcontainer', 'single', app, '');
+
+  };
+
+function fill1()
+{
+  $('separatorcontainer|single|zone1').innerHTML = 'Line 1<br />Line 2<br /> Line 3<br />Line 4<br />Line 5<br />';
+}
+
+function empty1()
+{
+  $('separatorcontainer|single|zone1').innerHTML = 'Zone 1';
+}
+
+</script>
+
+<br /><br />
+<a href="../../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>
