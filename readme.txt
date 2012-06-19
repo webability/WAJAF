@@ -225,6 +225,9 @@ V2, build 1:
 - Tree 4glNode rewritten: 3 events implemented, propagation of events implemented
 - application, container, zone, elements are extended from 4glNode
 - Default control methods implemented into application
+- application rewriten to be event-driven
+- simpleContainer, groupContainer, separatorContainer, treeContainer, tabContainer implemented on V2 new 4gl tree
+- buttonElement, codeElement, hiddenfieldElement, htmlElement, imageElement, linkElement, textareafieldElement, textElement, textfieldElement implemented on V2 new 4gl tree
 
 Build 28:
 - Elements rewritten to work with new core and 4gl manager

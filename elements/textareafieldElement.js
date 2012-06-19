@@ -1,7 +1,7 @@
 
 /*
     textareafieldElement.js, WAJAF, the WebAbility(r) Javascript Application Framework
-    Contains element to control a text area field
+    Contains element to control a text area field from a groupContainer
     (c) 2008-2012 Philippe Thomassigny
 
     This file is part of WAJAF
