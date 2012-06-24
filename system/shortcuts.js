@@ -20,6 +20,32 @@
     along with WAJAF.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+// prototypes
+/*
+Function.prototype.buildTransformer = WA.Function.buildTransformer;
+Function.prototype.buildFilter = WA.Function.buildFilter;
+Function.prototype.buildCompact = WA.Function.buildCompact;
+Function.prototype.delay = WA.Function.delay;
+String.prototype.sprintf = WA.String.sprintf;
+String.prototype.escape = WA.String.escape;
+String.prototype.padding = WA.String.padding;
+String.prototype.trim = WA.String.trim;
+Array.prototype.indexOf = WA.Array.indexOf;
+Array.prototype.remove = WA.Array.remove;
+Date.prototype.setNames = WA.Date.setNames;
+Date.prototype.isDate = WA.Date.isDate;
+Date.prototype.isTime = WA.Date.isTime;
+Date.prototype.isValid = WA.Date.isValid;
+Date.prototype.isLeapYear = WA.Date.isLeapYear;
+Date.prototype.getOrdinalSuffix = WA.Date.getOrdinalSuffix;
+Date.prototype.getMaxMonthDays = WA.Date.getMaxMonthDays;
+Date.prototype.getDayOfYear = WA.Date.getDayOfYear;
+Date.prototype.getWeekOfYear = WA.Date.getWeekOfYear;
+Date.prototype.getGMTOffset = WA.Date.getGMTOffset;
+Date.prototype.getTimezone = WA.Date.getTimezone;
+Date.prototype.format = WA.Date.format;
+*/
+
 // core
 var $ = WA.toDOM;
 var $$ = WA.get;
@@ -82,6 +108,7 @@ if (WA.Managers.draw)
 // 4glmanager
 if (WA.Managers.wa4gl)
 {
+  var $A = WA.$A;
   var $N = WA.$N;
 }
 

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.String.* examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The String object has been enhanced with 4 extra methods:<br />
+<b>sprintf</b>: A template replacement method.<br />
+<b>escape</b>: A method to escape special characters with a \: <b>', " and \</b> will turn into: <b>\', \" and \\</b><br />
+<b>padding</b>: A method to fill the beginning of the string with a single character up to have the desired size.<br />
+<b>trim</b>: A method to remove left and right spaces of a string.<br />
+<br />
+
+<div class="code">WA.String.sprintf.call(anystr, str, params);
+WA.String.escape.call(anystr, str);
+WA.String.padding.call(anystr, repeat, motif, str);
+WA.String.trim.call(anystr);
+</div>
+
+The 4 methods may also be used directly applied to the instance:<br />
+
+<div class="code">'the string with elements {0} {1}'.sprintf(params);
+'the string " to \ escape'.escape();
+'the string to fill'.padding(motif, repeat);
+'   the string to trim  '.trim();
+</div>
+
+<h2>String.sprintf</h2>
+
+Let's use a basic function that makes a template:<br />
+
+<div class="code">
+
+function test1()
+{
+  var template = '&lt;div id="{0}" style="border: 1px solid red; padding: 5px; margin: 2px;"&gt;Name: {1}&lt;br /&gt;Price: $ {2} USD&lt;br /&gt;&lt;/div&gt;';
+  var data = [
+      {"id":'prod1',"name":'Video of the Space',"price":132.30},
+      {"id":'prod2',"name":'Book of the Sea',"price":99.90},
+      {"id":'prod3',"name":'Music of the Silence',"price":5.99}
+    ];
+
+  for (var i=0, l=data.length; i&lt;l; i++)
+    WA.get('#test1').append(template.sprintf(data[i].id, data[i].name, data[i].price));
+}
+
+</div>
+<span class="button" onclick="test1();">Show the result</span>
+<div id="test1" class="result"></div>
+
+You may also use directly the content of the objects to replace into the string with the respective IDs of the elements of the object into the template:<br />
+
+<div class="code">
+
+function test2()
+{
+  var template = '&lt;div id="{id}" style="border: 1px solid red; padding: 5px; margin: 2px;"&gt;Name: {name}&lt;br /&gt;Price: $ {price} USD&lt;br /&gt;&lt;/div&gt;';
+  var data = [
+      {"id":'prod1',"name":'Video of the Space',"price":132.30},
+      {"id":'prod2',"name":'Book of the Sea',"price":99.90},
+      {"id":'prod3',"name":'Music of the Silence',"price":5.99}
+    ];
+
+  for (var i=0, l=data.length; i&lt;l; i++)
+    WA.get('#test1').append(template.sprintf(data[i]));
+}
+
+</div>
+<span class="button" onclick="test2();">Show the result</span>
+<div id="test2" class="result"></div>
+
+<h2>String.escape</h2>
+
+Let's escape some strings:<br />
+Node the parenthesis ( and ) around the second string, to build first the string, and THEN escape it all.<br />
+
+<div class="code">
+
+function test3()
+{
+  var escaped1 = String.escape('This is the '+"'first'"+ ' string to "escape"' + ', windows dir: C:\windows32');
+  var escaped2 = ('This is the '+"'second'"+ ' string to "escape"' + ', windows dir: C:\applications').escape();
+
+  WA.get('#test3').text(escaped1 + '\n' + escaped2);
+}
+
+</div>
+<span class="button" onclick="test3();">Show the result</span>
+<div id="test3" class="result"></div>
+
+<h2>String.padding</h2>
+
+Let's append some zeros and - before some numbers and variables:<br />
+If there is no motif character, spaces will be appended at the beginning.<br />
+This method is very usefull to fill numbers with 0, for instance for a month or a day in a 2 digits presentation.<br />
+
+<div class="code">
+
+function test4()
+{
+  var line1 = String.padding(10, '0', '123');
+  var line2 = 'abc'.padding(15, '-');
+  var line3 = '1'.padding(5);
+
+  WA.get('#test4').text(line1 + '\n' + line2 + '\n' + line3);
+}
+
+</div>
+<span class="button" onclick="test4();">Show the result</span>
+<div id="test4" class="result"></div>
+
+<h2>String.trim</h2>
+
+Let's trim some strings:<br />
+Note that the &amp;nbsp; html forced space will ALSO be trimed.<br />
+
+<div class="code">
+
+function test5()
+{
+  var trimed1 = String.trim('  A string to trim  ');
+  var trimed2 = '       &amp;nbsp;             Another string to trim          '.trim();
+
+  WA.get('#test5').text('==' + trimed1 + '==\n==' + trimed2 + '==');
+}
+
+</div>
+<span class="button" onclick="test5();">Show the result</span>
+<div id="test5" class="result"></div>
+
+
+
+
+<br /><br />
+
+<script type="text/javascript">
+
+function test1()
+{
+  var template = '<div id="{0}" style="border: 1px solid red; padding: 5px; margin: 2px;">Name: {1}<br />Price: $ {2} USD<br /></div>';
+  var data = [
+      {"id":'prod1',"name":'Video of the Space',"price":132.30},
+      {"id":'prod2',"name":'Book of the Sea',"price":99.90},
+      {"id":'prod3',"name":'Music of the Silence',"price":5.99}
+    ];
+
+  for (var i=0, l=data.length; i<l; i++)
+    WA.get('#test1').append(template.sprintf(data[i].id, data[i].name, data[i].price));
+}
+
+function test2()
+{
+  var template = '<div id="{id}" style="border: 1px solid red; padding: 5px; margin: 2px;">Name: {name}<br />Price: $ {price} USD<br /></div>';
+  var data = [
+      {"id":'prod1',"name":'Video of the Space',"price":132.30},
+      {"id":'prod2',"name":'Book of the Sea',"price":99.90},
+      {"id":'prod3',"name":'Music of the Silence',"price":5.99}
+    ];
+
+  for (var i=0, l=data.length; i<l; i++)
+    WA.get('#test2').append(template.sprintf(data[i]));
+}
+
+function test3()
+{
+  var escaped1 = String.escape('This is the '+"'first'"+ ' string to "escape"' + ', windows dir: C:\\windows32');
+  var escaped2 = ('This is the '+"'second'"+ ' string to "escape"' + ', windows dir: C:\\applications').escape();
+
+  WA.get('#test3').text(escaped1 + '\n' + escaped2);
+}
+
+function test4()
+{
+  var line1 = String.padding(10, '0', '123');
+  var line2 = 'abc'.padding(15, '-');
+  var line3 = '1'.padding(5);
+
+  WA.get('#test4').text(line1 + '\n' + line2 + '\n' + line3);
+}
+
+function test5()
+{
+  var trimed1 = String.trim('  A string to trim  ');
+  var trimed2 = '       &nbsp;             Another string to trim          '.trim();
+
+  WA.get('#test5').text('==' + trimed1 + '==\n==' + trimed2 + '==');
+}
+
+</script>
+
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

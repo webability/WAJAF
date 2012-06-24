@@ -69,6 +69,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   // errors on checks
   this.errors = {};
   this.errormessages = {};
+  this.firstview = true; // set to false when the field has been touched/modified. Used to know if we put the errors
 
   for (var i in this.code)
   {
@@ -136,7 +137,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
 
   function resize()
   {
-    WA.Containers.groupContainer.source.resize.call(self);
+    WA.Elements.textfieldElement.source.resize.call(self);
     // size mode for responsive design, not activated for now
 /*
     var RW = WA.browser.getNodeOuterWidth(self.father.domNode);
@@ -269,10 +270,9 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     {
       case 4: extras += ' disabled'; break;
       case 3: extras += ' readonly'; break;
-      case 2: extras += ' error'; self.father.setStatus(3); break;
-      case 1: extras += ' ok'; self.father.setStatus(2); break;
-      default: self.father.setStatus(0); break;
-
+      case 2: extras += ' error'; self.father.setStatus(self.focus?1:(self.firstview?0:3)); break;
+      case 1: extras += ' ok'; self.father.setStatus(self.focus?1:(self.firstview?0:2)); break;
+      default: self.father.setStatus(self.focus?1:0); break;
     }
     if (self.focus)
       extras += ' edition';
@@ -301,13 +301,18 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     self.checkClass();
     self.checkChildren(false);
 
-    var text = '';
-    for (var i in self.errors)
+    if (!self.firstview)
     {
-      if (self.errors[i])
-        text += self.errormessages[i] + '<br />';
+      var text = '';
+      for (var i in self.errors)
+      {
+        if (self.errors[i])
+          text += self.errormessages[i] + '<br />';
+      }
+      self.domNodeError.innerHTML = text;
     }
-    self.domNodeError.innerHTML = text;
+    else
+      self.domNodeError.innerHTML = '';
     if (self.group && notifygroup)
     {
       self.group.pleaseCheck();
@@ -333,6 +338,9 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     }
     self.father.show();
 
+    if (keep)
+      self.domNodeValue.innerHTML = self.domNodeField.value;
+
     self.domNodeValue.style.display = (self.info[mode]?'':'none');
 
     self.domNodeHelp.style.display = (self.help[mode]?'':'none');
@@ -342,6 +350,8 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     self.edition = !self.info[mode];
     if (mode == 1)
       reset();
+    else
+      checkAll();
   }
 
   this.reset = reset;
@@ -349,17 +359,22 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   {
     if (self.mode == 1)
     {
-      self.value = self.domNodeField.value = self.defaultvalue;
+      self.value = self.domNodeField.value = self.domNodeValue.innerHTML = self.defaultvalue;
     }
     else if (self.mode == 2 || self.mode == 3)
     {
-      self.domNodeField.value = self.value;
+      self.domNodeValue.innerHTML = self.domNodeField.value = self.value;
     }
     checkAll();
   }
 
   function onchange()
   {
+    self.firstview = false;
+    if ((self.value == undefined || self.value == null || self.value == '') && self.domNodeField.value == '')
+      self.firstview = true;
+    else if (self.value != undefined && self.value != null && self.domNodeField.value == self.value)
+      self.firstview = true;
     setTimeout( function() { checkAll(true); }, 0); // check and notify group
   }
 
@@ -401,6 +416,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   this.setValues = setValues;
   function setValues(values)
   {
+    self.firstview = true;
     self.value = self.domNodeField.value = values;
     if (values != undefined && values != null)
       self.domNodeValue.innerHTML = values;

@@ -186,7 +186,7 @@ margin-left: 0px; }
 .dommasktextfield.maskreadonly .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
 .dommasktextfield.maskdisabled .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
 
-/* textfield */
+/* textareafield */
 
 /* we force tiny until we liberate responsive design */
 .textareafieldlabel { float: left; width: 140px; padding-top: 1px; text-align: right; display: block; color: #333; font-size: 12px; font-weight: bold; line-height: 18px;
@@ -214,6 +214,35 @@ margin-left: 0px; }
 
 .dommasktextareafield.maskreadonly .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 60px; }
 .dommasktextareafield.maskdisabled .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 60px; }
+
+/* lovfield */
+
+/* we force tiny until we liberate responsive design */
+.lovfieldlabel { float: left; width: 140px; padding-top: 1px; lov-align: right; display: block; color: #333; font-size: 12px; font-weight: bold; line-height: 18px;
+width: auto; float: none; lov-align: left; padding-left: 20px; }
+.lovfieldlabel.error { color: red; }
+.lovfield { margin-left: 140px; padding-left: 20px; background-repeat: no-repeat; background-position: 2px 4px; position: relative;
+margin-left: 0px; }
+.lovfield.ok { background-image: url('../../skins/4gl/field-ok.png'); }
+.lovfield.error { background-image: url('../../skins/4gl/field-error.png'); }
+.lovfield.edition { background-image: url('../../skins/4gl/field-edition.png'); }
+.lovfield>.count { color: #999; font-size: 10px; padding-top: 3px; }
+.lovfield>.value {  }
+.lovfield>.field { width: 270px; border: 0px; padding: 2px; height: 15px; border-left: 1px solid #aaa; border-bottom: 1px solid #aaa; background-color: #eee; }
+.lovfield.ok>.field { border-left: 1px solid #44aa44; border-bottom: 1px solid #44aa44; background-color: #eef8cc; }
+.lovfield.error>.field { border-left: 1px solid #cc8800; border-bottom: 1px solid #cc8800; background-color: #ffeeee; }
+.lovfield.edition>.field { border-left: 1px solid #8888ff; border-bottom: 1px solid #8888ff; background-color: #eeeeff; }
+
+.lovfield>.help { display: block; padding: 5px; color: #999; float: right; width: 400px; }
+.lovfield>.error { display: block; padding: 5px; color: #f00; float: right; width: 400px; }
+
+.lovfieldlabel.medium { }
+
+.lovfieldlabel.tiny { width: auto; float: none; lov-align: left; padding-left: 20px; }
+.lovfield.tiny { margin-left: 0px; }
+
+.dommasklovfield.maskreadonly .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
+.dommasklovfield.maskdisabled .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
 
 
 

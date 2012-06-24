@@ -59,6 +59,21 @@
         <defaultvalue>defult value</defaultvalue>
       </element>
     </zone>
+    <zone type="field">
+      <element type="lovfieldElement" id="select1" size="400" visible="1234" info="34" disabled="" readonly="" notnull="1" help="12" >
+        3 Radio buttons:
+        <defaultvalue>2</defaultvalue>
+        <help>Help: Please select one of the three values.</help>
+        <options>
+          <option key="1">Option 1</option>
+          <option key="2">Option 2</option>
+          <option key="3">Option 3</option>
+        </options>
+      </element>
+    </zone>
+
+
+
     <zone type="control">
       <element type="buttonElement" action="first" visible="4">First record</element>
       <element type="buttonElement" action="previous" visible="4">Previous record</element>

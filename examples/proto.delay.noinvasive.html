@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.Function.delay examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The "delay" method allow the programmer to retard the call to a function:<br />
+<div class="code">WA.Function.delay.call(fct, timer, parameters);
+</div>
+
+The "timer" is an integer, the quantity of miliseconds to delay the call of the function.<br />
+The parameters are the list of each parameter to send to the main funcion.<br />
+This function is very usefull to call a delayed function with specific parameters, without having to use a specific timer.<br />
+<br />
+Let's use a basic function that makes a simple alert:
+
+<div class="code">function test(message)
+{
+  alert(message);
+}
+
+&lt;!-- the button: --&gt;
+&lt;span class="button" onclick="test('An alert message');"&gt;Call the normal function&lt;/span&gt;
+
+</div>
+<span class="button" onclick="test('An alert message');">Call the normal function</span>
+
+<div class="code">&lt;!-- the button: --&gt;
+&lt;span class="button" onclick="WA.Function.delay.call(test, 2000, 'A delayed alert message');"&gt;Call the delayed function (2s)&lt;/span&gt;
+</div>
+<span class="button" onclick="WA.Function.delay.call(test, 2000, 'A delayed alert message');">Call the delayed function (2s)</span>
+
+<br /><br />
+
+<script type="text/javascript">
+
+// test function, alerts the message
+
+function test(message)
+{
+  alert(message);
+}
+
+</script>
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

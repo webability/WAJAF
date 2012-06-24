@@ -21,7 +21,7 @@
 */
 
 // WA is the main WAJAF Object that will contain anything else (except for the native JS object prototypes)
-var WA = { version: '2.00.01',
+var WA = { version: '2.00.02',
            running: false };
 
 // Main Javascript Native Object Prototypes
@@ -302,6 +302,297 @@ Date.prototype.format = function(str)
   return f.call(this);
 }
 
+
+/*
+
+NON INVASIVE CODE. SHOULD WE ACTIVATE IT INSTEAD OF THE PROTOTYPES DEFINITION ?
+
+PROS: - no invasive code
+CONS: - heavy code to manage and call, not really usefull,
+      - better make a function with the *this* object as 1rst parameter
+
+// builds a function based on the transformation of the main function.
+// The parameters are sent to the prefunction to be transformed if necesary
+// The result of the main funciton is sent to the post function with the same parameters to be transformed if necesary.
+WA.Function = {};
+WA.Function.buildTransformer = function(prefct, postfct, scope)
+{
+  var self = this;
+  if (!WA.isFunction(prefct) && !WA.isFunction(postfct))
+    return this;
+  return function()
+    {
+      var args = WA.isFunction(prefct)?prefct.apply(scope || self, arguments):arguments;
+      var ret = self.apply(scope || self, args);
+      return WA.isFunction(postfct)?postfct.apply(scope || self, [ret]):ret;
+    }
+}
+
+// will call our fct before executing the main Function.
+// fct accept the same parameters as main Function.
+// if fct returns true, the main Function is executed, otherwise no.
+WA.Function.buildFilter = function(fct, scope)
+{
+  var self = this;
+  if (!WA.isFunction(fct))
+    return this;
+  return function()
+    {
+      return (fct.apply(scope || self, arguments) == true) ? self.apply(scope || self, arguments) : undefined;
+    }
+}
+
+// Builds a callback function based on the main function scope with the specified parameters to be able to call it without parameters by another instance.
+WA.Function.buildCompact = function()
+{
+  var self = this;
+  var args = arguments;
+  return function()
+    {
+      var r1 = Array.prototype.slice.call(args);
+      var r2 = Array.prototype.slice.call(arguments);
+      return self.apply(self, r1.concat(r2));
+    }
+}
+
+WA.Function.delay = function(delay)
+{
+  var self = this;
+  var args = [];
+  for (var i = 1, l = arguments.length; i < l; args.push(arguments[i++]));
+  var t = setTimeout(function() { return self.apply(self, args); }, delay);
+  return t;
+}
+
+// String prototypes
+WA.String = {};
+WA.String.sprintf = function()
+{
+  if (WA.isObject(arguments[0]))
+  {
+    var args = arguments[0];
+    return this.replace(/\{([A-Za-z0-9\-_\.]+)\}/g, function(p0, p1){ return args[p1]; });
+  }
+  else
+  {
+    var args = arguments;
+    return this.replace(/\{(\d+)\}/g, function(p0, p1){ return args[p1]; });
+  }
+}
+
+WA.String.escape = function(value)
+{
+  var newstr = (value != undefined && value != null) ? value : this;
+  return newstr.replace(/("|'|\\)/g, "\\$1");
+}
+
+WA.String.padding = function(size, pad, value)
+{
+  if (!pad) pad = ' ';
+  var newstr = new String((value != undefined && value != null) ? value : this);
+  while (newstr.length < size)
+  {
+    newstr = pad + newstr;
+  }
+  return newstr;
+}
+
+WA.String.trim = function(value)
+{
+  var newstr = (value != undefined && value != null) ? value : this;
+  return newstr.replace(/^(\s|&nbsp;)*|(\s|&nbsp;)*$/g, '');
+};
+
+// Array prototypes
+WA.Array = {};
+WA.Array.indexOf = function(val, field)
+{
+  for (var i = 0, l = this.length; i < l; i++)
+  {
+    if ((field && this[i][field] == val) || (!field && this[i] == val))
+      return i;
+  }
+  return false;
+}
+
+WA.Array.remove = function(o, field)
+{
+  var index = this.indexOf(o, field);
+  if(index != -1)
+  {
+    this.splice(index, 1);
+  }
+  return this;
+}
+
+// Date basic functions
+WA.Date = {};
+WA.Date.setNames = function(days, shortdays, months, shortmonths)
+{
+  WA.Date.days = days;
+  WA.Date.shortdays = shortdays;
+  WA.Date.months = months;
+  WA.Date.shortmonths = shortmonths;
+}
+
+// english by default
+WA.Date.setNames(
+  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+);
+
+WA.Date.basicdays = [31,28,31,30,31,30,31,31,30,31,30,31];
+
+WA.Date.isDate = function(year, month, day)
+{
+  var numdays = WA.Date.basicdays[month-1];
+  return day>0 && !!numdays && (day<=numdays || day==29 && year%4==0 && (year%100!=0 || year%400==0) );
+}
+
+WA.Date.isTime = function(hour, min, sec)
+{
+  return hour>=0 && hour<=23 && min>=0 && min<=59 && sec>=0 && sec<=59;
+}
+
+WA.Date.isValid = function(year, month, day, hour, min, sec, ms)
+{
+  hour = hour || 0;
+  min = min || 0;
+  sec = sec || 0;
+  ms = ms || 0;
+  // no need to apply(this) for isDate and isTime, they are static funcions
+  return WA.Date.isDate(year, month, day) && WA.Date.isTime(hour, min, sec) && ms >= 0 && ms <= 999;
+}
+
+WA.Date.isLeapYear = function()
+{
+  var year = this.getFullYear();
+  return (year%4==0 && (year%100!=0 || year%400==0));
+}
+
+WA.Date.getOrdinalSuffix = function()
+{
+  switch (this.getDate())
+  {
+    case 1: case 21: case 31: return 'st';
+    case 2: case 22:          return 'nd';
+    case 3: case 23:          return 'rd';
+    default:                  return 'th';
+  }
+}
+
+WA.Date.getMaxMonthDays = function()
+{
+  var numdays = WA.Date.basicdays[this.getMonth()];
+  if (numdays == 28 && WA.Date.isLeapYear.call(this))
+    numdays++;
+  return numdays;
+}
+
+WA.Date.getDayOfYear = function()
+{
+  var day = this.getDate();
+  for (var i = 0; i <= this.getMonth()-1; i++)
+    day += WA.Date.basicdays[i] + (i==1&&WA.Date.isLeapYear.call(this)?1:0);
+  return day;
+}
+
+// adapted from http://www.merlyn.demon.co.uk/weekcalc.htm
+WA.Date.getWeekOfYear = function()
+{
+  var ms1d = 86400000;
+  var ms7d = 604800000;
+  var DC3 = Date.UTC(this.getFullYear(), this.getMonth(), this.getDate() + 3) / ms1d;
+  var AWN = Math.floor(DC3 / 7);
+  var Wyr = (new Date(AWN * ms7d)).getUTCFullYear();
+  return AWN - Math.floor(Date.UTC(Wyr, 0, 7) / ms7d) + 1;
+}
+
+WA.Date.getGMTOffset = function(colon)
+{
+  return (this.getTimezoneOffset() > 0 ? '-' : '+')
+      + String.padding(2, '0', Math.floor(Math.abs(this.getTimezoneOffset()) / 60))
+      + (colon ? ':' : '')
+      + String.padding(2, '0', Math.abs(this.getTimezoneOffset() % 60));
+}
+
+// by extJS
+WA.Date.getTimezone = function()
+{
+  return this.toString().replace(/^.* (?:\((.*)\)|([A-Z]{1,4})(?:[\-+][0-9]{4})?(?: -?\d+)?)$/, '$1$2').replace(/[^A-Z]/g, '');
+}
+
+// original idea of structure/pattern by extJS
+WA.Date.grabformats = {
+  j: "this.getDate()",                                           // day of the month, no leading 0
+  d: "WA.String.padding(2, '0', this.getDate())",                // day of the month, leading 0, no need to call()
+  D: "WA.Date.shortdays[this.getDay()]",                         // short name of day
+  l: "WA.Date.days[this.getDay()]",                              // full name of day
+
+  w: "this.getDay()",                                            // day of the week, 0 = sunday
+  N: "(this.getDay()==0?7:this.getDay())",                       // ISO day of the week, 1 = monday
+  S: "WA.Date.getOrdinalSuffix.call(this)",                      // english day of the week suffix
+
+  z: "WA.Date.getDayOfYear.call(this)",                          // day of the year, 0 to 365
+
+  W: "WA.String.padding(2, '0', WA.Date.getWeekOfYear.call(this))",  // ISO week of the year, leading 0, no need to call()
+
+  n: "(this.getMonth() + 1)",                                    // number of month, 1 to 12, no leading 0
+  m: "WA.String.padding(2, '0', this.getMonth() + 1)",           // number of month, 01 to 12, leading 0, no need to call()
+  M: "WA.Date.shortmonths[this.getMonth()]",                     // short name of month
+  F: "WA.Date.months[this.getMonth()]",                          // full name of month
+  t: "WA.Date.getMaxMonthDays.call(this)",                       // number of days into the month
+
+  L: "(WA.Date.isLeapYear.call(this) ? 1 : 0)",
+  o: "(this.getFullYear() + (WA.Date.getWeekOfYear.call(this) == 1 && this.getMonth() > 0 ? +1 : (WA.Date.getWeekOfYear.call(this) >= 52 && this.getMonth() < 11 ? -1 : 0)))",
+  Y: "this.getFullYear()",
+  y: "('' + this.getFullYear()).substring(2, 4)",
+
+  a: "(this.getHours() < 12 ? 'am' : 'pm')",
+  A: "(this.getHours() < 12 ? 'AM' : 'PM')",
+  g: "((this.getHours() % 12) ? this.getHours() % 12 : 12)",
+  G: "this.getHours()",
+  h: "WA.String.padding(2, '0', (this.getHours() % 12) ? this.getHours() % 12 : 12)",
+  H: "WA.String.padding(2, '0', this.getHours())",
+
+  i: "WA.String.padding(2, '0', this.getMinutes())",
+  s: "WA.String.padding(2, '0', this.getSeconds())",
+  u: "WA.String.padding(3, '0', this.getMilliseconds())",
+
+  O: "WA.String.getGMTOffset.call(this)",
+  P: "WA.String.getGMTOffset.call(this, true)",
+  T: "WA.String.getTimezone.call(this)",
+  Z: "(this.getTimezoneOffset() * -60)",
+  c: "this.getUTCFullYear() + '-' + WA.String.padding(2, '0', this.getUTCMonth() + 1) + '-' + WA.String.padding(2, '0', this.getUTCDate()) + 'T' + "
+        + "WA.String.padding(2, '0', this.getUTCHours()) + ':' + WA.String.padding(2, '0', this.getUTCMinutes()) + ':' + "
+        + "WA.String.padding(2, '0', this.getUTCSeconds()) + WA.Date.getGMTOffset.call(this, true)",
+  U: "Math.round(this.getTime() / 1000)"
+};
+
+WA.Date.format = function(str)
+{
+  var code = [];
+  for (var i = 0, l = str.length; i < l; i++)
+  {
+    var c = str.charAt(i);
+    if (c == '\\')
+    {
+      i++;
+      // no need to call String.escape with an apply since we pass the caracter as parameter
+      code.push("'" + WA.String.escape(str.charAt(i)) + "'");
+    }
+    else
+    {
+      WA.Date.grabformats[c]!=undefined?code.push(WA.Date.grabformats[c]):code.push("'" + WA.String.escape(c) + "'");
+    }
+  }
+
+  var f = new Function('return ' + code.join('+') + ';');
+  return f.call(this);
+}
+*/
 
 // Main WAJAF Object definition
 

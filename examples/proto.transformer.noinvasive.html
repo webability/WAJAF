@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>WA.Function.buildTransformer examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The "transformer" method allow the programmer to filter the input and output of any existing function:<br />
+<div class="code">newfunction = WA.Function.buildTransformer.apply(function, prefuntion, postfunction);
+</div>
+
+The "prefunction" is a function that accept the <b>same</b> parameters as the main function, modify them, and finally reinject them into the main function. The return value must be an array with the parameters in the same order.<br />
+This function is very usefull to verify the validity of the parameters and modify them if there is any problem, put default values, etc.<br />
+The "postfunction" is a function that accept the returned result of the main function, and will modify it return the modified value to the caller.<br />
+<br />
+Let's use a basic function that calculates the difference between 2 values:
+
+<div class="code">function test(var1, var2)
+{
+  return var2-var1;
+}
+</div>
+<span class="button" onclick="natural();">View the result of this code</span>
+<div id="natural" class="result"></div>
+
+The pre function check if the first parameter is superior to the second one. If not, it will invert them.<br />
+
+<div class="code">var pretest = WA.Function.buildTransformer.apply(test,
+  function(v1, v2) // pre function, check the min/max on arguments
+    {
+      if (WA.isNumber(v1) && WA.isNumber(v2) && v1 > v2)
+        return [v2, v1];
+      return [v1, v2];
+    },
+  null  // no post function
+);
+</div>
+<span class="button" onclick="precheck();">View the result of this code</span>
+<div id="pretest" class="result"></div>
+
+The post function checks if the result is positive. If not, it will change the sign.<br />
+The two functions are identical in final returned result: a positive number.<br />
+
+<div class="code">var posttest = test.buildTransformer(
+  null, // no pre function
+  function(res) // post function, check the sign
+    {
+      return (res>0?res:-res);
+    }
+);
+</div>
+<span class="button" onclick="postcheck();">View the result of this code</span>
+<div id="posttest" class="result"></div>
+
+<br /><br />
+
+<script type="text/javascript">
+
+// test function, returns the difference between var1 and var2
+
+function test(var1, var2)
+{
+  return var2-var1;
+}
+
+// The pre and the post function are exactly equivalent to always return a positive difference between var1 and var2.
+
+var pretest = WA.Function.buildTransformer.call(test,
+  function(v1, v2) // pre function, check the min/max on arguments
+    {
+      if (WA.isNumber(v1) && WA.isNumber(v2) && v1 > v2)
+        return [v2, v1];
+      return [v1, v2];
+    },
+  null  // no post function
+);
+
+var posttest = WA.Function.buildTransformer.call(test,
+  null, // no pre function
+  function(res) // post function, check the sign
+    {
+      return (res>0?res:-res);
+    }
+);
+
+function natural()
+{
+  WA.get('#natural').text('Natural function: test(1,2) = ' + test(1,2) + '\nNatural function: test(2,1) = ' + test(2,1) + '\n');
+}
+
+function precheck()
+{
+  WA.get('#pretest').text('Pre order function: pretest(3,7) = ' + pretest(3,7) + '\nPre order function: pretest(7,3) = ' + pretest(7,3) + '\n');
+}
+
+function postcheck()
+{
+  WA.get('#posttest').text('Post sign function: posttest(10,12) = ' + posttest(10,12) + '\nPost sign function: posttest(12,10) = ' + posttest(12,10) + '\n');
+}
+
+</script>
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>

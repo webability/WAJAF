@@ -495,7 +495,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     // self.currentkey = null;
     changeMode(1);
     self.status = 1;
-    checkClass();
+    pleaseCheck();
   }
 
   this.doUpdate = doUpdate;
@@ -507,7 +507,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       changeMode(2);
       self.countload = 0;
       self.status = 1;
-      checkClass();
+      pleaseCheck();
     }
   }
 
@@ -520,7 +520,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       changeMode(3);
       self.countload = 0;
       self.status = 1;
-      checkClass();
+      pleaseCheck();
     }
   }
 

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <!-- Generic browser family -->
+  <title>WAJAF Demos, a WebAbility&reg; Network Project</title>
+  <meta http-equiv="PRAGMA" content="NO-CACHE" />
+  <meta http-equiv="Expires" content="-1" />
+
+  <meta name="Keywords" content="WAJAF, WebAbility" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta name="Charset" content="UTF-8" />
+  <meta name="Language" content="en" />
+  <link rel="stylesheet" href="/skins/css/wajaf.css" type="text/css" />
+
+</head>
+<body>
+
+<div class="container">
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+<br />
+
+<h1>Array.prototype.* examples</h1>
+
+<script language="javascript" type="text/javascript" src="../system/core.js"></script>
+
+The Array object has been enhanced with 2 extra extremely usefull methods:<br />
+<b>indexOf</b>: will search for the index of the specified value into the array.<br />
+<b>remove</b>: will remove the specified element by value.<br />
+The indexOf and remove methods will accept to work on an array of objects too, with a specified field of the objects as the second parameter.<br />
+<br />
+
+<div class="code">Array.indexOf(value, field);
+Array.remove(value, field);
+</div>
+
+The parameter 'field' is optional.<br />
+indexOf will return the index of the value (integer >= 0), or false.<br />
+remove will always return the Array itself so you can chain functions.<br />
+<br />
+Let's build a simple array:<br />
+
+<div class="code">var simplearray = ['abc', 'def', 1,2,3,4,5,6,7,8,9,10];
+
+function test1()
+{
+  var text = 'Index of def: ' + simplearray.indexOf('def') + '\n';
+  text += 'Index of 5: ' + simplearray.indexOf(5) + '\n';
+
+  text += 'Removing the elements: 3 and abc\n';
+  simplearray.remove(3).remove('abc');
+
+  text += 'Index of def: ' + simplearray.indexOf('def') + '\n';
+  text += 'Index of 5: ' + simplearray.indexOf(5) + '\n';
+
+  WA.get('#test1').text(text);
+};
+
+</div>
+<span class="button" onclick="test1();">Show the result</span>
+<div id="test1" class="result"></div>
+
+Now let's try with an array of objects:<br />
+
+<div class="code">var complexarray = [
+  {"id":'prod1',"name":'Video of the Space',"price":132.30},
+  {"id":'prod2',"name":'Book of the Sea',"price":99.90},
+  {"id":'prod3',"name":'Music of the Silence',"price":5.99}
+];
+
+function test2()
+{
+  var text = 'Index of price 99.90: ' + complexarray.indexOf(99.90, 'price') + '\n';
+  text += 'Index of id prod3: ' + complexarray.indexOf('prod3', 'id') + '\n';
+
+  text += 'Removing the element: prod1\n';
+  complexarray.remove('prod1', 'id');
+
+  text = 'Index of price 99.90: ' + complexarray.indexOf(99.90, 'price') + '\n';
+  text += 'Index of id prod3: ' + complexarray.indexOf('prod3', 'id') + '\n';
+
+  text += 'Removing the element: prod2\n';
+  complexarray.remove('prod2', 'id');
+
+  text += 'Index of price 99.90: ' + complexarray.indexOf(99.90, 'price') + '\n';
+  text += 'Index of id prod3: ' + complexarray.indexOf('prod3', 'id') + '\n';
+
+  WA.get('#test2').text(text);
+};
+
+</div>
+<span class="button" onclick="test2();">Show the result</span>
+<div id="test2" class="result"></div>
+
+
+<br /><br />
+
+<script type="text/javascript">
+
+var simplearray = ['abc', 'def', 1,2,3,4,5,6,7,8,9,10];
+
+function test1()
+{
+  var text = 'Index of def: ' + simplearray.indexOf('def') + '\n';
+  text += 'Index of 5: ' + simplearray.indexOf(5) + '\n';
+
+  text += 'Removing the elements: 3 and abc\n';
+  simplearray.remove(3).remove('abc');
+
+  text += 'Index of def: ' + simplearray.indexOf('def') + '\n';
+  text += 'Index of 5: ' + simplearray.indexOf(5) + '\n';
+
+  WA.get('#test1').text(text);
+};
+
+var complexarray = [
+  {"id":'prod1',"name":'Video of the Space',"price":132.30},
+  {"id":'prod2',"name":'Book of the Sea',"price":99.90},
+  {"id":'prod3',"name":'Music of the Silence',"price":5.99}
+];
+
+function test2()
+{
+  var text = 'Index of price 99.90: ' + complexarray.indexOf(99.90, 'price') + '\n';
+  text += 'Index of id prod3: ' + complexarray.indexOf('prod3', 'id') + '\n';
+
+  text += 'Removing the element: prod1\n';
+  complexarray.remove('prod1', 'id');
+
+  text += 'Index of price 99.90: ' + complexarray.indexOf(99.90, 'price') + '\n';
+  text += 'Index of id prod3: ' + complexarray.indexOf('prod3', 'id') + '\n';
+
+  text += 'Removing the element: prod2\n';
+  complexarray.remove('prod2', 'id');
+
+  text += 'Index of price 99.90: ' + complexarray.indexOf(99.90, 'price') + '\n';
+  text += 'Index of id prod3: ' + complexarray.indexOf('prod3', 'id') + '\n';
+
+  WA.get('#test2').text(text);
+};
+
+</script>
+
+
+<a href="../index.html" class="back">&#xAB; Back to the index</a><br />
+
+</div>
+
+</body>
+</html>
+

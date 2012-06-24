@@ -1,8 +1,8 @@
 
 /*
-    textareafieldElement.js, WAJAF, the WebAbility(r) Javascript Application Framework
-    Contains element to control a text area field from a groupContainer
-    (c) 2008-2012 Philippe Thomassigny
+    lovfieldElement.js, WAJAF, the WebAbility(r) Javascript Application Framework
+    Contains element to control a list of values
+    (c) 2008-2010 Philippe Thomassigny
 
     This file is part of WAJAF
 
@@ -20,10 +20,10 @@
     along with WAJAF.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
+WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
 {
   var self = this;
-  WA.Elements.textareafieldElement.sourceconstructor.call(this, fatherNode, domID, code, 'div', { classname:'textareafield' }, listener);
+  WA.Elements.lovfieldElement.sourceconstructor.call(this, fatherNode, domID, code, 'div', { classname:'lovfield' }, listener);
 
   this.id = this.code.attributes.id; // name of field, to use to send to the server
 
@@ -55,15 +55,14 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
   }
 
   // validity checks
-  this.minlength = (this.code.attributes.minlength?this.code.attributes.minlength:'');
-  this.maxlength = (this.code.attributes.maxlength?this.code.attributes.maxlength:'');
-  this.minwords = (this.code.attributes.minwords?this.code.attributes.minwords:null);
-  this.maxwords = (this.code.attributes.maxwords?this.code.attributes.maxwords:null);
-  this.width = (this.code.attributes.areawidth?this.code.attributes.areawidth:'');
-  this.height = (this.code.attributes.areaheight?this.code.attributes.areaheight:'');
+  this.multiselect = (this.code.attributes.multiselect?this.code.attributes.multiselect=='yes':null);
+  this.threshold = (this.code.attributes.threshold?this.code.attributes.threshold:3);
+  this.options = {};
+
   // defaultvalue is the default for insert mode (code from the code, set below)
   // value is the value set in this mode by setValues, if we want to undo changes
-  this.defaultvalue = this.value = '';
+  // accept an array of values if multiselect
+  this.defaultvalue = this.value = null;
 
   // errors on checks
   this.errors = {};
@@ -77,11 +76,16 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
       case 'defaultvalue': this.defaultvalue = code[i].data?code[i].data:''; break;
       case 'help': this.helpmessage = code[i].data; break;
       case 'statusnotnull': this.errormessages.statusnotnull = code[i].data; this.errors.statusnotnull = false; break;
-      case 'statustooshort': this.errormessages.statustooshort = code[i].data; this.errors.statustooshort = false; break;
-      case 'statustoolong': this.errormessages.statustoolong = code[i].data; this.errors.statustoolong = false; break;
-      case 'statustoofewwords': this.errormessages.statustoofewwords = code[i].data; this.errors.statustoofewwords = false; break;
-      case 'statustoomanywords': this.errormessages.statustoomanywords = code[i].data; this.errors.statustoomanywords = false; break;
       case 'statuscheck': this.errormessages.statuscheck = code[i].data; this.errors.statuscheck = false; break;
+      case 'options':
+        for (var j in this.code[i])
+        {
+          if (j != 'tag' && WA.isObject(this.code[i][j]) && this.code[i][j].tag == 'option')
+          {
+            self.options[this.code[i][j].attributes.key] = this.code[i][j].data;
+          }
+        }
+        break;
     }
   }
   // NODES
@@ -93,14 +97,10 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
   this.domNodeValue = WA.createDomNode('div', domID+'_value', 'value');
   this.domNode.appendChild(this.domNodeValue);
 
-  this.domNodeField = WA.createDomNode('textarea', domID+'_field', 'field');
+  this.domNodeField = WA.createDomNode('select', domID+'_field', 'field');
   this.domNodeField.name = this.id;
-  if (this.maxlength)
-    this.domNodeField.maxLength = this.maxlength;
-  if (this.width)
-    this.domNodeField.style.width = this.width+'px';
-  if (this.height)
-    this.domNodeField.style.height = this.height+'px';
+  if (this.size)
+    this.domNodeField.style.width = this.size+'px';
   this.domNode.appendChild(this.domNodeField);
 
   this.domNodeCount = WA.createDomNode('span', domID+'_count', 'count');
@@ -136,7 +136,7 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
 
   function resize()
   {
-    WA.Elements.textareafieldElement.source.resize.call(self);
+    WA.Elements.lovfieldElement.source.resize.call(self);
     // size mode for responsive design, not activated for now
 /*
     var RW = WA.browser.getNodeOuterWidth(self.father.domNode);
@@ -169,6 +169,22 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
       }
     }
     return;
+  }
+
+  function populate()
+  {
+    var text = '';
+    if (!self.notnull[self.mode])
+    {
+      text += '<option value=""'+(!self.defaultvalue?' selected="selected"':'')+'></option>';
+    }
+    for (var i in self.options)
+    {
+      // we intelligent populate based on option, select or search
+      // is this the selected option ?
+      text += '<option value="'+i+'"'+(i==self.defaultvalue?' selected="selected"':'')+'>'+self.options[i]+'</option>';
+    }
+    self.domNodeField.innerHTML = text;
   }
 
   this.checkStatus = checkStatus;
@@ -220,6 +236,12 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
       self.status = 2;
       self.errors.statusnotnull = true;
     }
+
+    if (self.format && value.match(self.format) == null)
+    {
+      self.status = 2;
+      self.errors.statusbadformat = true;
+    }
     if (self.minlength && value.length < self.minlength)
     {
       self.status = 2;
@@ -263,8 +285,8 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
     {
       case 4: extras += ' disabled'; break;
       case 3: extras += ' readonly'; break;
-      case 2: extras += ' error'; self.father.setStatus((self.firstview?0:3)); break;
-      case 1: extras += ' ok'; self.father.setStatus((self.firstview?0:2)); break;
+      case 2: extras += ' error'; self.father.setStatus(self.focus?1:(self.firstview?0:3)); break;
+      case 1: extras += ' ok'; self.father.setStatus(self.focus?1:(self.firstview?0:2)); break;
       default: self.father.setStatus(self.focus?1:0); break;
     }
     if (self.focus)
@@ -397,6 +419,10 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
       if (self.synchronizer)
         self.synchronizer.registerSynchronize(self);
     }
+
+    // we populate the values
+    populate();
+
     // we do not check, there is still no value. the setMode will do the job
   }
 
@@ -431,7 +457,7 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
   this.destroy = destroy;
   function destroy(fast)
   {
-    WA.Elements.textareafieldElement.source.destroy.call(self, fast);
+    WA.Elements.lovfieldElement.source.destroy.call(self, fast);
 
     self.synchronizer = null;
     self.synchronizeelements = [];
@@ -455,5 +481,279 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
 }
 
 // Add basic element code
-WA.extend(WA.Elements.textareafieldElement, WA.Managers.wa4gl._element);
+WA.extend(WA.Elements.lovfieldElement, WA.Managers.wa4gl._element);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+
+
+	  this.domNode = document.createElement('select');
+	  if(this.multiselect)
+	  {
+		  this.classname = params.attributes.classname?params.attributes.classname:'lovmok';
+		  this.classnameerror = params.attributes.classnameerror?params.attributes.classnameerror:'lovmerror';
+		  this.classnamefocus = params.attributes.classnamefocus?params.attributes.classnamefocus:'lovmfocus';
+		  this.classnamedisabled = params.attributes.classnamedisabled?params.attributes.classnamedisabled:'lovmdisabled';
+		  this.classnamereadonly = params.attributes.classnamereadonly?params.attributes.classnamereadonly:'lovmreadonly';
+		  this.classnameselected = params.attributes.classname?params.attributes.classname:'lovmselected';
+	    this.domNode.setAttribute('multiple','1');
+	  }
+	  this.domNode.id = domID;
+	  this.domNode.name = _4glNode.id;
+	  if (this.width)
+	    this.domNode.style.width = this.width+'px';
+	  if (this.height)
+	    this.domNode.style.height = this.height+'px';
+	  domNodefather.appendChild(this.domNode);
+  // we link with the group container if needed
+
+
+  this.checkStatus = checkStatus;
+  function checkStatus()
+  {
+    if (self.synchronize)
+    {
+      // we rebuild synchronize
+      self.synchronize.checkStatus();
+      self.synchronize.checkChildren();
+      self.synchronize.checkClass();
+      self.status = self.synchronize.status;
+      return;
+    }
+
+    // we check anything based on the attributes of the field
+    if (self.domNode.disabled)
+    {
+      self.status = 4;
+      return;
+    }
+    if (self.domNode.readonly)
+    {
+      self.status = 3;
+      return;
+    }
+    self.status = 1;
+    if (self.notnull && self.domNode.value == '')
+      self.status = 2;
+  }
+
+  this.checkClass = checkClass;
+  function checkClass()
+  {
+    switch (self.status)
+    {
+      case 4:
+        if (self.classnamedisabled)
+          self.domNode.className = self.classnamedisabled; break;
+      case 3:
+        if (self.classnamereadonly)
+          self.domNode.className = self.classnamereadonly; break;
+      case 2:
+        if (self.classnameerror)
+          self.domNode.className = self.classnameerror; break;
+      case 1:
+        if (self.classname)
+          self.domNode.className = self.classname; break;
+    }
+  }
+
+  this.checkChildren = checkChildren;
+  function checkChildren()
+  {
+    if (self.statuselement)
+      self.statuselement.setValues(self.status);
+    if (self.titleelement)
+      self.titleelement.setValues(self.status);
+    if (self.helpelement)
+      self.helpelement.setValues(self.status);
+    if (self.extraelement)
+      self.extraelement.setValues(self.status);
+    if (self.errorelement)
+      self.errorelement.setValues(self.status);
+  }
+
+  this.setError = setError;
+  function setError(values)
+  {
+    if (self.errorelement)
+      self.errorelement.setError(values);
+  }
+
+  this.setHelp = setHelp;
+  function setHelp(values)
+  {
+    if (self.helpelement)
+      self.helpelement.setHelp(values);
+  }
+
+  this.onchange = onchange;
+  function onchange()
+  {
+    self.checkStatus();
+    self.checkChildren();
+    if (self.synchronizeelement)
+    {
+      self.synchronizeelement.status = self.status;
+      self.synchronizeelement.checkChildren();
+    }
+//    self.Notify('change')
+  }
+
+  this.onblur = onblur;
+  function onblur()
+  {
+    self.checkClass();
+    if (self.synchronizeelement)
+    {
+      self.synchronizeelement.checkClass();
+    }
+  }
+
+  this.onfocus = onfocus;
+  function onfocus()
+  {
+    if (self.classnamefocus)
+      self.domNode.className = self.classnamefocus;
+  }
+
+  this.start = start;
+  function start()
+  {
+
+    self.domNode.onchange = self.onchange;
+    self.domNode.onfocus = self.onfocus;
+    self.domNode.onblur = self.onblur;
+
+    // we fill the list if any
+    var item = 0;
+    if (!self.notnull)
+    {
+      var node = document.createElement('option');
+      node.id = null;
+      node.value = null;
+      node.text = '';
+      if(self.params[i].attributes.selected == 'yes')
+        node.selected = true;
+      self.domNode.options[item++] = node;
+    }
+
+    for (var i in self.params)
+    {
+      if (self.params[i].tag && self.params[i].tag == 'option')
+      {
+
+        var node = document.createElement('option');
+        node.id = self.params[i].attributes.id;
+        node.value = self.params[i].attributes.id;
+        node.text = self.params[i].data;
+
+        // Add Pau, esta bien phil ? para preseleccionar el combo desde un
+        // dbmaskfieldloo
+        if(self.params[i].attributes.selected == 'yes')
+          node.selected = true;
+        // End Add Pau
+
+        //self.domNode.appendChild(node);
+        // Add Pau, esta bien phil ? el appendChild no "pinta" a la
+        // opción en el combo
+        // el "options[]" sí
+        self.domNode.options[item++] = node;
+        // End Add Pau
+      }
+    }
+
+    // we register to our group if needed
+    self.checkStatus();
+    self.checkChildren();
+    self.checkClass();
+    self.resize();
+  }
+
+  this.resize = resize;
+  function resize()
+  {
+    self._4glNode.nodeResize(self.domNodefather, self.domNode, self.params.attributes);
+  }
+
+  this.show = show;
+  function show()
+  {
+    self.domNode.style.display = "";
+  }
+
+  this.hide = hide;
+  function hide()
+  {
+    self.domNode.style.display = "none";
+  }
+
+  this.getValues = getValues;
+  function getValues()
+  {
+    return self.domNode.value;
+  }
+
+  this.setValues = setValues;
+  function setValues(values)
+  {
+    self.domNode.value = values;
+    self.checkStatus();
+    self.checkChildren();
+    self.checkClass();
+  }
+
+  this.stop = stop;
+  function stop()
+  {
+    if (self.group)
+      self.group.unregisterField(self);
+    self.domNode.onfocus = null;
+    self.domNode.onblur = null;
+    self.domNode.onchange = null;
+  }
+
+  this.destroy = destroy;
+  function destroy()
+  {
+    self.group = null;
+    self.domNode = null;
+    self.statuselement = null;
+    self.regexp = null;
+    self.classnamereadonly = null;
+    self.classnamedisabled = null;
+    self.classnamefocus = null;
+    self.classnameerror = null;
+    self.classname = null;
+    self.feedback = feedback;
+    self.params = params;
+    self.domID = domID;
+    self.domNodefather = domNodefather;
+    self = null;
+  }
+}
+
+// Needed aliases
+WA.Elements.lovfieldElement = lovfieldElement;
+*/

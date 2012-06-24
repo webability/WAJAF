@@ -73,6 +73,8 @@ class wajaf extends WAClass
   protected $description = null;
   protected $events = array();
   protected $possiblechildren = array();
+  protected $messages = array();
+  protected $possiblemessages = array();
 
   public function __construct($tagname)
   {
@@ -128,6 +130,12 @@ class wajaf extends WAClass
       $this->possiblechildren[$t] = true;
   }
 
+  protected function registerPossibleMessages($entries)
+  {
+    foreach ($entries as $e)
+      $this->possiblemessages[$e] = true;
+  }
+
   public function setData($data, $isnottext = false)
   {
     $this->isnottext = $isnottext;
@@ -141,6 +149,19 @@ class wajaf extends WAClass
     $this->title = $title;
     $this->description = $description;
     return $this;
+  }
+
+  public function setMessages($messages)
+  {
+    foreach($messages as $e => $message)
+    {
+      $this->messages[$e] = $message;
+    }
+  }
+
+  public function setMessage($entry, $message)
+  {
+    $this->messages[$entry] = $message;
   }
 
   public function add($object)
@@ -188,6 +209,14 @@ class wajaf extends WAClass
     return $txt;
   }
 
+  public function compilemessages()
+  {
+    $txt = '';
+    foreach($this->messages as $k => $m)
+      $txt .= '<'.$k.'><![CDATA['.$m.']]></'.$k.'>';
+    return $txt;
+  }
+
   protected function compilepost()
   {
     $txt = '</'.$this->tagname.'>';
@@ -196,7 +225,7 @@ class wajaf extends WAClass
 
   public function compile()
   {
-    return $this->compilepre() . $this->compilepost();
+    return $this->compilepre() . $this->compilemessages() . $this->compilepost();
   }
 
 }
@@ -416,7 +445,7 @@ class groupContainer extends Xcontainer
     parent::__construct('groupContainer', $id);
     $this->registerAttributes( array('mode', 'authmodes', 'varkey', 'key', 'varorder', 'varmode') );
     $this->registerPossibleChildren( array('dataset') );
- }
+  }
 }
 /* @@groupContainer:End@@ */
 
@@ -749,12 +778,35 @@ class hiddenElement extends Xelement
 /* @@textfieldElement:Begin:wajaf@@ */
 class textfieldElement extends Xelement
 {
-  public function __construct($id = null)
+  public function __construct($id = null, $text = null)
   {
     parent::__construct('textfieldElement');
     $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+    $this->registerPossibleMessages( array() );
     $this->setId($id);
-//    $this->registerData($text);
+    $this->setData($text);
+  }
+
+  public function setMessages($messages)
+  {
+    foreach($messages as $e => $message)
+    {
+      $this->Messages[$e] = $message;
+    }
+  }
+
+  public function setMessage($entry, $message)
+  {
+    $this->Messages[$entry] = $message;
+  }
+
+  public function compile()
+  {
+    $txt = $this->compilepre();
+    foreach($this->Messages as $k => $m)
+      $txt .= '<'.$k.'><![CDATA['.$m.']]></'.$k.'>';
+    $txt .= $this->compilepost();
+    return $txt;
   }
 }
 /* @@textfieldElement:End@@ */

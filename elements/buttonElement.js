@@ -66,7 +66,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
   else
     this.action = null;
 
-  this.status = 1; // 1 = normal, 2 = disabled
+  this.status = this.code.attributes.status=='disabled'?4:1; // 1 = normal, 2 = disabled as a form, 3 = modified, 4 = force disabled
   this.mode = 0;
   // Behaviour on modes
   this.isvisible = [];
@@ -84,6 +84,8 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
     this.group = this.father.father;
     this.group.registerField(this);
   }
+  else
+    checkClass();
 
   this.addEvent('start', start);
   this.addEvent('stop', start);
@@ -111,13 +113,15 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
       case 1: // neutral, working, ok
       case 3: // modified
         break;
-      case 2: // disabled
-        if (self.action == 'submit')
+      case 2: // disabled in a form context
+        if (!self.action || self.action == 'submit')
           disabled = ' disabled';
+        break;
+      case 4: // disabled forced
+        disabled = ' disabled';
         break;
     }
     self.domNode.className = self.classes.classname + disabled + (self.action?' '+self.action:'');
-    self.resize();
   }
 
   this.setMode = setMode;

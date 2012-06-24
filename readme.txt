@@ -34,7 +34,7 @@ Thank you !
 
 ----
 
-This is the version 2, build 1
+This is the version 2, build 2
 
 - To change the build:
   edit system/core.js at the beginning and change the version number
@@ -220,7 +220,15 @@ destroy() called to destroy the element
 
 ----
 
-V2, build 1:
+V2, build 2 - 2012-06-21:
+- The prototypes methods have been prepared to be in a non-invasive context but not released
+- The prototypes methods have been added in the shortcuts file but not released
+- buttonElement has been modified to work in both Group (form) and No group context
+- textfieldElement has been modified to show error only when the value is different as the default one (cleaner screen)
+- textareafieldElement has been modified to show error only when the value is different as the default one (cleaner screen)
+- Some logical bugs corrected on textfieldElement and textareafieldElement
+
+V2, build 1 - 2012-06-19:
 - 4gl Manager rewritten, lighter, faster, event driven
 - Tree 4glNode rewritten: 3 events implemented, propagation of events implemented
 - application, container, zone, elements are extended from 4glNode
