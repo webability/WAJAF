@@ -816,13 +816,12 @@ class textfieldElement extends Xelement
 /* @@textareafieldElement:Begin:wajaf@@ */
 class textareafieldElement extends Xelement
 {
-  public function __construct($id = null)
+  public function __construct($id = null, $text = null)
   {
     parent::__construct('textareafieldElement');
     $this->registerAttributes( array('areawidth', 'areaheight', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
-
     $this->setId($id);
-//    $this->registerData($text);
+    $this->setData($text);
   }
 }
 /* @@textareafieldElement:End@@ */
@@ -833,8 +832,7 @@ class lovfieldElement extends Xelement
   public function __construct($id = null)
   {
     parent::__construct('lovfieldElement');
-//    $this->registerAttributes( array('classnameover', 'classnamedown', 'classnamedisabled', 'action', 'link') );
-
+    $this->registerAttributes( array('size', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
     $this->setId($id);
 //    $this->registerData($text);
   }
