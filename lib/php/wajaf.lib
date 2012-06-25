@@ -786,28 +786,6 @@ class textfieldElement extends Xelement
     $this->setId($id);
     $this->setData($text);
   }
-
-  public function setMessages($messages)
-  {
-    foreach($messages as $e => $message)
-    {
-      $this->Messages[$e] = $message;
-    }
-  }
-
-  public function setMessage($entry, $message)
-  {
-    $this->Messages[$entry] = $message;
-  }
-
-  public function compile()
-  {
-    $txt = $this->compilepre();
-    foreach($this->Messages as $k => $m)
-      $txt .= '<'.$k.'><![CDATA['.$m.']]></'.$k.'>';
-    $txt .= $this->compilepost();
-    return $txt;
-  }
 }
 /* @@textfieldElement:End@@ */
 
