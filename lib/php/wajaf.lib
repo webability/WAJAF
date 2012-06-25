@@ -775,6 +775,20 @@ class hiddenElement extends Xelement
 }
 /* @@hiddenElement:End@@ */
 
+/* @@hiddenfieldElement:Begin:wajaf@@ */
+class textfieldElement extends Xelement
+{
+  public function __construct($id = null, $text = null)
+  {
+    parent::__construct('textfieldElement');
+//    $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+//    $this->registerPossibleMessages( array() );
+    $this->setId($id);
+    $this->setData($text);
+  }
+}
+/* @@hiddenfieldElement:End@@ */
+
 /* @@textfieldElement:Begin:wajaf@@ */
 class textfieldElement extends Xelement
 {
