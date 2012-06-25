@@ -806,7 +806,7 @@ class textfieldElement extends Xelement
   {
     parent::__construct('textfieldElement');
     $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
-    $this->registerPossibleMessages( array() );
+    $this->registerPossibleMessages( array('defaultvalue', 'help', 'statusnotnull', 'statusbadformat', 'statustooshort', 'statustoolong', 'statustoofewwords', 'statustoomanywords', 'statuscheck') );
     $this->setId($id);
     $this->setData($text);
   }
