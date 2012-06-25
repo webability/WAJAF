@@ -776,11 +776,11 @@ class hiddenElement extends Xelement
 /* @@hiddenElement:End@@ */
 
 /* @@hiddenfieldElement:Begin:wajaf@@ */
-class textfieldElement extends Xelement
+class hiddenfieldElement extends Xelement
 {
   public function __construct($id = null, $text = null)
   {
-    parent::__construct('textfieldElement');
+    parent::__construct('hiddenfieldElement');
 //    $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
 //    $this->registerPossibleMessages( array() );
     $this->setId($id);
