@@ -616,6 +616,15 @@ class gridDataset extends Xdataset
 }
 /* @@gridDataset:End@@ */
 
+/* @@groupDataset:Begin:wajaf@@ */
+class groupDataset extends Xdataset
+{
+  public function __construct($data)
+  {
+    parent::__construct($data);
+  }
+}
+/* @@groupDataset:End@@ */
 
 // ====================================================================
 // Templates
