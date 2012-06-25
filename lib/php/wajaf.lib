@@ -444,6 +444,7 @@ class groupContainer extends Xcontainer
   {
     parent::__construct('groupContainer', $id);
     $this->registerAttributes( array('mode', 'authmodes', 'varkey', 'key', 'varorder', 'varmode') );
+    $this->registerPossibleMessages( array('alertmessage', 'servermessage', 'titleinsert', 'titleupdate', 'titledelete', 'titleview', 'insertok', 'updateok', 'deleteok') );
     $this->registerPossibleChildren( array('dataset') );
   }
 }
