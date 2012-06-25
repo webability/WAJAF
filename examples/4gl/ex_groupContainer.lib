@@ -40,15 +40,19 @@ class ex_groupContainer
         $r = $this->getRecord($key);
         return json_encode($r);
       case 'submit':
-
+        break;
     }
 
-
-    return json_encode( array('success' => true ));
+    // randomly return a sucess or an error
+    if (rand(0, 1000) < 500)
+      return json_encode( array('success' => true ));
+    return json_encode( array('success' => false, 'messages' => array('text' => 'Error: This is a simulated error from the server. It happens randomly to show how the errors are handled.')));
   }
 
   function getRecord($key)
   {
+    if (!$key || !is_numeric($key) || $key < 1 || $key > 10)
+      $key = rand(1,10);
     return array($key => array('key' => $key, 'fullname' => 'Juan Perez Hernandez '.$key, 'address1' => "Street $key, num $key, int. $key", 'address2' => "City of city$key, State of state$key, Mexico"));
   }
 }

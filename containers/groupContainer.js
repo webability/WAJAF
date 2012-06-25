@@ -99,6 +99,11 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   this.mode = 0;    // no mode at start, pending
   this.defaultmode = this.code.attributes.mode?this.code.attributes.mode:1;
   this.status = 1;  // 1 = ok 2 = error
+  this.authmodes = [];
+  for (var i = 1; i < 5; i++)
+  {
+    this.authmodes[i] = (this.code.attributes.authmodes?this.code.attributes.authmodes.indexOf(''+i)!=-1:true);
+  }
 
   this.fields = [];
   this.data = {};
@@ -112,7 +117,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   this.timemessage = 8000; // 8 seconds before degrading
 
   this.mainerroralert = 'Error: some fields are not valid. Check the red ones.';
-  this.servererroralert = 'Error: the record data could not be retrieved from the server. Retry?';
+  this.servererroralert = 'Error: there was a not specified error on the server.';
   this.title = ['','Insert','Update','Delete','View'];
   this.result = ['','Insert ok','Update ok','Delete ok'];
 
@@ -165,6 +170,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   this.domNodeLoading.style.display = 'none';  // not shown by default
 
   this.addEvent('start', start);
+  this.addEvent('stop', stop);
   this.addEvent('resize', this.resize);
   this.addEvent('postresize', this.postresize);  // resize is default resize
 
@@ -174,7 +180,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   // Mode Controler
   function changeMode(newmode, keep)
   {
-    if (newmode == self.mode)
+    if (newmode == self.mode || !self.authmodes[newmode])
       return;
     self.mode = newmode;
 
@@ -222,11 +228,12 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     self.domNodeLoading.style.display = 'none';
   }
 
-  function showMessage(message)
+  function showMessage(message, success)
   {
     self.domNodeMessage.innerHTML = message;
     self.domNodeMessage.style.display = '';
-    setTimeout(hideMessage, self.timemessage);
+    self.domNodeMessage.className = 'message ' + (success?'success':'failure');
+//    setTimeout(hideMessage, self.timemessage);
   }
 
   function hideMessage()
@@ -339,6 +346,12 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       self.countload = 0;
       fillData();
     }
+    WA.Managers.event.on('click', self.domNodeMessage, hideMessage, true);
+  }
+
+  function stop()
+  {
+    WA.Managers.event.off('click', self.domNodeMessage, hideMessage, true);
   }
 
   // ========================================================================================
@@ -554,34 +567,42 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
 
       if (result && result.success)
       {
-        self.callEvent('success', self.domID, result);
+        var rest = self.callEvent('success', self.domID, result);
         self.status = 3;
+        if (result.messages && result.messages.text)
+          showMessage(result.messages.text, true);
+        else
+          showMessage(self.result[self.mode], true);
         if (self.mode == 1 || self.mode == 2)
         {
           // go to dataloaded = true and set the record based on the values of each fields
           // the record should be in a temporal record ready to apply with the primary key if any
-
-          if (result.messages && result.messages.text)
-            showMessage(result.messages.text);
           self.data[self.currentkey] = self.datatemporal;
 
           changeMode(4, true);
         }
         else
         {
-          // do we put a ok deleted message under the title ?
-          if (result.messages && result.messages.text)
-            showMessage(result.messages.text);
-
-          // we destroy the currentkey
-          delete(self.data[self.currentkey]);
-          self.currentkey = null;
+          // If there is no view mode available, we just stay here ?
+          if (self.authmodes[4] && rest)
+          {
+            // We refetch data for view ?
+            changeMode(4);
+            // we destroy the currentkey record
+            delete(self.data[self.currentkey]);
+            self.dataloaded = false;
+            self.countload = 0;
+            // but we keep the current key. If there is no record with this current key, the server should get back the nearest record
+            fillData();
+          }
         }
       }
       else
       {
         if (result.messages && result.messages.text)
-          showMessage(result.messages.text);
+          showMessage(result.messages.text, false);
+        else
+          showMessage(self.servererroralert, false);
 
         self.callEvent('failure', self.domID, result);
         self.status = 4;

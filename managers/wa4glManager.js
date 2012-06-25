@@ -729,12 +729,11 @@ WA.Managers.wa4gl._4glnode.prototype.registerEvents = function()
       var code = '';
       for (var j in this.code[i])
       {
-        if (i == 'tag' || i == 'attributes' || i == 'data' || !WA.isObject(this.code[i][j]))   // we are only interested by objects
+        if (j == 'tag' || j == 'attributes' || j == 'data' || !WA.isObject(this.code[i][j]))   // we are only interested by objects
           continue;
         if (this.code[i][j].tag == 'code')
           code += this.code[i][j].data;
       }
-
       eval('this.events[this.code[i].attributes.type] = '+code+';');
       // if the event is a JS event, we add it with on()
       if (this.code[i].attributes.type.substr(0,2) == 'on')
@@ -749,10 +748,8 @@ WA.Managers.wa4gl._4glnode.prototype.registerEvents = function()
       {
         WA.Managers.wa4gl.setGlobalLogin(this.events['globallogin']);
       }
-      return;
     }
   }
-  return;
 }
 
 WA.Managers.wa4gl._4glnode.prototype.callEvent = function(type, params)

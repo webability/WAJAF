@@ -227,6 +227,9 @@ V2, build 2 - 2012-06-21:
 - textfieldElement has been modified to show error only when the value is different as the default one (cleaner screen)
 - textareafieldElement has been modified to show error only when the value is different as the default one (cleaner screen)
 - Some logical bugs corrected on textfieldElement and textareafieldElement
+- groupContainer modified to manage sucess, failure, and messages from server
+- lovfieldElement implemented
+- _4glnode modified to register all events, not only the first one in list
 
 V2, build 1 - 2012-06-19:
 - 4gl Manager rewritten, lighter, faster, event driven

@@ -350,6 +350,8 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
   this.reset = reset;
   function reset()
   {
+    if (!self.edition)
+      return;
     if (self.mode == 1)
     {
       self.value = self.domNodeField.value = self.domNodeValue.innerHTML = self.defaultvalue;

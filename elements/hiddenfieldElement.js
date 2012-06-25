@@ -52,6 +52,9 @@ WA.Elements.hiddenfieldElement = function(fatherNode, domID, code, listener)
   function setMode(mode, keep)
   { }
 
+  this.reset = reset;
+  function reset()
+  { }
 
   this.getValues = getValues;
   function getValues()

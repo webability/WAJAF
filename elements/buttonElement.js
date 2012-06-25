@@ -53,9 +53,22 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
   this.focus = false;
   this.record = false;
 
-  this.domNode.type = 'button';
+  this.defaulttitle = 'Submit';
   if (this.code.data)
-    this.domNode.value = this.code.data;
+    this.defaulttitle = this.code.data;
+  this.title = ['','','',''];
+  for (var i in code)
+  {
+    if (code[i].tag == 'titleinsert')
+      self.title[1] = code[i].data;
+    if (code[i].tag == 'titleupdate')
+      self.title[2] = code[i].data;
+    if (code[i].tag == 'titledelete')
+      self.title[3] = code[i].data;
+  }
+
+  this.domNode.type = 'button';
+  this.domNode.value = self.defaulttitle;
   if (this.code.attributes.value != undefined)
     this.value = this.code.attributes.value;
   else
@@ -140,6 +153,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
     {
       self.status = 2;
     }
+    self.domNode.value = self.title[self.mode]?self.title[self.mode]:self.defaulttitle;
     checkClass();
   }
 
