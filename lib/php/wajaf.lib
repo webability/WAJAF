@@ -638,7 +638,7 @@ class treeTemplate extends Xtemplate
     parent::__construct($name);
   }
 }
-/* @@listTemplate:End@@ */
+/* @@treeTemplate:End@@ */
 
 /* @@listTemplate:Begin:wajaf@@ */
 class listTemplate extends Xtemplate
