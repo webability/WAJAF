@@ -566,7 +566,7 @@ WA.Managers.wa4gl = new function()
       throw 'The node to charge the application into is not a zone node.';
     // empty the node if needed !, destroy any app into the tree
     if (fatherNode.app)
-      fatherNode.app.emptyTree(fatherNode.domID);
+      fatherNode.app.emptyNode(fatherNode.domID);
 
     var app = new WA.Managers.wa4gl._4glapplication(fatherNode, applicationID, instanceID, mode, listener);
     if (app.domNode == null)
