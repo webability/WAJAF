@@ -564,6 +564,9 @@ WA.Managers.wa4gl = new function()
 
     if (fatherNode.supertype != 'zone')
       throw 'The node to charge the application into is not a zone node.';
+    // empty the node if needed !, destroy any app into the tree
+    if (fatherNode.app)
+      fatherNode.app.emptyTree(fatherNode.domID);
 
     var app = new WA.Managers.wa4gl._4glapplication(fatherNode, applicationID, instanceID, mode, listener);
     if (app.domNode == null)
@@ -1274,10 +1277,18 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
     if (!node)
       return false;
     if (node.app != self)
-      return node.app.emptyTree(node);
-    for (var i in node.children)
+      return node.app.emptyNode(node);
+    if (node.application)
     {
-      destroyTree(node.children[i]);
+      WA.Managers.wa4gl.destroyApplication(node.application.applicationID, node.application.instanceID);
+      node.application = null;
+    }
+    else
+    {
+      for (var i in node.children)
+      {
+        destroyTree(node.children[i]);
+      }
     }
     return true;
   }
