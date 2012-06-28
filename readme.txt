@@ -230,6 +230,8 @@ V2, build 2 - 2012-06-21:
 - groupContainer modified to manage sucess, failure, and messages from server
 - lovfieldElement implemented
 - _4glnode modified to register all events, not only the first one in list
+- Error corrected in wajaf.lib in the classes delimiters
+
 
 V2, build 1 - 2012-06-19:
 - 4gl Manager rewritten, lighter, faster, event driven

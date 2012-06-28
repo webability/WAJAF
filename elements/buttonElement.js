@@ -54,6 +54,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
   this.record = false;
 
   this.defaulttitle = 'Submit';
+alert('=' + this.code.data + '=');
   if (this.code.data)
     this.defaulttitle = this.code.data;
   this.title = ['','','',''];
