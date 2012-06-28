@@ -1277,7 +1277,7 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
       return node.app.emptyTree(node);
     for (var i in node.children)
     {
-      destroyNode(node.children[i]);
+      destroyTree(node.children[i]);
     }
     return true;
   }
