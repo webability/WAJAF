@@ -231,6 +231,7 @@ V2, build 2 - 2012-06-21:
 - lovfieldElement implemented
 - _4glnode modified to register all events, not only the first one in list
 - Error corrected in wajaf.lib in the classes delimiters
+- Modified 'help' tag to 'helpdescription' tag for the group elements. Examples, javascript code and wajaf.lib adjusted for this change
 
 
 V2, build 1 - 2012-06-19:

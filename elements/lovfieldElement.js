@@ -74,7 +74,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
     switch (code[i].tag)
     {
       case 'defaultvalue': this.defaultvalue = code[i].data?code[i].data:''; break;
-      case 'help': this.helpmessage = code[i].data; break;
+      case 'helpdescription': this.helpmessage = code[i].data; break;
       case 'statusnotnull': this.errormessages.statusnotnull = code[i].data; this.errors.statusnotnull = false; break;
       case 'statuscheck': this.errormessages.statuscheck = code[i].data; this.errors.statuscheck = false; break;
       case 'options':

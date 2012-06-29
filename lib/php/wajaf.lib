@@ -806,7 +806,7 @@ class textfieldElement extends Xelement
   {
     parent::__construct('textfieldElement');
     $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
-    $this->registerPossibleMessages( array('defaultvalue', 'help', 'statusnotnull', 'statusbadformat', 'statustooshort', 'statustoolong', 'statustoofewwords', 'statustoomanywords', 'statuscheck') );
+    $this->registerPossibleMessages( array('defaultvalue', 'helpdescription', 'statusnotnull', 'statusbadformat', 'statustooshort', 'statustoolong', 'statustoofewwords', 'statustoomanywords', 'statuscheck') );
     $this->setId($id);
     $this->setData($text);
   }
@@ -820,6 +820,7 @@ class textareafieldElement extends Xelement
   {
     parent::__construct('textareafieldElement');
     $this->registerAttributes( array('areawidth', 'areaheight', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+    $this->registerPossibleMessages( array('defaultvalue', 'helpdescription', 'statusnotnull', 'statusbadformat', 'statustooshort', 'statustoolong', 'statustoofewwords', 'statustoomanywords', 'statuscheck') );
     $this->setId($id);
     $this->setData($text);
   }
@@ -833,6 +834,7 @@ class lovfieldElement extends Xelement
   {
     parent::__construct('lovfieldElement');
     $this->registerAttributes( array('size', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+    $this->registerPossibleMessages( array('defaultvalue', 'helpdescription', 'statusnotnull', 'statuscheck') );
     $this->setId($id);
 //    $this->registerData($text);
   }
