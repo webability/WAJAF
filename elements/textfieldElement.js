@@ -51,7 +51,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     this.disabled[i] = (this.code.attributes.disabled?this.code.attributes.disabled.indexOf(''+i)!=-1:false);
     this.readonly[i] = (this.code.attributes.readonly?this.code.attributes.readonly.indexOf(''+i)!=-1:false);
     this.notnull[i] = (this.code.attributes.notnull?this.code.attributes.notnull.indexOf(''+i)!=-1:false);
-    this.help[i] = (this.code.attributes.help?this.code.attributes.help.indexOf(''+i)!=-1:false);
+    this.help[i] = (this.code.attributes.helpmode?this.code.attributes.helpmode.indexOf(''+i)!=-1:false);
   }
 
   // validity checks

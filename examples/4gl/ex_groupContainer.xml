@@ -4,7 +4,7 @@
   <!-- Note important: the min-width of the container should be always: max field size + 480px (help size) -->
   <container type="groupContainer" id="myform" style="min-width: 880px;" mode="4" authmodes="1234" varkey="key" key="1" varorder="order" varmode="mode">
     <zone type="field">
-      <element type="textfieldElement" id="fullname" size="400" minlength="3" maxlength="50" minwords="2" maxwords="10" format="^[a-zA-Z0-9\s]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" help="12">
+      <element type="textfieldElement" id="fullname" size="400" minlength="3" maxlength="50" minwords="2" maxwords="10" format="^[a-zA-Z0-9\s]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" helpmode="12">
         Your full name:
         <defaultvalue></defaultvalue>
         <helpdescription>Help: This field must have a min length of 3 chars, max length of 50 chars, min 2 words, max 10 words, and can be only a-z, A-Z, 0-9 and spaces</helpdescription>
@@ -18,7 +18,7 @@
       </element>
     </zone>
     <zone type="field">
-      <element type="textfieldElement" id="address1" size="400" minlength="3" maxlength="150" minwords="2" maxwords="20" format="^[a-zA-Z0-9\s,\.#]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" help="12">
+      <element type="textfieldElement" id="address1" size="400" minlength="3" maxlength="150" minwords="2" maxwords="20" format="^[a-zA-Z0-9\s,\.#]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" helpmode="12">
         Your address (line 1):
         <defaultvalue></defaultvalue>
         <helpdescription>Help: This field must have a min length of 3 chars, max length of 150 chars, min 2 words, max 20 words, and can be only a-z, A-Z, 0-9, coma, dot, #  and spaces</helpdescription>
@@ -32,7 +32,7 @@
       </element>
     </zone>
     <zone type="field">
-      <element type="textfieldElement" id="address2" size="400" minlength="3" maxlength="150" minwords="2" maxwords="20" format="^[a-zA-Z0-9\s,\.#]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" help="12">
+      <element type="textfieldElement" id="address2" size="400" minlength="3" maxlength="150" minwords="2" maxwords="20" format="^[a-zA-Z0-9\s,\.#]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" helpmode="12">
         Your address (line 2):
         <defaultvalue></defaultvalue>
         <helpdescription>Help: This field must have a min length of 3 chars, max length of 150 chars, min 2 words, max 20 words, and can be only a-z, A-Z, 0-9, coma, dot, # and spaces</helpdescription>
@@ -46,7 +46,7 @@
       </element>
     </zone>
     <zone type="field">
-      <element type="textareafieldElement" id="comments" areawidth="400" areaheight="150" minlength="" maxlength="4000" minwords="" maxwords="" visible="1234" info="34" disabled="" readonly="" notnull="" help="12">
+      <element type="textareafieldElement" id="comments" areawidth="400" areaheight="150" minlength="" maxlength="4000" minwords="" maxwords="" visible="1234" info="34" disabled="" readonly="" notnull="" helpmode="12">
         Some comments:
         <defaultvalue></defaultvalue>
         <helpdescription>Help: Any comments, anotate them here. This field accept any character, up to 4000 characters.</helpdescription>
@@ -60,7 +60,7 @@
       </element>
     </zone>
     <zone type="field">
-      <element type="lovfieldElement" id="select1" size="400" visible="1234" info="34" disabled="" readonly="" notnull="1" help="12" >
+      <element type="lovfieldElement" id="select1" size="400" visible="1234" info="34" disabled="" readonly="" notnull="1" helpmode="12" >
         Color:
         <defaultvalue>2</defaultvalue>
         <helpdescription>Help: Please select one of the three colors.</helpdescription>

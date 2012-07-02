@@ -805,7 +805,7 @@ class textfieldElement extends Xelement
   public function __construct($id = null, $text = null)
   {
     parent::__construct('textfieldElement');
-    $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+    $this->registerAttributes( array('size', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'helpmode') );
     $this->registerPossibleMessages( array('defaultvalue', 'helpdescription', 'statusnotnull', 'statusbadformat', 'statustooshort', 'statustoolong', 'statustoofewwords', 'statustoomanywords', 'statuscheck') );
     $this->setId($id);
     $this->setData($text);
@@ -819,7 +819,7 @@ class textareafieldElement extends Xelement
   public function __construct($id = null, $text = null)
   {
     parent::__construct('textareafieldElement');
-    $this->registerAttributes( array('areawidth', 'areaheight', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+    $this->registerAttributes( array('areawidth', 'areaheight', 'minlength', 'maxlength', 'minwords', 'maxwords', 'format', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'helpmode') );
     $this->registerPossibleMessages( array('defaultvalue', 'helpdescription', 'statusnotnull', 'statusbadformat', 'statustooshort', 'statustoolong', 'statustoofewwords', 'statustoomanywords', 'statuscheck') );
     $this->setId($id);
     $this->setData($text);
@@ -833,7 +833,7 @@ class lovfieldElement extends Xelement
   public function __construct($id = null)
   {
     parent::__construct('lovfieldElement');
-    $this->registerAttributes( array('size', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'help') );
+    $this->registerAttributes( array('size', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'helpmode') );
     $this->registerPossibleMessages( array('defaultvalue', 'helpdescription', 'statusnotnull', 'statuscheck') );
     $this->setId($id);
 //    $this->registerData($text);
