@@ -236,6 +236,7 @@ V2, build 2 - 2012-06-21:
 - Buttons classes recombined so confirm and cancel are now image based, and the sucess, warning and danger classes have been added to change the button color. Added the 'extra' attribute to the buttonElement tag to access the color class
 - base class 'wajaf' modified in wajaf.lib to accept a protected method to compile specific class code
 - linkElement implemented
+- hiddenfieldElement modified to use data as default value
 
 V2, build 1 - 2012-06-19:
 - 4gl Manager rewritten, lighter, faster, event driven

@@ -55,9 +55,7 @@
       </element>
     </zone>
     <zone type="field">
-      <element type="hiddenfieldElement" id="hiddenparam">
-        <defaultvalue>default value</defaultvalue>
-      </element>
+      <element type="hiddenfieldElement" id="hiddenparam">default value</element>
     </zone>
     <zone type="field">
       <element type="lovfieldElement" id="select1" size="400" visible="1234" info="34" disabled="" readonly="" notnull="1" helpmode="12" >

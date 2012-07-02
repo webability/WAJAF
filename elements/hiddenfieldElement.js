@@ -27,13 +27,14 @@ WA.Elements.hiddenfieldElement = function(fatherNode, domID, code, listener)
 
   this.formtype = 'field';
   this.record = (this.code.attributes.record&&this.code.attributes.record=='no'?false:true);
-  this.editable = true;  // it's a text field, so yes
+  this.editable = this.edition = true;  // it's a text field, so yes, and we always send it to the server
 
   this.status = 1; // status is always OK
 
   this.domNodeField = WA.createDomNode('input', domID+'_field', 'field');
   this.domNodeField.type = 'hidden';
   this.domNodeField.name = this.id;
+  this.domNodeField.name = this.code.data || '';
   this.domNode.appendChild(this.domNodeField);
 
   // we link with the group. first father is the zone, second father is the group
