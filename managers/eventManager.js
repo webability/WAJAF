@@ -154,7 +154,7 @@ WA.Managers.event = new function()
 
     if (eventname == 'load' && WA.browser.isMSIE) // special incompatible IE not firing onload event
     {
-      eventnode.onreadystatechange = nothing;
+      eventnode.onreadystatechange = WA.nothing;
     }
     else if (eventnode.removeEventListener)
     {

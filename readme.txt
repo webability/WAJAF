@@ -237,6 +237,7 @@ V2, build 2 - 2012-06-21:
 - base class 'wajaf' modified in wajaf.lib to accept a protected method to compile specific class code
 - linkElement implemented
 - hiddenfieldElement modified to use data as default value
+- error corrected in WA.eventManager using the WA.nothing void function (error in IE).
 
 V2, build 1 - 2012-06-19:
 - 4gl Manager rewritten, lighter, faster, event driven
