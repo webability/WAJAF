@@ -340,7 +340,7 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
     self.request.abort();
     self.request.onreadystatechange = WA.nothing;
     if (!checkPeriod())
-      setTimeout( function() { WA.managers.ajax.destroyRequest(self); }, 1);
+      setTimeout( function() { WA.Managers.ajax.destroyRequest(self); }, 1);
   }
 
   // timeout abort
