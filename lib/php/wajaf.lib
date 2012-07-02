@@ -838,6 +838,11 @@ class lovfieldElement extends Xelement
     $this->setId($id);
 //    $this->registerData($text);
   }
+  
+  public function setOptions()
+  {
+    
+  }
 }
 /* @@lovfieldElement:End@@ */
 
