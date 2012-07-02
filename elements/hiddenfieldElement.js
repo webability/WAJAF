@@ -34,7 +34,7 @@ WA.Elements.hiddenfieldElement = function(fatherNode, domID, code, listener)
   this.domNodeField = WA.createDomNode('input', domID+'_field', 'field');
   this.domNodeField.type = 'hidden';
   this.domNodeField.name = this.id;
-  this.domNodeField.name = this.code.data || '';
+  this.domNodeField.value = this.code.data || '';
   this.domNode.appendChild(this.domNodeField);
 
   // we link with the group. first father is the zone, second father is the group
