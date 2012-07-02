@@ -28,35 +28,35 @@
    * classname         default class: link
 */
 
-WA.Elements.linkElement = function(domNodeFather, domID, params, notify, _4glNode)
+WA.Elements.linkElement = function(fatherNode, domID, code, listener)
 {
   var self = this;
-  WA.Elements.linkElement.sourceconstructor.call(this, domNodeFather, domID, params, notify, _4glNode, { classname:'link' }, 'a');
-  if (this.params.data)
-    WA.browser.setInnerHTML(this.domNode, this.params.data);
+  WA.Elements.linkElement.sourceconstructor.call(this, fatherNode, domID, code, 'a', { classname:'link' }, listener);
+
+  if (this.code.data)
+    WA.browser.setInnerHTML(this.domNode, this.code.data);
+
+  this.addEvent('start', start);
+  this.addEvent('stop', stop);
 
   // ========================================================================================
   // private functions
 
   function click(e)
   {
-    self._callNotify('click', null);
+    self._callEvent('click', null);
   }
 
   // ========================================================================================
   // standard system functions
 
-  this.start = start;
   function start()
   {
-    WA.Elements.linkElement.source.start.call(self);
     WA.Managers.event.on('click', self.domNode, click, true);
   }
 
-  this.stop = stop;
   function stop()
   {
-    WA.Elements.linkElement.source.stop.call(self);
     WA.Managers.event.off('click', self.domNode, click, true);
   }
 
@@ -65,13 +65,6 @@ WA.Elements.linkElement = function(domNodeFather, domID, params, notify, _4glNod
   {
     WA.Elements.linkElement.source.destroy.call(self, fast);
     self = null;
-  }
-
-  if (!_4glNode)
-  {
-    // we call all to setup things and start the node, since there is no 4gl node calling this.
-    this.start();
-    this.resize();
   }
 }
 
