@@ -209,13 +209,16 @@ class wajaf extends WAClass
     return $txt;
   }
 
-  public function compilemessages()
+  protected function compilemessages()
   {
     $txt = '';
     foreach($this->messages as $k => $m)
       $txt .= '<'.$k.'><![CDATA['.$m.']]></'.$k.'>';
     return $txt;
   }
+
+  protected function compilelocal()
+  { }
 
   protected function compilepost()
   {
@@ -225,7 +228,7 @@ class wajaf extends WAClass
 
   public function compile()
   {
-    return $this->compilepre() . $this->compilemessages() . $this->compilepost();
+    return $this->compilepre() . $this->compilemessages() . $this->compilelocal() . $this->compilepost();
   }
 
 }
@@ -830,18 +833,33 @@ class textareafieldElement extends Xelement
 /* @@lovfieldElement:Begin:wajaf@@ */
 class lovfieldElement extends Xelement
 {
-  public function __construct($id = null)
+  protected $Options = null;
+
+  public function __construct($id = null, $text = null)
   {
     parent::__construct('lovfieldElement');
     $this->registerAttributes( array('size', 'visible', 'info', 'disabled', 'readonly', 'notnull', 'helpmode') );
     $this->registerPossibleMessages( array('defaultvalue', 'helpdescription', 'statusnotnull', 'statuscheck') );
     $this->setId($id);
-//    $this->registerData($text);
+    $this->setData($text);
   }
-  
-  public function setOptions()
+
+  public function setOptions($options)
   {
-    
+    $this->Options = $options;
+  }
+
+  protected function compilelocal()
+  {
+    $txt = '';
+    if ($this->Options)
+    {
+      $txt .= '<options>';
+      foreach($this->Options as $k => $m)
+        $txt .= '<option key="'.htmlentities($k, ENT_COMPAT, 'UTF-8').'"><![CDATA['.$m.']]></option>';
+      $txt .= '</options>';
+    }
+    return $txt;
   }
 }
 /* @@lovfieldElement:End@@ */
