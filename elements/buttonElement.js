@@ -79,6 +79,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
   else
     this.action = null;
 
+  this.extra = this.code.attributes.extra?' '+this.code.attributes.extra:'';
   this.status = this.code.attributes.status=='disabled'?4:1; // 1 = normal, 2 = disabled as a form, 3 = modified, 4 = force disabled
   this.mode = 0;
   // Behaviour on modes
@@ -134,7 +135,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
         disabled = ' disabled';
         break;
     }
-    self.domNode.className = self.classes.classname + disabled + (self.action?' '+self.action:'');
+    self.domNode.className = self.classes.classname + self.extra + disabled + (self.action?' '+self.action:'');
   }
 
   this.setMode = setMode;

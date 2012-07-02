@@ -23,18 +23,18 @@ function()
       <element type="buttonElement" status="disabled">Normal button disabled</element>
 
       <element type="htmlElement"><![CDATA[
-Some buttons with predefined actions:
+Some buttons with predefined actions and extra color:
 ]]></element>
 
-      <element type="buttonElement" action="confirm">Confirm</element>
-      <element type="buttonElement" action="cancel">Cancel</element>
+      <element type="buttonElement" action="confirm" extra="success">Confirm</element>
+      <element type="buttonElement" action="cancel" extra="danger">Cancel</element>
       <element type="buttonElement" action="info">Info</element>
       <element type="buttonElement" action="insert">Insert</element>
       <element type="buttonElement" action="update">Update</element>
       <element type="buttonElement" action="delete">Delete</element>
       <element type="buttonElement" action="view">View</element>
-      <element type="buttonElement" action="clear">Clear</element>
-      <element type="buttonElement" action="reset">Reset</element>
+      <element type="buttonElement" action="clear" extra="warning">Clear</element>
+      <element type="buttonElement" action="reset" extra="warning">Reset</element>
       <element type="buttonElement" action="submit">Submit</element>
       <element type="buttonElement" action="previous">Previous</element>
       <element type="buttonElement" action="next">Next</element>
@@ -45,15 +45,15 @@ Some buttons with predefined actions:
 Same buttons disabled:
 ]]></element>
 
-      <element type="buttonElement" action="confirm" status="disabled">Confirm</element>
-      <element type="buttonElement" action="cancel" status="disabled">Cancel</element>
+      <element type="buttonElement" action="confirm" status="disabled" extra="success">Confirm</element>
+      <element type="buttonElement" action="cancel" status="disabled" extra="danger">Cancel</element>
       <element type="buttonElement" action="info" status="disabled">Info</element>
       <element type="buttonElement" action="insert" status="disabled">Insert</element>
       <element type="buttonElement" action="update" status="disabled">Update</element>
       <element type="buttonElement" action="delete" status="disabled">Delete</element>
       <element type="buttonElement" action="view" status="disabled">View</element>
-      <element type="buttonElement" action="clear" status="disabled">Clear</element>
-      <element type="buttonElement" action="reset" status="disabled">Reset</element>
+      <element type="buttonElement" action="clear" status="disabled" extra="warning">Clear</element>
+      <element type="buttonElement" action="reset" status="disabled" extra="warning">Reset</element>
       <element type="buttonElement" action="submit" status="disabled">Submit</element>
       <element type="buttonElement" action="previous" status="disabled">Previous</element>
       <element type="buttonElement" action="next" status="disabled">Next</element>

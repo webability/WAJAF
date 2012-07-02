@@ -132,21 +132,28 @@ a.link:hover { color: #aa0000; text-decoration: underline; cursor: pointer; }
 
 /* buttonElement default class */
 
-.button { display:inline-block; margin: 2px; border: 1px solid #007d9a; background-color: #dfe8f6; color: #5555cc; font-weight: bold; font-size: 12px; padding: 3px; cursor: pointer; text-decoration: none; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; }
-.button:hover { background-color: #c6d9f6; color: #000088; text-decoration: none; }
-.button:active { background-color: #a6b9f6; color: #000088; text-decoration: none; }
-.button.disabled { border: 1px solid #a6b9f6; background-color: #eeeeee; color: #aaaaaa; }
+.button { display:inline-block; margin: 2px; border: 1px solid #57c; background-color: #57c; color: white; font-weight: bold; font-size: 12px; padding: 3px; cursor: pointer; text-decoration: none; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; }
+.button:hover { background-color: #DFF4FF; color: #57c; text-decoration: none; }
+.button:active { background-color: #a6b9f6; color: #57c; text-decoration: none; }
+.button.disabled { border: 1px solid #a6b9f6; background-color: #eeeeee; color: #aaaaaa; cursor: not-allowed; }
 
-.button.confirm { display:inline-block; margin: 2px; border: 1px solid #009a00; background-color: #d8e8d8; color: #008800; font-weight: bold; font-size: 12px; padding: 3px; padding-left: 20px; cursor: pointer; text-decoration: none; background-image: url('../../skins/4gl/button-confirm.png'); background-repeat: no-repeat; background-position: 2px 2px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; }
-.button.confirm:hover { background-color: #b8e8b8; color: #006600; text-decoration: none; }
-.button.confirm:active { background-color: #98e898; color: #006600; text-decoration: none; }
-.button.confirm.disabled { border: 1px solid #b8e8b8; background-color: #eeeeee; color: #aaaaaa; }
+.button.success { border: 1px solid #51A351; background-color: #51A351; color: white; }
+.button.success:hover { background-color: #b8e8b8; color: #006600; text-decoration: none; }
+.button.success:active { background-color: #98e898; color: #006600; text-decoration: none; }
+.button.success.disabled { border: 1px solid #b8e8b8; background-color: #eeeeee; color: #aaaaaa; }
 
-.button.cancel { display:inline-block; margin: 2px; border: 1px solid #9a0000; background-color: #e8d8d8; color: #cc0000; font-weight: bold; font-size: 12px; padding: 3px; padding-left: 20px; cursor: pointer; text-decoration: none; background-image: url('../../skins/4gl/button-cancel.png'); background-repeat: no-repeat; background-position: 2px 2px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; }
-.button.cancel:hover { background-color: #e8b8b8; color: #aa0000; text-decoration: none; }
-.button.cancel:active { background-color: #e89898; color: #aa0000; text-decoration: none; }
-.button.cancel.disabled { border: 1px solid #e8b8b8; background-color: #eeeeee; color: #aaaaaa; }
+.button.warning { border: 1px solid #F89406; background-color: #F89406; color: white; }
+.button.warning:hover { background-color: #fdb; color: #f90; text-decoration: none; }
+.button.warning:active { background-color: #fca; color: #f90; text-decoration: none; }
+.button.warning.disabled { border: 1px solid #e8b8b8; background-color: #eeeeee; color: #aaaaaa; }
 
+.button.danger { border: 1px solid #BD362F; background-color: #BD362F; color: white; }
+.button.danger:hover { background-color: #e8b8b8; color: #aa0000; text-decoration: none; }
+.button.danger:active { background-color: #e89898; color: #aa0000; text-decoration: none; }
+.button.danger.disabled { border: 1px solid #e8b8b8; background-color: #eeeeee; color: #aaaaaa; }
+
+.button.confirm { background-image: url('../../skins/4gl/button-confirm.png'); background-repeat: no-repeat; padding-left: 20px; background-position: 2px 2px; }
+.button.cancel { background-image: url('../../skins/4gl/button-cancel.png'); background-repeat: no-repeat; padding-left: 20px; background-position: 2px 2px; }
 .button.info { background-image: url('../../skins/4gl/button-info.png'); background-repeat: no-repeat; padding-left: 20px; background-position: 2px 2px; }
 .button.insert { background-image: url('../../skins/4gl/button-insert.png'); background-repeat: no-repeat; padding-left: 20px; background-position: 2px 2px; }
 .button.update { background-image: url('../../skins/4gl/button-update.png'); background-repeat: no-repeat; padding-left: 20px; background-position: 2px 2px; }

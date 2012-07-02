@@ -233,6 +233,7 @@ V2, build 2 - 2012-06-21:
 - Error corrected in wajaf.lib in the classes delimiters
 - Modified 'help' tag to 'helpdescription' tag for the group elements. Examples, javascript code and wajaf.lib adjusted for this change
 - Modified 'help' attribute to 'helpmode' to avoid help conflicts, for the group elements. Examples, javascript code and wajaf.lib adjusted for this change
+- Buttons classes recombined so confirm and cancel are now image based, and the sucess, warning and danger classes have been added to change the button color. Added the 'extra' attribute to the buttonElement tag to access the color class
 
 V2, build 1 - 2012-06-19:
 - 4gl Manager rewritten, lighter, faster, event driven
