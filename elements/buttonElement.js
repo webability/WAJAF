@@ -67,14 +67,13 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
       self.title[3] = code[i].data;
   }
 
-  var newInput = document.createElement('input');
-  newInput.type = 'button'; // that should work even with IE
-//newInput.name = input.name;
-//newInput.value = newInput.defaultValue = input.value;
-  newInput.className = 'button';
-  this.domNode.parentNode.replaceChild(newInput, this.domNode);
+  // IE bug: we cant set type if attached
+  var parent = this.domNode.parentNode;
+  var next = this.domNode.nextSibling;
+  parent.removeChild(this.domNode);
+  this.domNode.type = 'button';
+  parent.insertBefore(this.domNode, next);
 
-//  this.domNode.type = 'button';
   this.domNode.value = self.defaulttitle;
   if (this.code.attributes.value != undefined)
     this.value = this.code.attributes.value;
