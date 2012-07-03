@@ -113,7 +113,7 @@ WA.is4GL = function(node)
 // normalize and separate number from measure
 WA.analize = function(m, nomax)
 {
-  if (m == 'auto' || m == undefined || m == null || m == '')
+  if (m == 'auto' || m === undefined || m === null || m === '')
     return null;
   if (m == 'max')
     return nomax?null:m;
@@ -265,10 +265,10 @@ WA.getCoords = function(domNode, metrics)
   if (autoleft && autotop && autoright && autobottom)
   {
     domNode.style.position = 'relative';
-    domNode.style.left = undefined;
-    domNode.style.top = undefined;
-    domNode.style.right = undefined;
-    domNode.style.bottom = undefined;
+    domNode.style.left = 'auto';
+    domNode.style.top = 'auto';
+    domNode.style.right = 'auto';
+    domNode.style.bottom = 'auto';
   }
 }
 
