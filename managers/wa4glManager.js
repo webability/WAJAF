@@ -675,7 +675,7 @@ WA.Managers.wa4gl._4glnode = function(father, domID, supertype, code, type, clas
     this.created = true;
     // this is due to a IE bug, the type of an input CANNOT be changed after the node is attached.
     // so we have to take in charge here. To set an input type, code.domtype must be set to the type
-    if (code.domtype)
+    if (code && code.domtype)
       this.domNode.type = code.domtype;
   }
   else
