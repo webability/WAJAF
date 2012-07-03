@@ -45,6 +45,7 @@
 WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
 {
   var self = this;
+  code.domtype = 'button'; // IE bug on input type, we force the type at the node creation
   WA.Elements.buttonElement.sourceconstructor.call(this, domNodeFather, domID, code, 'input', { classname:'button' }, listener);
 
   this.formtype = 'control';
@@ -67,13 +68,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
       self.title[3] = code[i].data;
   }
 
-  // IE bug: we cant set type if attached
-  var parent = this.domNode.parentNode;
-  var next = this.domNode.nextSibling;
-  parent.removeChild(this.domNode);
-  this.domNode.type = 'button';
-  parent.insertBefore(this.domNode, next);
-
+//  this.domNode.type = 'button';
   this.domNode.value = self.defaulttitle;
   if (this.code.attributes.value != undefined)
     this.value = this.code.attributes.value;
