@@ -330,6 +330,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   {
     self.domNodeError.innerHTML = values;
     self.errorexternal = true;
+    checkAll();
   }
 
   this.setMode = setMode;
