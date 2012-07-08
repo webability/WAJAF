@@ -60,6 +60,8 @@ V2, build 3 - :
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode
 - groupContainer modified to manage failure errors from the server
 - textfieldELement modified to manage errors from the server
+- 4gl.css modified so the simple zone has no more auto overflow to auto-adapt to the container
+- buttonElement modified to not be disabled in a form if there is no predefined action
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released

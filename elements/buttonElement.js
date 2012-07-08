@@ -129,7 +129,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
       case 3: // modified
         break;
       case 2: // disabled in a form context
-        if (!self.action || self.action == 'submit')
+        if (self.action == 'submit')
           disabled = ' disabled';
         break;
       case 4: // disabled forced
