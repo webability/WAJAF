@@ -165,6 +165,7 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
 
   function start()
   {
+    alert('id='+self.domID);
     WA.Managers.event.on('click', self.domNode, click, false);
   }
 
