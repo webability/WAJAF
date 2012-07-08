@@ -67,6 +67,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   this.defaultvalue = this.value = '';
 
   // errors on checks
+  this.errorexternal = false;  // true when set manually an error
   this.errors = {};
   this.errormessages = {};
   this.firstview = true; // set to false when the field has been touched/modified. Used to know if we put the errors
@@ -257,6 +258,8 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
       }
       self.domNodeCount.innerHTML = numpalabras + '/' + value.length;
     }
+    if (self.errorexternal)
+      self.status = 2;
     // user own checks
     if (self.code[0] != undefined && self.code[0].tag != undefined && self.code[0].tag == 'check')
       eval(self.code[0].data);
@@ -303,13 +306,16 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
 
     if (!self.firstview)
     {
-      var text = '';
-      for (var i in self.errors)
+      if (!self.errorexternal)
       {
-        if (self.errors[i])
-          text += self.errormessages[i] + '<br />';
+        var text = '';
+        for (var i in self.errors)
+        {
+          if (self.errors[i])
+            text += self.errormessages[i] + '<br />';
+        }
+        self.domNodeError.innerHTML = text;
       }
-      self.domNodeError.innerHTML = text;
     }
     else
       self.domNodeError.innerHTML = '';
@@ -323,6 +329,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   function setError(values)
   {
     self.domNodeError.innerHTML = values;
+    self.errorexternal = true;
   }
 
   this.setMode = setMode;
@@ -373,6 +380,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   function onchange()
   {
     self.firstview = false;
+    self.errorexternal = false;
     if ((self.value == undefined || self.value == null || self.value == '') && self.domNodeField.value == '')
       self.firstview = true;
     else if (self.value != undefined && self.value != null && self.domNodeField.value == self.value)
