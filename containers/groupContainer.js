@@ -571,7 +571,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
 
       if (result && result.success)
       {
-        var rest = self.callEvent('success', self.domID, result);
+        var rest = self.callEvent('success', result);
         self.status = 3;
         if (result.messages && result.messages.text)
           showMessage(result.messages.text, true);
@@ -604,7 +604,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       else
       {
         setMessages(result);
-        self.callEvent('failure', self.domID, result);
+        self.callEvent('failure', result);
         self.status = 4;
         checkClass();
       }
