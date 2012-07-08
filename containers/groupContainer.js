@@ -737,6 +737,11 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     // 1. is POPUP
     // 2. is any error domID
     // 3. is any field with its own error
+    if (!params || !params.messages)
+    {
+      showMessage(self.servererroralert, false);
+      return;
+    }
     var popup = '';
     var html = '';
     if (params.messages.main)
