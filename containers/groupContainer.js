@@ -756,7 +756,9 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       }
       self.fields[i].setError(params.messages[self.fields[i].id]);
     }
-    showMessage(html, false);
+    alert(html);
+    if (html)
+      showMessage(html, false);
     if (params.popup)
     {
       alert(popup);
