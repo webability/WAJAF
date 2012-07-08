@@ -8,9 +8,9 @@
 
 /* SIMPLECONTAINER */
 /* the container is by default always full size, unless specified with another class */
-.simple { position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: none; }
+.simple { position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: auto; }
 /* the simple zone always takes all the container available, no need to calculate size */
-.simple>.zone { overflow: auto; }
+.simple>.zone { }
 
 /* SEPARATOR CONTAINER */
 /* the container take care to use relative or absolute and metrics, based on width, height, top, left, right, bottom */
