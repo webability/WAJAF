@@ -1,7 +1,7 @@
 
 readme.txt, WAJAF, the WebAbility(r) Javascript Application Framework
 Contains multi purpose functions, browser and WA objects
-(c) 2008-2010 Philippe Thomassigny
+(c) 2008-2012 Philippe Thomassigny
 
 This file is part of WAJAF
 
@@ -34,7 +34,7 @@ Thank you !
 
 ----
 
-This is the version 2, build 2
+This is the version 2, build 3
 
 - To change the build:
   edit system/core.js at the beginning and change the version number
@@ -45,7 +45,6 @@ To do:
 - implement helpmanager.startHelp
 
 - implement requests ajax from events in 4glnode
-- remove events and requests ajax when stopping the node
 - app.clone, detachNode, attachNode
 
 - making lab for elements, lab for container in 4gl interfase, standalone and local 4gl
@@ -53,172 +52,12 @@ To do:
 
 ----
 
-Implement a Manager:
-
-WA.Managers.<name> = new function()
-{
-  var self = this;
-  ...
-  function destroy()
-  {
-    ...
-    self = null;
-  }
-
-  WA.Managers.event.registerFlush(destroy);
-}();
-
-WA.Managers.<name>.<object> = function()
-{}
-
-WA.i18n.setEntry('<name>.<id>', '<message>');
+Please read the 4glstructure.txt document for a resumed 4GL programmation guide
 
 ----
 
-4GL Manager:
-
-Classes tree:
-
-- 4glNode
-  - Application
-  - Container
-    - simpleContainer
-    - separatorContainer
-  - Zone
-  - Element
-    - htmlElement
-
-4glNode have:
-  - ID       string
-  - father   only main app have no father
-  - supertype   application, container, zone, element
-  - children    list of children registered
-  - domNode  DOM correspondint node
-  - state    0, 1, 2, 3, 4, 5, 6, 7, 10
-  - code     {} of anything build the node
-
-  appendChild()
-  removeChild()
-  getNode()
-
-
-==============================================================================================
-Implement a Container:
-Container skeletton:
-==============================================================================================
-
-WA.Containers.<name> = function(fatherNode, domID, code, listener)
-{
-  var self = this;
-  WA.Containers.<name>.sourceconstructor.call(this, fatherNode, domID, code, '<type of DOMNode>', { classname:'<class>' }, listener);
-  ...
-  addEvent('start', start);
-  addEvent('resize', resize);
-  addEvent('stop', stop);
-
-  /* system methods */
-  function resize()
-  {
-    WA.Containers.<name>.source.resize.call(self);
-    ...
-  }
-  function start()
-  {}
-  function stop()
-  {}
-  this.createZone = createZone;
-  function createZone(domID, code, listener)
-  {}
-  this.destroyZone = destroyZone;
-  function destroyZone(id)
-  {}
-  this.destroy = destroy;
-  function destroy(fast)
-  {
-    WA.Containers.<name>.source.destroy.call(self, fast);
-    ...
-    self = null;
-  }
-  /* User methods */
-  this.newZone = newZone;
-  function newZone(id, classname, style, ....)
-  {}
-  this.showZone = showZone;
-  function showZone(id)
-  {}
-  this.hideZone = hideZone;
-  function hideZone(id)
-  {}
-  this.deleteZone = deleteZone;
-  function deleteZone(id)
-  {}
-  this.activateZone = activateZone;
-  function activateZone(id)
-  {}
-  this.getValues = getValues;
-  function getValues()
-  {}
-  this.setValues = setValues;
-  function setValues(values)
-  {}
-}
-
-WA.extend(WA.Containers.<name>, WA.Managers.wa4gl._container);
-
-WA.Containers.<name>.<zone> = function(father, domID, code, listener, ....)
-{
-  WA.Containers.<name>.<zone>.sourceconstructor.call(this, father, domID, code, '<Type of DOMNode>', { classname:'zone' }, listener);
-  ...
-  addEvent('start', start);
-  addEvent('resize', resize);
-  addEvent('stop', stop);
-
-  /* system methods */
-  function resize()
-  {
-    WA.Containers.<name>.<zone>.source.resize.call(self);
-    ...
-  }
-  function start()
-  {}
-  function stop()
-  {}
-  this.destroy = destroy;
-  function destroy(fast)
-  {
-    WA.Containers.<name>.<zone>.source.destroy.call(self, fast);
-    ...
-    self = null;
-  }
-  /* User methods */
-  ...
-}
-
-WA.extend(WA.Containers.<name>.<zone>, WA.Managers.wa4gl._zone);
-
-----
-
-==============================================================================================
-Implement an Element:
-Element skeletton:
-==============================================================================================
-
-WA.Elements.<name> = function()
-{}
-
-WA.extend(WA.Elements.<name>, WA.Managers.wa4gl._element);
-
-** Elements basic functions:
-
-show() show the full element
-hide() hide the full element
-setSize() set size of the element
-setPosition() set position of the element
-getValues() get values of the element if apply
-setValues() set values of the element if apply
-destroy() called to destroy the element
-
-----
+V2, build 3 - :
+- Corrected a bug in groupContainer to display correctly the form context when changing the mode
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released
@@ -239,6 +78,8 @@ V2, build 2 - 2012-06-21:
 - hiddenfieldElement modified to use data as default value
 - Error corrected in WA.eventManager using the WA.nothing void function (error in IE)
 - Error corrected in WA.ajaxManager aborting requests
+- Calculation of elements positions has been replaced with 'auto' instead of 'undefined
+- Corrected a bug on IE when assigning a type of an input already attached
 
 V2, build 1 - 2012-06-19:
 - 4gl Manager rewritten, lighter, faster, event driven

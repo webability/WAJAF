@@ -288,6 +288,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
 
     // we remove the "loading" stuff if any
     stopLoading();
+    checkStatus();
   }
 
   function checkStatus()
@@ -346,6 +347,9 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       self.countload = 0;
       fillData();
     }
+    else
+      checkStatus();
+
     WA.Managers.event.on('click', self.domNodeMessage, hideMessage, true);
   }
 

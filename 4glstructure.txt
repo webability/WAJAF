@@ -1,0 +1,202 @@
+
+Resumed implementation guide:
+
+----
+
+How to implement a Manager:
+
+WA.Managers.<name> = new function()
+{
+  var self = this;
+  ...
+  function destroy()
+  {
+    ...
+    self = null;
+  }
+
+  WA.Managers.event.registerFlush(destroy);
+}();
+
+WA.Managers.<name>.<object> = function()
+{}
+
+WA.i18n.setEntry('<name>.<id>', '<message>');
+
+----
+
+The 4GL Manager classes tree:
+
+- 4glnode
+  - Application
+  - Container
+    - simpleContainer
+    - separatorContainer
+    - tabContainer
+    - treeContainer
+    - groupContainer
+  - Zone
+    - simpleZone
+    - separatorZone
+    - separatorSizer (internal zone, no children)
+    - tabZone
+    - tabSelector (internal zone, no children)
+    - treeZone
+    - groupZone
+  - Element
+    - htmlElement
+    - codeElement
+    - buttonElement
+    - imageElement
+    - linkElement
+    - textElement
+    - textfieldElement
+    - hiddenfieldElement
+    - lovfieldElement
+    - textareafieldElement
+
+
+The _4glnode attributes and methods:
+  - app        the owner application object
+  - domID      the 3-parts DOM id, string
+  - xdomID     the 3-parts id exploded in an array
+  - id         the application local id of the node (3rd part of the domID)
+  - supertype  enum(application, container, zone, element)
+  - children   the list of registered children (only if application, container, zone)
+  - _4gl       true: it's a normal 4gl node, false: main app context node
+  - father     the father of this node (only main app context node have no father)
+  - listener   the listener to send a copy of any event
+  - code       object with the xml equivalent code
+  - state      0: creation, 1: loading, 2: checking, 3: building, 4: starting, 5: running, 6: stopping, 7: stopped, 10: critical error
+  - visible    true if the node is visible, or false
+  - serverlistener true if the server listen this node events, or false
+  - application  contains the inner application object (only if the node is a zone)
+  - created    true if the node has been created by the constructor, or false
+  - domNode    DOM corresponding node
+
+  appendChild()
+  removeChild()
+  addEvent()
+  removeEvent()
+  registerEvents()
+  callEvent()
+  propagate()
+  resize()
+  destroy()
+
+==============================================================================================
+Implement a Container:
+Container skeletton:
+==============================================================================================
+
+WA.Containers.<name> = function(fatherNode, domID, code, listener)
+{
+  var self = this;
+  WA.Containers.<name>.sourceconstructor.call(this, fatherNode, domID, code, '<type of DOMNode>', { classname:'<class>' }, listener);
+  ...
+  addEvent('start', start);
+  addEvent('resize', resize);
+  addEvent('stop', stop);
+
+  /* system methods */
+  function resize()
+  {
+    WA.Containers.<name>.source.resize.call(self);
+    ...
+  }
+  function start()
+  {}
+  function stop()
+  {}
+  this.createZone = createZone;
+  function createZone(domID, code, listener)
+  {}
+  this.destroyZone = destroyZone;
+  function destroyZone(id)
+  {}
+  this.destroy = destroy;
+  function destroy(fast)
+  {
+    WA.Containers.<name>.source.destroy.call(self, fast);
+    ...
+    self = null;
+  }
+  /* User methods */
+  this.newZone = newZone;
+  function newZone(id, classname, style, ....)
+  {}
+  this.showZone = showZone;
+  function showZone(id)
+  {}
+  this.hideZone = hideZone;
+  function hideZone(id)
+  {}
+  this.deleteZone = deleteZone;
+  function deleteZone(id)
+  {}
+  this.activateZone = activateZone;
+  function activateZone(id)
+  {}
+  this.getValues = getValues;
+  function getValues()
+  {}
+  this.setValues = setValues;
+  function setValues(values)
+  {}
+}
+
+WA.extend(WA.Containers.<name>, WA.Managers.wa4gl._container);
+
+WA.Containers.<name>.<zone> = function(father, domID, code, listener, ....)
+{
+  WA.Containers.<name>.<zone>.sourceconstructor.call(this, father, domID, code, '<Type of DOMNode>', { classname:'zone' }, listener);
+  ...
+  addEvent('start', start);
+  addEvent('resize', resize);
+  addEvent('stop', stop);
+
+  /* system methods */
+  function resize()
+  {
+    WA.Containers.<name>.<zone>.source.resize.call(self);
+    ...
+  }
+  function start()
+  {}
+  function stop()
+  {}
+  this.destroy = destroy;
+  function destroy(fast)
+  {
+    WA.Containers.<name>.<zone>.source.destroy.call(self, fast);
+    ...
+    self = null;
+  }
+  /* User methods */
+  ...
+}
+
+WA.extend(WA.Containers.<name>.<zone>, WA.Managers.wa4gl._zone);
+
+----
+
+==============================================================================================
+Implement an Element:
+Element skeletton:
+==============================================================================================
+
+WA.Elements.<name> = function()
+{}
+
+WA.extend(WA.Elements.<name>, WA.Managers.wa4gl._element);
+
+** Elements basic functions:
+
+show() show the full element
+hide() hide the full element
+setSize() set size of the element
+setPosition() set position of the element
+getValues() get values of the element if apply
+setValues() set values of the element if apply
+destroy() called to destroy the element
+
