@@ -749,20 +749,14 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     {
       if (params.messages[self.fields[i].id] == undefined)
         continue;
-      if (params.popup || self.error)
-      {
-        popup += params.messages[self.fields[i].id] + '\n';
-        html += params.messages[self.fields[i].id] + '<br />';
-      }
+      popup += params.messages[self.fields[i].id] + '\n';
+      html += params.messages[self.fields[i].id] + '<br />';
       self.fields[i].setError(params.messages[self.fields[i].id]);
     }
-    alert(html);
     if (html)
       showMessage(html, false);
     if (params.popup)
-    {
       alert(popup);
-    }
   }
 
   this.getFieldValue = getFieldValue;
