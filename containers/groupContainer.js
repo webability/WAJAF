@@ -603,11 +603,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       }
       else
       {
-        if (result.messages && result.messages.text)
-          showMessage(result.messages.text, false);
-        else
-          showMessage(self.servererroralert, false);
-
+        setMessages(result);
         self.callEvent('failure', self.domID, result);
         self.status = 4;
         checkClass();

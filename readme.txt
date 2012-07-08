@@ -58,6 +58,8 @@ Please read the 4glstructure.txt document for a resumed 4GL programmation guide
 
 V2, build 3 - :
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode
+- groupContainer modified to manage failure errors from the server
+
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released
