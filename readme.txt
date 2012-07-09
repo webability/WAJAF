@@ -63,6 +63,8 @@ V2, build 3 - :
 - textfieldELement modified to manage errors from the server
 - 4gl.css modified so the simple zone has no more auto overflow to auto-adapt to the container
 - buttonElement modified to not be disabled in a form if there is no predefined action
+- buttonElement modified to listen to the default resize event, and error corrected on stop event
+- treeContainer modified to autoload the data from the server if there is no dataset
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released

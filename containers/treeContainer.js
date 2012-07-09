@@ -85,40 +85,6 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
       self.zones[id].openclose();
   }
 
-  this.show = show;
-  function show()
-  {
-    if (!self.callEvent('preshow', self.domID))
-      return;
-    self.domNode.style.display = '';
-    self.visible = true;
-    self.resize();
-    self.callEvent('postshow', self.domID);
-    // finaly ask for a general resize
-    self.callEvent('resize', null);
-  }
-
-  this.hide = hide;
-  function hide()
-  {
-    if (!self.callEvent('prehide', self.domID))
-      return;
-    self.visible = false;
-    self.domNode.style.display = 'none';
-    self.callEvent('posthide', self.domID);
-  }
-
-  this.setSize = setSize;
-  function setSize(w,h)
-  {
-    if (w !== null)
-      self.domNode.style.width = w + 'px';
-    if (h !== null)
-      self.domNode.style.height = h + 'px';
-    self.resize();
-    // finaly ask for a general resize
-    self.callEvent('resize', null);
-  }
 
 
   // getvalues, setvalues, start, stop, resize and destroy are controlled by 4GL so no notifications are needed
@@ -133,11 +99,10 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
   {
   }
 
-  this.start = start;
   function start()
   {
     self.countload = 0;
-    self.fillData();
+    fillData();
   }
 
   this.destroy = destroy;
@@ -168,23 +133,20 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
 
     self.loaded = false;
     self.countload = 0;
-    self.fillData();
+    fillData();
   }
 
-
-  this.getData = getData;
   function getData(r)
   {
     self.data = WA.JSON.decode(r.responseText);
     self.loaded = true;
-    self.fillData();
+    fillData();
   }
 
   // any record change should call this
-  this.fillData = fillData;
   function fillData()
   {
-    if (!self.loaded && self.haslistener)
+    if (!self.loaded && self.serverlistener)
     {
       if (self.countload++ > 3)
       {
@@ -193,7 +155,7 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
       }
 
       // ask to the server the data
-      var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self._4glNode.application.appID + '.' + self._4glNode.id + '.json', 'POST', 'Order=get', self.getData, true);
+      var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', 'Order=get', getData, true);
 
       // we put the "loading"
 
@@ -329,7 +291,7 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
   this.sendServer = sendServer;
   function sendServer(order, code)
   {
-    if (!self.father.haslistener)
+    if (!self.father.serverlistener)
       return;
     // send information to server based on mode
     var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.father._4glNode.application.appID + '.' + self.father._4glNode.id + '.json', 'POST', 'Order='+order, self.getResponse, false);
