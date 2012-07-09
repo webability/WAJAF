@@ -293,7 +293,6 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
     if (!self.father.serverlistener)
       return;
     // send information to server based on mode
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', 'Order=get', getData, true);
     var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.father.app.applicationID + '.' + self.father.id + '.json', 'POST', 'Order='+order, getResponse, false);
     if (request)
     {
