@@ -282,7 +282,6 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
     // start an ajax request
   }
 
-  this.getResponse = getResponse;
   function getResponse(request)
   {
 //    alert(request.responseText);
@@ -294,7 +293,8 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
     if (!self.father.serverlistener)
       return;
     // send information to server based on mode
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.father._4glNode.application.appID + '.' + self.father._4glNode.id + '.json', 'POST', 'Order='+order, self.getResponse, false);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', 'Order=get', getData, true);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.father.app.applicationID + '.' + self.father.id + '.json', 'POST', 'Order='+order, getResponse, false);
     if (request)
     {
       for (var i in code)
