@@ -103,7 +103,8 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
     checkClass();
 
   this.addEvent('start', start);
-  this.addEvent('stop', start);
+  this.addEvent('stop', stop);
+  this.addEvent('resize', this.resize);
 
   function click()
   {

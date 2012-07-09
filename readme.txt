@@ -59,6 +59,7 @@ Please read the 4glstructure.txt document for a resumed 4GL programmation guide
 V2, build 3 - :
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode
 - groupContainer modified to manage failure errors from the server
+- groupContainer modified to send result to the success and failure events
 - textfieldELement modified to manage errors from the server
 - 4gl.css modified so the simple zone has no more auto overflow to auto-adapt to the container
 - buttonElement modified to not be disabled in a form if there is no predefined action
