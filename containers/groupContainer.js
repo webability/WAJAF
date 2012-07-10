@@ -342,6 +342,11 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
 
   function start()
   {
+    WA.Managers.event.on('click', self.domNodeMessage, hideMessage, true);
+  }
+
+  function poststart()
+  {
     changeMode(self.defaultmode);
     if (self.mode != 1 && !self.dataloaded)
     {
@@ -350,8 +355,6 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     }
     else
       checkStatus();
-
-    WA.Managers.event.on('click', self.domNodeMessage, hideMessage, true);
   }
 
   function stop()
