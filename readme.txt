@@ -49,6 +49,7 @@ To do:
 
 - making lab for elements, lab for container in 4gl interfase, standalone and local 4gl
 - make a simple classname for expandable, separator, tab containers
+- add an attribute to check key vs list in lovfieldELement case sensitive or case insensitive
 
 ----
 
@@ -66,6 +67,7 @@ V2, build 3 - :
 - buttonElement modified to listen to the default resize event, and error corrected on stop event
 - treeContainer modified to autoload the data from the server if there is no dataset
 - textfieldElement modified to support disabled and readonly properties
+- lovfieldElement modified to compare keys as case insensitive when populating the list
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released

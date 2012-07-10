@@ -62,7 +62,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
   // defaultvalue is the default for insert mode (code from the code, set below)
   // value is the value set in this mode by setValues, if we want to undo changes
   // accept an array of values if multiselect
-  this.defaultvalue = this.value = null;
+  this.defaultvalue = this.value = '';
 
   // errors on checks
   this.errors = {};
@@ -182,7 +182,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
     {
       // we intelligent populate based on option, select or search
       // is this the selected option ?
-      text += '<option value="'+i+'"'+(i==self.defaultvalue?' selected="selected"':'')+'>'+self.options[i]+'</option>';
+      text += '<option value="'+i+'"'+(i.toUpperCase()==self.defaultvalue.toUpperCase()?' selected="selected"':'')+'>'+self.options[i]+'</option>';
     }
     self.domNodeField.innerHTML = text;
   }
@@ -486,30 +486,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
 WA.extend(WA.Elements.lovfieldElement, WA.Managers.wa4gl._element);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
-
-
-
-
-
 
 	  this.domNode = document.createElement('select');
 	  if(this.multiselect)
@@ -531,231 +508,4 @@ WA.extend(WA.Elements.lovfieldElement, WA.Managers.wa4gl._element);
 	  domNodefather.appendChild(this.domNode);
   // we link with the group container if needed
 
-
-  this.checkStatus = checkStatus;
-  function checkStatus()
-  {
-    if (self.synchronize)
-    {
-      // we rebuild synchronize
-      self.synchronize.checkStatus();
-      self.synchronize.checkChildren();
-      self.synchronize.checkClass();
-      self.status = self.synchronize.status;
-      return;
-    }
-
-    // we check anything based on the attributes of the field
-    if (self.domNode.disabled)
-    {
-      self.status = 4;
-      return;
-    }
-    if (self.domNode.readonly)
-    {
-      self.status = 3;
-      return;
-    }
-    self.status = 1;
-    if (self.notnull && self.domNode.value == '')
-      self.status = 2;
-  }
-
-  this.checkClass = checkClass;
-  function checkClass()
-  {
-    switch (self.status)
-    {
-      case 4:
-        if (self.classnamedisabled)
-          self.domNode.className = self.classnamedisabled; break;
-      case 3:
-        if (self.classnamereadonly)
-          self.domNode.className = self.classnamereadonly; break;
-      case 2:
-        if (self.classnameerror)
-          self.domNode.className = self.classnameerror; break;
-      case 1:
-        if (self.classname)
-          self.domNode.className = self.classname; break;
-    }
-  }
-
-  this.checkChildren = checkChildren;
-  function checkChildren()
-  {
-    if (self.statuselement)
-      self.statuselement.setValues(self.status);
-    if (self.titleelement)
-      self.titleelement.setValues(self.status);
-    if (self.helpelement)
-      self.helpelement.setValues(self.status);
-    if (self.extraelement)
-      self.extraelement.setValues(self.status);
-    if (self.errorelement)
-      self.errorelement.setValues(self.status);
-  }
-
-  this.setError = setError;
-  function setError(values)
-  {
-    if (self.errorelement)
-      self.errorelement.setError(values);
-  }
-
-  this.setHelp = setHelp;
-  function setHelp(values)
-  {
-    if (self.helpelement)
-      self.helpelement.setHelp(values);
-  }
-
-  this.onchange = onchange;
-  function onchange()
-  {
-    self.checkStatus();
-    self.checkChildren();
-    if (self.synchronizeelement)
-    {
-      self.synchronizeelement.status = self.status;
-      self.synchronizeelement.checkChildren();
-    }
-//    self.Notify('change')
-  }
-
-  this.onblur = onblur;
-  function onblur()
-  {
-    self.checkClass();
-    if (self.synchronizeelement)
-    {
-      self.synchronizeelement.checkClass();
-    }
-  }
-
-  this.onfocus = onfocus;
-  function onfocus()
-  {
-    if (self.classnamefocus)
-      self.domNode.className = self.classnamefocus;
-  }
-
-  this.start = start;
-  function start()
-  {
-
-    self.domNode.onchange = self.onchange;
-    self.domNode.onfocus = self.onfocus;
-    self.domNode.onblur = self.onblur;
-
-    // we fill the list if any
-    var item = 0;
-    if (!self.notnull)
-    {
-      var node = document.createElement('option');
-      node.id = null;
-      node.value = null;
-      node.text = '';
-      if(self.params[i].attributes.selected == 'yes')
-        node.selected = true;
-      self.domNode.options[item++] = node;
-    }
-
-    for (var i in self.params)
-    {
-      if (self.params[i].tag && self.params[i].tag == 'option')
-      {
-
-        var node = document.createElement('option');
-        node.id = self.params[i].attributes.id;
-        node.value = self.params[i].attributes.id;
-        node.text = self.params[i].data;
-
-        // Add Pau, esta bien phil ? para preseleccionar el combo desde un
-        // dbmaskfieldloo
-        if(self.params[i].attributes.selected == 'yes')
-          node.selected = true;
-        // End Add Pau
-
-        //self.domNode.appendChild(node);
-        // Add Pau, esta bien phil ? el appendChild no "pinta" a la
-        // opción en el combo
-        // el "options[]" sí
-        self.domNode.options[item++] = node;
-        // End Add Pau
-      }
-    }
-
-    // we register to our group if needed
-    self.checkStatus();
-    self.checkChildren();
-    self.checkClass();
-    self.resize();
-  }
-
-  this.resize = resize;
-  function resize()
-  {
-    self._4glNode.nodeResize(self.domNodefather, self.domNode, self.params.attributes);
-  }
-
-  this.show = show;
-  function show()
-  {
-    self.domNode.style.display = "";
-  }
-
-  this.hide = hide;
-  function hide()
-  {
-    self.domNode.style.display = "none";
-  }
-
-  this.getValues = getValues;
-  function getValues()
-  {
-    return self.domNode.value;
-  }
-
-  this.setValues = setValues;
-  function setValues(values)
-  {
-    self.domNode.value = values;
-    self.checkStatus();
-    self.checkChildren();
-    self.checkClass();
-  }
-
-  this.stop = stop;
-  function stop()
-  {
-    if (self.group)
-      self.group.unregisterField(self);
-    self.domNode.onfocus = null;
-    self.domNode.onblur = null;
-    self.domNode.onchange = null;
-  }
-
-  this.destroy = destroy;
-  function destroy()
-  {
-    self.group = null;
-    self.domNode = null;
-    self.statuselement = null;
-    self.regexp = null;
-    self.classnamereadonly = null;
-    self.classnamedisabled = null;
-    self.classnamefocus = null;
-    self.classnameerror = null;
-    self.classname = null;
-    self.feedback = feedback;
-    self.params = params;
-    self.domID = domID;
-    self.domNodefather = domNodefather;
-    self = null;
-  }
-}
-
-// Needed aliases
-WA.Elements.lovfieldElement = lovfieldElement;
 */
