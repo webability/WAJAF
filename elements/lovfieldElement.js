@@ -316,7 +316,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
   this.checkAll = checkAll;
   function checkAll(notifygroup)
   {
-    if (self.status != 5)
+    if (self.state != 5)
       return;
     self.checkStatus();
     self.checkClass();
