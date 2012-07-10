@@ -190,7 +190,6 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
   this.checkStatus = checkStatus;
   function checkStatus()
   {
-alert(3);
     for (var i in self.errors)
       self.errors[i] = false;
 
@@ -317,6 +316,8 @@ alert(3);
   this.checkAll = checkAll;
   function checkAll(notifygroup)
   {
+    if (self.status != 5)
+      return;
     self.checkStatus();
     self.checkClass();
     self.checkChildren(false);
@@ -415,7 +416,6 @@ alert(3);
 
   function start()
   {
-alert(1);
     WA.Managers.event.on('keyup', self.domNodeField, onchange, true);
     WA.Managers.event.on('focus', self.domNodeField, onfocus, true);
     WA.Managers.event.on('blur', self.domNodeField, onblur, true);
@@ -430,7 +430,6 @@ alert(1);
 
     // we populate the values
     populate();
-alert(2);
 
     // we do not check, there is still no value. the setMode will do the job
   }
