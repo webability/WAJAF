@@ -316,8 +316,6 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
   this.checkAll = checkAll;
   function checkAll(notifygroup)
   {
-    if (self.state != 5)
-      return;
     self.checkStatus();
     self.checkClass();
     self.checkChildren(false);
@@ -358,6 +356,9 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
       return;
     }
     self.father.show();
+
+    // we populate the values
+    populate();
 
     if (keep)
       self.domNodeValue.innerHTML = self.domNodeField.value;
@@ -427,11 +428,6 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
       if (self.synchronizer)
         self.synchronizer.registerSynchronize(self);
     }
-
-    // we populate the values
-    populate();
-
-    // we do not check, there is still no value. the setMode will do the job
   }
 
   this.getValues = getValues;

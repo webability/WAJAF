@@ -69,6 +69,7 @@ V2, build 3 - :
 - textfieldElement modified to support disabled and readonly properties
 - lovfieldElement modified to compare keys as case insensitive when populating the list
 - post* events implemented on propagate event in the _4glnode class
+- poststart implemented in groupContainer to calculate the validity of the form
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released
