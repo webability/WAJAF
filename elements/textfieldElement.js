@@ -207,6 +207,10 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
       self.status = 3;
       return;
     }
+    if (self.domNodeField.disabled == true)
+      self.domNodeField.disabled == false;
+    if (self.domNodeField.readOnly == true)
+      self.domNodeField.readOnly == false;
     var value = self.domNodeField.value;
     if (self.value != undefined && value == self.value && self.mode != 1)
     {
@@ -271,8 +275,8 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     var extras = '';
     switch (self.status)
     {
-      case 4: extras += ' disabled'; break;
-      case 3: extras += ' readonly'; break;
+      case 4: extras += ' disabled'; self.domNodeField.disabled = true; break;
+      case 3: extras += ' readonly'; self.domNodeField.readOnly = true; break;
       case 2: extras += ' error'; self.father.setStatus(self.focus?1:(self.firstview?0:3)); break;
       case 1: extras += ' ok'; self.father.setStatus(self.focus?1:(self.firstview?0:2)); break;
       default: self.father.setStatus(self.focus?1:0); break;
