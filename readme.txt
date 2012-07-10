@@ -68,6 +68,7 @@ V2, build 3 - :
 - treeContainer modified to autoload the data from the server if there is no dataset
 - textfieldElement modified to support disabled and readonly properties
 - lovfieldElement modified to compare keys as case insensitive when populating the list
+- post* events implemented on propagate event in the _4glnode class
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released

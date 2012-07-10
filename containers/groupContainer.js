@@ -170,6 +170,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   this.domNodeLoading.style.display = 'none';  // not shown by default
 
   this.addEvent('start', start);
+  this.addEvent('poststart', poststart);
   this.addEvent('stop', stop);
   this.addEvent('resize', this.resize);
   this.addEvent('postresize', this.postresize);  // resize is default resize

@@ -795,6 +795,7 @@ WA.Managers.wa4gl._4glnode.prototype.propagate = function(type, params)
     this.state = 5;
   if (type == 'stop')
     this.state = 7;
+  this.callEvent('post'+type, params?params:{id:this.xdomID[2]});
   return result;
 }
 
