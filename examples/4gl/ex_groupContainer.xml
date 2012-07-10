@@ -2,7 +2,7 @@
 <application id="ex_groupContainer">
 
   <!-- Note important: the min-width of the container should be always: max field size + 480px (help size) -->
-  <container type="groupContainer" id="myform" style="min-width: 880px;" mode="1" authmodes="1234" varkey="key" key="1" varorder="order" varmode="mode">
+  <container type="groupContainer" id="myform" style="min-width: 880px;" mode="4" authmodes="1234" varkey="key" key="1" varorder="order" varmode="mode">
     <zone type="field">
       <element type="textfieldElement" id="fullname" size="400" minlength="3" maxlength="50" minwords="2" maxwords="10" format="^[a-zA-Z0-9\s]{1,}$" visible="1234" info="34" disabled="" readonly="" notnull="123" helpmode="12">
         Your full name:
