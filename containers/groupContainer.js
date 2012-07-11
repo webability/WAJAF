@@ -678,6 +678,8 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
         request.addParameter(self.varkey, self.currentkey);
       request.addParameter(self.varmode, self.mode);
       request.addParameter(self.varorder, 'submit');
+      // please communicate with JSON (transparent variable to notify to the server we need a JSON answer. aka dommask for instance)
+      request.addParameter(self.id+'_JSON', 1);
       request.send();
     }
     else

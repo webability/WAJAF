@@ -173,7 +173,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
 
   function populate()
   {
-    var text = '';
+   var text = '';
     if (!self.notnull[self.mode])
     {
       text += '<option value=""'+(!self.defaultvalue?' selected="selected"':'')+'></option>';
@@ -182,7 +182,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
     {
       // we intelligent populate based on option, select or search
       // is this the selected option ?
-      text += '<option value="'+i+'"'+(i.toUpperCase()==self.defaultvalue.toUpperCase()?' selected="selected"':'')+'>'+self.options[i]+'</option>';
+      text += '<option value="'+i+'"'+(i==self.defaultvalue?' selected="selected"':'')+'>'+self.options[i]+'</option>';
     }
     self.domNodeField.innerHTML = text;
   }
@@ -347,7 +347,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
   this.setMode = setMode;
   function setMode(mode, keep)
   {
-    self.mode = mode;
+   self.mode = mode;
 
     // Set all the data based on the mode
     if (!self.isvisible[mode])

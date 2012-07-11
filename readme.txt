@@ -49,7 +49,7 @@ To do:
 
 - making lab for elements, lab for container in 4gl interfase, standalone and local 4gl
 - make a simple classname for expandable, separator, tab containers
-- add an attribute to check key vs list in lovfieldELement case sensitive or case insensitive
+- check field disabled or readonly: class assignation is not working well (edition mode is too persistent on blur)
 
 ----
 
@@ -67,7 +67,7 @@ V2, build 3 - :
 - buttonElement modified to listen to the default resize event, and error corrected on stop event
 - treeContainer modified to autoload the data from the server if there is no dataset
 - textfieldElement modified to support disabled and readonly properties
-- lovfieldElement modified to compare keys as case insensitive when populating the list
+- lovfieldElement modified to populate on mode change, not on start
 - post* events implemented on propagate event in the _4glnode class
 - poststart implemented in groupContainer to calculate the validity of the form
 
