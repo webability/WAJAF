@@ -142,16 +142,19 @@ a.link:hover { color: #aa0000; text-decoration: underline; cursor: pointer; }
 .button.success:hover { background-color: #b8e8b8; color: #006600; text-decoration: none; }
 .button.success:active { background-color: #98e898; color: #006600; text-decoration: none; }
 .button.success.disabled { border: 1px solid #b8e8b8; background-color: #eeeeee; color: #aaaaaa; }
+.button.success:focus { text-decoration: underline; border-color: black; }
 
 .button.warning { border: 1px solid #F89406; background-color: #F89406; color: white; }
 .button.warning:hover { background-color: #fdb; color: #f90; text-decoration: none; }
 .button.warning:active { background-color: #fca; color: #f90; text-decoration: none; }
 .button.warning.disabled { border: 1px solid #e8b8b8; background-color: #eeeeee; color: #aaaaaa; }
+.button.warning:focus { text-decoration: underline; border-color: black; }
 
 .button.danger { border: 1px solid #BD362F; background-color: #BD362F; color: white; }
 .button.danger:hover { background-color: #e8b8b8; color: #aa0000; text-decoration: none; }
 .button.danger:active { background-color: #e89898; color: #aa0000; text-decoration: none; }
 .button.danger.disabled { border: 1px solid #e8b8b8; background-color: #eeeeee; color: #aaaaaa; }
+.button.danger:focus { text-decoration: underline; border-color: black; }
 
 .button.confirm { background-image: url('../../skins/4gl/button-confirm.png'); background-repeat: no-repeat; padding-left: 20px; background-position: 2px 2px; }
 .button.cancel { background-image: url('../../skins/4gl/button-cancel.png'); background-repeat: no-repeat; padding-left: 20px; background-position: 2px 2px; }
