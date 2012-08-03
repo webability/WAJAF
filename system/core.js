@@ -1643,14 +1643,14 @@ WA.browser.getCursorNode = function(e)
 WA.browser.getCursorDocumentX = function(e)
 {
   var ev = e || window.event;
-  return ev.clientX + WA.browser.getScrollLeft() - (document.documentElement.clientLeft || 0);  // MSIE 7 has a weird 2 pixels offset for mouse coords !
+  return ev.pageX - (document.documentElement.clientLeft || 0);  // MSIE 7 has a weird 2 pixels offset for mouse coords !
 }
 
   // returns the absolute position of the event in the document
 WA.browser.getCursorDocumentY = function(e)
 {
   var ev = e || window.event;
-  return ev.clientY + WA.browser.getScrollTop() - (document.documentElement.clientLeft || 0);  // MSIE 7 has a weird 2 pixels offset for mouse coords !
+  return ev.pageY - (document.documentElement.clientTop || 0);  // MSIE 7 has a weird 2 pixels offset for mouse coords !
 }
 
   // returns the absolute position of the event in the browserwindow

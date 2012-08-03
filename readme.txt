@@ -70,6 +70,7 @@ V2, build 3 - :
 - lovfieldElement modified to populate on mode change, not on start
 - post* events implemented on propagate event in the _4glnode class
 - poststart implemented in groupContainer to calculate the validity of the form
+- Corrected a bug in core.js on getCursorDocumentX and getCursorDocumentY, the position was not correctly calculated
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released

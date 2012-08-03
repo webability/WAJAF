@@ -133,6 +133,7 @@ a.link:hover { color: #aa0000; text-decoration: underline; cursor: pointer; }
 /* buttonElement default class */
 
 .button { display:inline-block; margin: 2px; border: 1px solid #57c; background-color: #57c; color: white; font-weight: bold; font-size: 12px; padding: 3px; cursor: pointer; text-decoration: none; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; -khtml-border-radius: 5px; }
+.button:focus { text-decoration: underline; border-color: black; }
 .button:hover { background-color: #DFF4FF; color: #57c; text-decoration: none; }
 .button:active { background-color: #a6b9f6; color: #57c; text-decoration: none; }
 .button.disabled { border: 1px solid #a6b9f6; background-color: #eeeeee; color: #aaaaaa; cursor: not-allowed; }
