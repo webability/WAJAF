@@ -212,6 +212,16 @@ function(e)
         ]]></code>
                 </event>
               </element>
+              <element type="buttonElement">Reload the menu tree at the left
+                <event type="click">
+                  <code><![CDATA[
+function(e)
+{
+  WA.$N('menu').reload();
+}
+        ]]></code>
+                </event>
+              </element>
 
             </zone>
           </container>

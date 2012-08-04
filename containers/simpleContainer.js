@@ -85,13 +85,14 @@ WA.Containers.simpleContainer = function(fatherNode, domID, code, listener)
       throw 'Error: the zone does not exists in simpleContainer.destroyZone: id=' + ldomID[2];
 
     // 2. call event destroy
-    if (!self.callEvent('destroy', {id:ldomID[2]}) )
+    if (!self.callEvent('predestroy', {id:ldomID[2]}) )
       return;
 
     if (self.zoneactive == ldomID[2])
       self.activateZone(null);
 
-    self.zones[ldomID[2]].destroy();
+    self.app.destroyTree(ldomID[2]);
+//    self.zones[ldomID[2]].destroy();
     delete self.zones[ldomID[2]];
     self.callEvent('postdestroy', {id:ldomID[2]});
   }

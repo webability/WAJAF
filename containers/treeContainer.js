@@ -67,15 +67,23 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
   }
 
   this.destroyZone = destroyZone;
-  function destroyZone(id, _4gl)
+  function destroyZone(domID)
   {
-    var ldomID = WA.parseID(id, self.xdomID);
+    var ldomID = WA.parseID(domID, self.xdomID);
+    if (!ldomID)
+      throw 'Error: the zone id is not valid in treeContainer.destroyZone: id=' + domID;
+    // check the zone must exists YET !
+    if (!self.zones[ldomID[2]])
+      throw 'Error: the zone does not exists in treeContainer.destroyZone: id=' + ldomID[2];
 
-    if (!_4gl && self._4glNode)
-    {
-      self._4glNode.destroyNode(ldomID[2]);
+    // 2. call event destroy
+    if (!self.callEvent('predestroy', {id:ldomID[2]}) )
       return;
-    }
+
+    self.app.destroyTree(ldomID[2]);
+//    self.zones[ldomID[2]].destroy();
+    delete self.zones[ldomID[2]];
+    self.callEvent('postdestroy', {id:ldomID[2]});
   }
 
   this.switchzone = switchzone;
@@ -84,8 +92,6 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
     if (self.zones[id])
       self.zones[id].openclose();
   }
-
-
 
   // getvalues, setvalues, start, stop, resize and destroy are controlled by 4GL so no notifications are needed
   this.getValues = getValues;
@@ -118,13 +124,12 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
   this.reload = reload;
   function reload()
   {
-    if (!self.running)
+    if (self.state != 5)
       return;
 
     // destroy the existing stuff
     for (var i in self.zones)
     {
-      self.zones[i].stop();
       self.destroyZone(i);
     }
     self.zones = {};          // Destroy all the zones
@@ -377,15 +382,15 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
   }
 
   this.destroy = destroy;
-  function destroy()
+  function destroy(fast)
   {
-    if (self.running)
-      self.stop();
-    self.domNode = null;
-    self.code = null;
-    self.notify = null;
-    self.domID = null;
-    self.father = null;
+    WA.Containers.treeContainer.treeZone.source.destroy.call(self, fast);
+
+    self.children = null;
+    self.container = null;
+    self.domNodeMain = null;
+    self.domNodeOpenClose = null;
+    self.domNodeChildren = null;
     self = null;
   }
 }

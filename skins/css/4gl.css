@@ -77,6 +77,7 @@
 .treeleave { }
 .treedata { height: 1.8em; }
 .treechildren { }
+.treechildren>.zone { list-style: none; }
 
 /* group CONTAINER CLASSES */
 
