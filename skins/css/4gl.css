@@ -47,16 +47,19 @@
 .tab>.selector>.select { position: absolute; right: 0px; top: 0px; width: 16px; height: 20px; background-color: #ccffcc; background-image: url('../../skins/4gl/tab-selector-select.png'); border: 1px Solid #99bbe8; }
 .tab>.selector>.select:hover { background-color: #ffc; }
 
-.tab>.selector>.selectorcontainer>div>.taboff { float: left; cursor: pointer; height: 21px; cursor: pointer; border: 1px solid #99bbe8; white-space: nowrap; -webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; background-color: #def; padding: 3px; font-weight: bold; color: #999; position: absolute; padding-right: 15px;}
+.tab>.selector>.selectorcontainer>div>.taboff { float: left; cursor: pointer; height: 21px; cursor: pointer; border: 1px solid #99bbe8; white-space: nowrap; -webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; background-color: #def; padding: 3px; font-weight: bold; color: #999; position: absolute; padding-right: 3px;}
 .tab>.selector>.selectorcontainer>div>.taboff:hover { background-color: #79d; color: #006; }
 .tab>.selector>.selectorcontainer>div>.taboff>.tabclose { margin-top: 3px; margin-left: 3px; width: 10px; height: 10px; background-image: url('../../skins/4gl/tab-close.png'); }
+.tab>.selector>.selectorcontainer>div>.taboff>.tabmove { cursor: w-resize; margin-top: 3px; margin-left: 3px; width: 10px; height: 10px; background-image: url('../../skins/4gl/tab-move.png'); }
 
-.tab>.selector>.selectorcontainer>div>.tabon { float: left; cursor: pointer; height: 21px; cursor: pointer; border: 1px solid #99bbe8; white-space: nowrap; -webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; background-color: #fff; padding: 3px; font-weight: bold; color: black; position: absolute; padding-right: 15px; }
+.tab>.selector>.selectorcontainer>div>.tabon { float: left; cursor: pointer; height: 21px; cursor: pointer; border: 1px solid #99bbe8; white-space: nowrap; -webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; background-color: #fff; padding: 3px; font-weight: bold; color: black; position: absolute; padding-right: 3px; }
 .tab>.selector>.selectorcontainer>div>.tabon:hover { color: #79d; }
 .tab>.selector>.selectorcontainer>div>.tabon>.tabclose { margin-top: 3px; margin-left: 3px; width: 10px; height: 10px; background-image: url('../../skins/4gl/tab-close.png'); }
+.tab>.selector>.selectorcontainer>div>.tabon>.tabmove { cursor: w-resize; margin-top: 3px; margin-left: 3px; width: 10px; height: 10px; background-image: url('../../skins/4gl/tab-move.png'); }
 
 .tab>.selector>.selectorcontainer>div>.tabdisable { cursor: pointer; height: 21px; cursor: pointer; border: 1px solid #99bbe8; white-space: nowrap; -webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; background-color: #aaa; padding: 3px; position: absolute; padding-right: 15px; }
 .tab>.selector>.selectorcontainer>div>.tabdisable>.tabclose { margin-top: 3px; margin-left: 3px; width: 10px; height: 10px; background-image: url('../../skins/4gl/tab-close.png'); }
+.tab>.selector>.selectorcontainer>div>.tabdisable>.tabmove { cursor: w-resize; margin-top: 3px; margin-left: 3px; width: 10px; height: 10px; background-image: url('../../skins/4gl/tab-move.png'); }
 
 .tab>.list { border: 1px solid #99bbe8; background-color: #eef; z-index: 2; right: 0px; max-height: 300px; min-width: 200px; position: absolute; top: 22px; overflow: auto; }
 

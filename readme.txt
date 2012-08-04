@@ -71,6 +71,11 @@ V2, build 3 - :
 - post* events implemented on propagate event in the _4glnode class
 - poststart implemented in groupContainer to calculate the validity of the form
 - Corrected a bug in core.js on getCursorDocumentX and getCursorDocumentY, the position was not correctly calculated
+- treeContainer.reload() implemented
+- treeContainer.destroyNode implemented
+- treeContainer CSS modified to never display li list circle
+- tabContainer drag and drop of selector enhanced with class and button to move
+- buttonElement CSS enhanced to change visual on focus
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released

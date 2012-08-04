@@ -48,6 +48,7 @@ WA.Containers.tabContainer = function(domNodeFather, domID, code, listener)
   this.selectorsize = 0;
   this.availablewidth = 0;
   this.list = false;
+  this.changeorder = this.code.attributes.changeorder?this.code.attributes.changeorder!="no":true;
 
   this.hassound = !!WA.Managers.sound;
   this.soundopen = this.code.attributes.soundopen?this.code.attributes.soundopen:WA.Containers.tabContainer.soundopen;
@@ -661,6 +662,13 @@ WA.Containers.tabContainer.tabSelector = function(maincontainer, domID, domIDCon
   this.domNodeTitle.innerHTML = this.title;
   this.domNode.appendChild(this.domNodeTitle);
 
+  this.domNodeMove = document.createElement('div');
+  this.domNodeMove.id = this.domIDControl + '_move';
+  this.domNodeMove.className = 'tabmove';
+  this.domNodeMove.style.position = 'absolute';
+  this.domNodeMove.style.display = 'none';
+  this.domNode.appendChild(this.domNodeMove);
+
   this.domNodeClose = document.createElement('div');
   this.domNodeClose.className = 'tabclose';
   this.domNodeClose.style.position = 'absolute';
@@ -680,10 +688,21 @@ WA.Containers.tabContainer.tabSelector = function(maincontainer, domID, domIDCon
     {
       self.domNodeClose.style.display = '';
       self.domNodeClose.style.top = '0px';
-      self.domNodeClose.style.right = '0px';
+      self.domNodeClose.style.right = '3px';
+      self.domNode.style.paddingRight = '17px';
     }
     else
       self.domNodeClose.style.display = 'none';
+      
+    if (self.father.changeorder)
+    {
+      self.domNodeMove.style.display = '';
+      self.domNodeMove.style.top = '0px';
+      self.domNodeMove.style.right = self.closeable?'15px':'3px';
+      self.domNode.style.paddingRight = self.closeable?'29px':'17px';
+    }
+    else
+      self.domNodeMove.style.display = 'none';
   }
 
   this.setTitle = setTitle;
@@ -764,8 +783,8 @@ WA.Containers.tabContainer.tabSelector = function(maincontainer, domID, domIDCon
     if (self.code.attributes.shortcut != undefined)
       WA.Managers.event.key(self.code.attributes.shortcut, self.shortcut);
 
-    if (self.father.hasdd)
-      WA.Managers.dd.registerObject(self.father.domID, self.domNode, self.domNode, moving, null);
+    if (self.father.hasdd && self.father.changeorder)
+      WA.Managers.dd.registerObject(self.father.domID, self.domNodeMove, self.domNode, moving, null);
   }
 
   this.select = select;
@@ -812,7 +831,8 @@ WA.Containers.tabContainer.tabSelector = function(maincontainer, domID, domIDCon
 
   function stop()
   {
-    // we stop the key listener too if any
+    if (self.father.hasdd && self.father.changeorder)
+      WA.Managers.dd.unregisterObject(self.father.domID, self.domNode);
     if (self.code.attributes.shortcut != undefined)
       WA.Managers.event.removeKey(self.code.attributes.shortcut);
     WA.Managers.event.off('mousedown', self.domNodeTitle, self.click, true);
