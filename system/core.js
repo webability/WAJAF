@@ -1104,8 +1104,8 @@ WA.debug.explain = function(message, level)
     message = txt;
   }
 
-console.log(message);
-  // The console may be a popup or a division
+  if (console && console.log)
+    console.log(message);
   if (window.console && window.console.firebug && !WA.debug.Console)
     window.console.log(message);
   else if (WA.debug.Console && WA.debug.Console.write)

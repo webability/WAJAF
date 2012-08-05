@@ -76,6 +76,7 @@ V2, build 3 - :
 - treeContainer CSS modified to never display li list circle
 - tabContainer drag and drop of selector enhanced with class and button to move
 - buttonElement CSS enhanced to change visual on focus
+- core.js modified to use chrome console in debug
 
 V2, build 2 - 2012-06-21:
 - The prototypes methods have been prepared to be in a non-invasive context but not released
