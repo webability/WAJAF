@@ -40,11 +40,11 @@
 
 .tab>.selector { height: 22px; position: absolute; top: 0px; left: 0px; right: 0px; border-bottom: 1px solid #99bbe8; }
 .tab>.selector>.selectorcontainer { height: 22px; overflow: hidden; position: absolute; left: 0px; right: 16px; }
-.tab>.selector>.left { position: absolute; left: 0px; top: 0px; width: 8px; height: 20px; background-color: #ccffcc; background-image: url('../../skins/4gl/tab-selector-left.png'); border: 1px Solid #99bbe8; }
+.tab>.selector>.left { position: absolute; right: 28px; top: 0px; width: 8px; height: 20px; background-color: #def; background-image: url('../../skins/4gl/tab-selector-left.png'); border: 1px Solid #77a; }
 .tab>.selector>.left:hover { background-color: #ffc; }
-.tab>.selector>.right { position: absolute; left: 0px; top: 0px; width: 8px; height: 20px; background-color: #ccffcc; background-image: url('../../skins/4gl/tab-selector-right.png'); border: 1px Solid #99bbe8; }
+.tab>.selector>.right { position: absolute; right: 18px; top: 0px; width: 8px; height: 20px; background-color: #def; background-image: url('../../skins/4gl/tab-selector-right.png'); border: 1px Solid #77a; }
 .tab>.selector>.right:hover { background-color: #ffc; }
-.tab>.selector>.select { position: absolute; right: 0px; top: 0px; width: 16px; height: 20px; background-color: #ccffcc; background-image: url('../../skins/4gl/tab-selector-select.png'); border: 1px Solid #99bbe8; }
+.tab>.selector>.select { position: absolute; right: 0px; top: 0px; width: 16px; height: 20px; background-color: #def; background-image: url('../../skins/4gl/tab-selector-select.png'); border: 1px Solid #77a; }
 .tab>.selector>.select:hover { background-color: #ffc; }
 
 .tab>.selector>.selectorcontainer>div>.taboff { float: left; cursor: pointer; height: 21px; cursor: pointer; border: 1px solid #99bbe8; white-space: nowrap; -webkit-border-radius: 4px 4px 0 0; -moz-border-radius: 4px 4px 0 0; border-radius: 4px 4px 0 0; background-color: #def; padding: 3px; font-weight: bold; color: #999; position: absolute; padding-right: 3px;}
