@@ -57,7 +57,7 @@ Please read the 4glstructure.txt document for a resumed 4GL programmation guide
 
 ----
 
-V2, build 3 - :
+V2, build 3 - 2012-08-04:
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode
 - groupContainer modified to manage failure errors from the server
 - groupContainer modified to send result to the success and failure events
