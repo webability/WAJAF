@@ -1249,6 +1249,8 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
       return nodeFather.app.createTree(nodeFather, code);
     checkNodes(code);
     var n = buildTree(nodeFather, code);
+    // THE CREATEZONE OF THE CONTAINERS AUTO STARTS THE ZONES !!!!!!
+    // BE CAREFULL, THE START WILL BE CALLED TWICE WITH THIS ONE
     if (self.state == 5)
     {
       n.propagate('start');

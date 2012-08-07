@@ -57,6 +57,12 @@ Please read the 4glstructure.txt document for a resumed 4GL programmation guide
 
 ----
 
+V2, build 4 - :
+- Removed music MP3s
+- Renamed walk MP3s
+- wajaf->position now have right and bottom parameters optional in wajaf.lib
+- Added a check state in start/stop in treeContainer
+
 V2, build 3 - 2012-08-04:
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode
 - groupContainer modified to manage failure errors from the server

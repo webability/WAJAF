@@ -94,7 +94,7 @@ class wajaf extends WAClass
     return $this;
   }
 
-  public function position($left, $top, $right, $bottom)
+  public function position($left, $top, $right = null, $bottom = null)
   {
     $this->attributes['left'] = $left;
     $this->attributes['top'] = $top;
