@@ -61,7 +61,7 @@ V2, build 4 - :
 - Removed music MP3s
 - Renamed walk MP3s
 - wajaf->position now have right and bottom parameters optional in wajaf.lib
-- Added a check state in start/stop in treeContainer
+- _4glnode.propagate modified to not call start or stop events when the node is not in expected state
 
 V2, build 3 - 2012-08-04:
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode

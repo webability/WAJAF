@@ -107,8 +107,6 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
 
   function start()
   {
-    if (self.state == 5)
-      return;
     self.countload = 0;
     fillData();
   }
@@ -340,9 +338,6 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
 
   function start()
   {
-    if (self.state == 5)
-      return;
-    
     // link open close
     if (self.closeable)
       WA.Managers.event.on('click', self.domNodeOpenClose, self.openclose, true);
@@ -356,9 +351,6 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
 
   function stop()
   {
-    if (self.state != 5)
-      return;
-    
     if (self.closeable)
       WA.Managers.event.off('click', self.domNodeOpenClose, self.openclose, true);
   }

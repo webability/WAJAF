@@ -780,8 +780,14 @@ WA.Managers.wa4gl._4glnode.prototype.callEvent = function(type, params)
 
 WA.Managers.wa4gl._4glnode.prototype.propagate = function(type, params)
 {
+  // no notifications if we try to start when it is starting, started or stopping
+  if (type == 'start' && (this.state == 4 || this.state == 5 || this.state == 6))
+    return false;
+  // no notifications if we try to stop and we are not started
+  if (type == 'stop' && this.state != 5)
+    return false;
+  
   var result = true;
-  // no notifications if the app is not started
   if (type == 'start')
     this.state = 4;
   if (type == 'stop')
