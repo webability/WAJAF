@@ -291,8 +291,6 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
         WA.Managers.dd.registerZone(self.domID, self.columns[i].domNode, self.movezone);
     }
 
-    WA.Containers.widgetContainer.source.start.call(self);
-
     self.resize();
   }
 
