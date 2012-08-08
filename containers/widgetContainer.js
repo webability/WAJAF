@@ -76,7 +76,7 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
 
 
 
-    if (self.params.attributes.height && self.params.attributes.height != 'auto')
+    if (self.code.attributes.height && self.code.attributes.height != 'auto')
     {
       // we should check ALSO the inner scroll if there is some
       var height = WA.browser.getNodeInnerHeight(self.domNode) - WA.browser.getNodeExtraHeight(self.domNodeZones);
@@ -134,13 +134,13 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
 
     for (var i = 0; i < self.columnsmax; i++)
     {
-      if (self.params.attributes.height && self.params.attributes.height != 'auto')
-        if (self.params.attributes.height > height + WA.browser.getNodeExtraHeight(self.domNode) + WA.browser.getNodeExtraHeight(self.domNodeZones) + WA.browser.getNodeExtraHeight(self.columns[i].domNode))
-          height = self.params.attributes.height - WA.browser.getNodeExtraHeight(self.domNode) - WA.browser.getNodeExtraHeight(self.domNodeZones) - WA.browser.getNodeExtraHeight(self.columns[i].domNode);
+      if (self.code.attributes.height && self.code.attributes.height != 'auto')
+        if (self.code.attributes.height > height + WA.browser.getNodeExtraHeight(self.domNode) + WA.browser.getNodeExtraHeight(self.domNodeZones) + WA.browser.getNodeExtraHeight(self.columns[i].domNode))
+          height = self.code.attributes.height - WA.browser.getNodeExtraHeight(self.domNode) - WA.browser.getNodeExtraHeight(self.domNodeZones) - WA.browser.getNodeExtraHeight(self.columns[i].domNode);
       self.columns[i].setHeight(height);
     }
 
-    if (!self.params.attributes.height || (self.params.attributes.height && self.params.attributes.height == 'auto'))
+    if (!self.code.attributes.height || (self.code.attributes.height && self.code.attributes.height == 'auto'))
     {
       height += WA.browser.getNodeExtraHeight(self.domNode) + WA.browser.getNodeExtraHeight(self.domNodeZones) + WA.browser.getNodeExtraHeight(self.columns[0].domNode);
       self.domNode.style.height = height + 'px';
@@ -593,7 +593,7 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
     if (self.running > 0)
       self.stop();
     self.domNode = null;
-    self.params = null;
+    self.code = null;
     self.notify = null;
     self.domID = null;
     self.maincontainer = null;
@@ -639,7 +639,7 @@ WA.Containers.widgetContainer.widgetColumn = function(maincontainer, domID, domN
     if (self.running > 0)
       self.stop();
     self.domNode = null;
-    self.params = null;
+    self.code = null;
     self.notify = null;
     self.domID = null;
     self.maincontainer = null;
