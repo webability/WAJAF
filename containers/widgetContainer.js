@@ -443,7 +443,7 @@ WA.extend(WA.Containers.widgetContainer, WA.Managers.wa4gl._container);
 WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, notify)
 {
   var self = this;
-  WA.Containers.widgetContainer.widgetZone.sourceconstructor.call(this, maincontainer, domID, code, notify, { classname:maincontainer.classes.classnamezone }, 'div');
+  WA.Containers.widgetContainer.widgetZone.sourceconstructor.call(this, maincontainer, domID, code, 'div', { classname:'zone' }, notify);
   this.domNode.style.display = '';
   this.domNode.className += ' zone';
   this.visible = this.code.attributes.visible?this.code.attributes.visible!='no':true;
@@ -496,6 +496,10 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
   this.domNodeBox.appendChild(this.domNode);
 
   this.domNodeEditorContainer = null;
+
+  this.addEvent('start', start);
+//  this.addEvent('resize', resize);
+  this.addEvent('stop', stop);
 
   this.resize = resize;
   function resize()
