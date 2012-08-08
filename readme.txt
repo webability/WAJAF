@@ -34,7 +34,7 @@ Thank you !
 
 ----
 
-This is the version 2, build 3
+This is the version 2, build 4
 
 - To change the build:
   edit system/core.js at the beginning and change the version number
@@ -62,6 +62,8 @@ V2, build 4 - :
 - Renamed walk MP3s
 - wajaf->position now have right and bottom parameters optional in wajaf.lib
 - _4glnode.propagate modified to not call start or stop events when the node is not in expected state
+- 4gl.css modified in speraratorcontainer to use default sizer
+- Added widgetContainer, modified to work on v2
 
 V2, build 3 - 2012-08-04:
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode
