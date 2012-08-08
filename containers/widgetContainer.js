@@ -48,10 +48,10 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
   WA.Containers.widgetContainer.sourceconstructor.call(this, domNodeFather, domID, code, 'div', { classname:'widget' }, listener);
 
   this.zones = {};
-  this.columnsmax = this.params.attributes.columns?params.attributes.columns:3;
+  this.columnsmax = this.code.attributes.columns?code.attributes.columns:3;
   this.columns = [];
 
-  this.moveable = (params.attributes.moveable==='yes');
+  this.moveable = (code.attributes.moveable==='yes');
   this.hasdd = !!WA.Managers.dd;
   this.movingzone = null;
 
