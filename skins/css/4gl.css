@@ -18,19 +18,17 @@
 .separatorhorizontal>.sizer { background-color: #dfe8f6; cursor: e-resize; cursor: col-resize; width: 10px; background-image: url('../../skins/4gl/separator-sizer.png'); background-position: center center; background-repeat: no-repeat; position: absolute; top: 0px; bottom: 0px; }
 .separatorhorizontal>.zone { margin: 2px; border: 1px solid #99bbe8; background-color: white; overflow: auto; position: absolute; top: 0px; bottom: 0px; -moz-box-shadow: 2px 2px 2px #79c; -webkit-box-shadow: 2px 2px 2px #79c; box-shadow: 2px 2px 2px #79c; }
 
-/* the container take care to use relative or absolute and metrics, based on width, height, top, left, right, bottom */
 .separatorvertical { position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: auto; }
 .separatorvertical>.sizer { background-color: #dfe8f6; cursor: s-resize; cursor: row-resize; height: 10px; background-image: url('../../skins/4gl/separator-sizer.png'); background-position: center center; background-repeat: no-repeat; position: absolute; left: 0px; right: 0px; }
 .separatorvertical>.zone { margin: 2px; border: 1px solid #99bbe8; background-color: white;  overflow: auto; position: absolute; left: 0px; right: 0px; -moz-box-shadow: 2px 2px 2px #79c; -webkit-box-shadow: 2px 2px 2px #79c; box-shadow: 2px 2px 2px #79c; }
 
-/* invisible separator classes, use separatorinvisible as classname */
+/* invisible (zones no border/bg) separator classes, use separatorinvisible as classname */
 .separatorinvisiblehorizontal { position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: auto; }
-.separatorinvisiblehorizontal>.sizer { background-color: #dfe8f6; cursor: e-resize; cursor: col-resize; width: 10px; background-image: url('../../skins/4gl/separatorinvisible-sizer.png'); background-position: center center; background-repeat: no-repeat; position: absolute; top: 0px; bottom: 0px; }
+.separatorinvisiblehorizontal>.sizer { background-color: #dfe8f6; cursor: e-resize; cursor: col-resize; width: 10px; background-image: url('../../skins/4gl/separator-sizer.png'); background-position: center center; background-repeat: no-repeat; position: absolute; top: 0px; bottom: 0px; }
 .separatorinvisiblehorizontal>.zone { position: absolute; top: 0px; bottom: 0px; }
 
-/* the container take care to use relative or absolute and metrics, based on width, height, top, left, right, bottom */
 .separatorinvisiblevertical { position: absolute; top: 0px; bottom: 0px; left: 0px; right: 0px; overflow: auto; }
-.separatorinvisiblevertical>.sizer { background-color: #dfe8f6; cursor: s-resize; cursor: row-resize; height: 10px; background-image: url('../../skins/4gl/separatorinvisible-sizer.png'); background-position: center center; background-repeat: no-repeat; position: absolute; left: 0px; right: 0px; }
+.separatorinvisiblevertical>.sizer { background-color: #dfe8f6; cursor: s-resize; cursor: row-resize; height: 10px; background-image: url('../../skins/4gl/separator-sizer.png'); background-position: center center; background-repeat: no-repeat; position: absolute; left: 0px; right: 0px; }
 .separatorinvisiblevertical>.zone { position: absolute; left: 0px; right: 0px; }
 
 
