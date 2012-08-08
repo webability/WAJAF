@@ -505,7 +505,7 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
   function resize()
   {
     // cannot resize if not visible or not running
-    if (!self.running || !self.visible || !self.maincontainer.visible)
+    if (!self.running || !self.visible || !self.father.visible)
       return;
     // ask for an inner resize
     self.callEvent('pleaseresize');
@@ -523,7 +523,7 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
   function clickclose(e)
   {
     // the call close if available
-    self.maincontainer.destroyZone(self.domID);
+    self.father.destroyZone(self.domID);
   }
 
   this.clickeditor = clickeditor;
@@ -541,7 +541,7 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
   function moving(order, id1, id2, zone, metrics)
   {
     self.moving = true;
-    self.maincontainer.moving(order, self.xdomID[2], metrics, zone);
+    self.father.moving(order, self.xdomID[2], metrics, zone);
   }
 
   this.start = start;
@@ -551,8 +551,8 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
     WA.Managers.event.on('click', self.domNodeClose, self.clickclose, true);
     WA.Managers.event.on('click', self.domNodeEditor, self.clickeditor, true);
 
-    if (self.maincontainer.hasdd)
-      WA.Managers.dd.registerObject(self.maincontainer.domID, self.domNodeTitle, self.domNodeBox, moving, null);
+    if (self.father.hasdd)
+      WA.Managers.dd.registerObject(self.father.domID, self.domNodeTitle, self.domNodeBox, moving, null);
 
     // search for the EditorContainer if any
     var enode = maincontainer._4glNode.getNode(self.domID + '_editor');
@@ -570,8 +570,8 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
     WA.Managers.event.off('click', self.domNodeClose, self.clickclose, true);
     WA.Managers.event.off('click', self.domNodeEditor, self.clickeditor, true);
 
-    if (self.maincontainer.hasdd)
-      WA.Managers.dd.unregisterObject(self.maincontainer.domID, self.domNodeTitle, self.domNodeBox);
+    if (self.father.hasdd)
+      WA.Managers.dd.unregisterObject(self.father.domID, self.domNodeTitle, self.domNodeBox);
   }
 
   // no resize , resize is directly controled by the main container
@@ -600,7 +600,7 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
     self.code = null;
     self.notify = null;
     self.domID = null;
-    self.maincontainer = null;
+    self.father = null;
     self = null;
   }
 }
@@ -646,7 +646,7 @@ WA.Containers.widgetContainer.widgetColumn = function(maincontainer, domID, domN
     self.code = null;
     self.notify = null;
     self.domID = null;
-    self.maincontainer = null;
+    self.father = null;
     self = null;
   }
 }
