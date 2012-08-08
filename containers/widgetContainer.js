@@ -443,15 +443,15 @@ WA.extend(WA.Containers.widgetContainer, WA.Managers.wa4gl._container);
 WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, notify)
 {
   var self = this;
-  WA.Containers.widgetContainer.widgetZone.sourceconstructor.call(this, maincontainer, domID, params, notify, { classname:maincontainer.classes.classnamezone }, 'div');
+  WA.Containers.widgetContainer.widgetZone.sourceconstructor.call(this, maincontainer, domID, code, notify, { classname:maincontainer.classes.classnamezone }, 'div');
   this.domNode.style.display = '';
   this.domNode.className += ' zone';
-  this.visible = this.params.attributes.visible?this.params.attributes.visible!='no':true;
-  this.opencloseable = (params.attributes.opencloseable=='yes');
-  this.editable = (params.attributes.editable=='yes');
-  this.closeable = (params.attributes.closeable=='yes');
-  this.title = params.attributes.title;
-  this.column = params.attributes.column?params.attributes.column:0;
+  this.visible = this.code.attributes.visible?this.code.attributes.visible!='no':true;
+  this.opencloseable = (code.attributes.opencloseable=='yes');
+  this.editable = (code.attributes.editable=='yes');
+  this.closeable = (code.attributes.closeable=='yes');
+  this.title = code.attributes.title;
+  this.column = code.attributes.column?code.attributes.column:0;
   this.statusopenclose = true;
   this.statuseditor = false;
 
