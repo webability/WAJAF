@@ -555,12 +555,13 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
       WA.Managers.dd.registerObject(self.father.domID, self.domNodeTitle, self.domNodeBox, moving, null);
 
     // search for the EditorContainer if any
-    var enode = maincontainer._4glNode.getNode(self.domID + '_editor');
+/*    var enode = maincontainer._4glNode.getNode(self.domID + '_editor');
     if (enode)
     {
       self.domNodeEditorContainer = enode.domNode;
       self.domNodeEditorContainer.style.display = 'none';
     }
+*/
   }
 
   this.stop = stop;
