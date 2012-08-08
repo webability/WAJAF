@@ -191,13 +191,13 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
     }
 
     // 1. call event precreate, can we create ?
-    if (!self._callNotify('precreate', {id:ldomID[2]}))
+    if (!self.callEvent('precreate', {id:ldomID[2]}))
       return null;
 
     var z = new WA.Containers.widgetContainer.widgetZone(self, ldomID[3], params, notify);
     self.zones[ldomID[2]] = z;
 
-    self._callNotify('postcreate', {id:ldomID[2]});
+    self.callEvent('postcreate', {id:ldomID[2]});
     if (self.running)
     {
       z.start();
@@ -216,12 +216,12 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
     if (!self.zones[ldomID[2]])
       throw 'Error: the zone does not exists in widgetContainer.showZone: id=' + ldomID[2];
 
-    if (!self._callNotify('preshow', ldomID[2]))
+    if (!self.callEvent('preshow', ldomID[2]))
       return;
 
     // then show the specified zone
     self.zones[ldomID[2]].show();
-    self._callNotify('postshow', ldomID[2]);
+    self.callEvent('postshow', ldomID[2]);
     if (self.running)
     {
       self.resize();
@@ -244,12 +244,12 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
     if (!self.zones[ldomID[2]])
       throw 'Error: the zone does not exists in widgetContainer.showZone: id=' + ldomID[2];
 
-    if (!self._callNotify('prehide', ldomID[2]))
+    if (!self.callEvent('prehide', ldomID[2]))
       return;
 
     // then show the specified zone
     self.zones[ldomID[2]].hide();
-    self._callNotify('posthide', ldomID[2]);
+    self.callEvent('posthide', ldomID[2]);
     if (self.running)
     {
       self.resize();
@@ -267,7 +267,7 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
       throw 'Error: the zone does not exists in widgetContainer.showZone: id=' + ldomID[2];
 
     // 2. call event predestroy
-    if (!self._callNotify('predestroy', {id:ldomID[2]}) )
+    if (!self.callEvent('predestroy', {id:ldomID[2]}) )
       return;
 
     self.columns[self.zones[ldomID[2]].column].domNode.removeChild(self.zones[ldomID[2]].domNodeBox);
@@ -276,7 +276,7 @@ WA.Containers.widgetContainer = function(domNodeFather, domID, code, listener)
 
 //    if (!_4gl && self._4glNode)
 //      self._4glNode.destroyNode(ldomID[2]);
-    self._callNotify('postdestroy', {id:ldomID[2]});
+    self.callEvent('postdestroy', {id:ldomID[2]});
     self.resize();
   }
 
@@ -504,7 +504,7 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
     if (!self.running || !self.visible || !self.maincontainer.visible)
       return;
     // ask for an inner resize
-    self._callNotify('pleaseresize');
+    self.callEvent('pleaseresize');
   }
 
   this.clickopenclose = clickopenclose;

@@ -87,7 +87,7 @@
 .group.error { background-image: url('../../skins/4gl/group-error.png'); background-repeat: no-repeat; background-position: 10px 10px; }
 
 /* 3 types of zones: title, field, control */
-.group>fieldset>.loading { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; background-color: #fed; opacity:0.8; filter:alpha(opacity=80); z-index: 10; background-image: url('../../skins/images/loader.gif'); background-position: 50% 50%; background-repeat:  no-repeat; }
+.group>fieldset>.loading { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; background-color: #fed; opacity:0.8; filter:alpha(opacity=80); z-index: 10; background-image: url('../../skins/4gl/loader.gif'); background-position: 50% 50%; background-repeat:  no-repeat; }
 
 .group>fieldset>.title { font-size: 14px; font-weight: bold; color: #008; padding: 10px; padding-left: 30px; margin-bottom: 5px; border-bottom: 1px solid #ddf; }
 .group>fieldset>.message { color: black; font-size: 13px; font-weight: bold; margin: 5px; padding: 5px; padding-left: 25px; margin-left: 20px; margin-right: 10px; cursor: pointer; background-image: url('../../skins/4gl/button-cancel.png'); background-repeat: no-repeat; background-position: 5px 5px; }
