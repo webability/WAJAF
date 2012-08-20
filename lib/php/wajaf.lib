@@ -748,7 +748,7 @@ class buttonElement extends Xelement
   public function __construct($text, $id = null)
   {
     parent::__construct('buttonElement', $id);
-    $this->registerAttributes( array('visible', 'action') );
+    $this->registerAttributes( array('visible', 'action', 'status', 'extra') );
 
     $this->setData($text);
   }
