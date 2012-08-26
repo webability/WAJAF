@@ -573,8 +573,11 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     {
       var result = WA.JSON.decode( request.responseText );
 
-      if (result && result.login) // nothing to do right now
+      if (result && result.login) // nothing to do right now, asking for login
+      {
+        stopLoading();
         return;
+      }
       if (result && result.success)
       {
         var rest = self.callEvent('success', result);

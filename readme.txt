@@ -64,6 +64,8 @@ V2, build 4 - :
 - _4glnode.propagate modified to not call start or stop events when the node is not in expected state
 - 4gl.css modified in speraratorcontainer to use default sizer
 - Added widgetContainer, modified to work on v2
+- Modified core.js WA.JSON.decode to support the login flag
+- Modified groupContainer.js to support the login flag
 
 V2, build 3 - 2012-08-04:
 - Corrected a bug in groupContainer to display correctly the form context when changing the mode
