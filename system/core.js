@@ -1142,6 +1142,10 @@ WA.JSON.decode = function(json)
     WA.debug.explain(code.messages, 3);
     code = null;
   }
+  if (code.login)
+  {
+    WA.Managers.wa4gl.callGlobalLogin(null, null);
+  }
   return code;
 }
 
