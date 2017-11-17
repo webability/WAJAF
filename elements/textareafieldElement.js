@@ -70,18 +70,18 @@ WA.Elements.textareafieldElement = function(fatherNode, domID, code, listener)
   this.errormessages = {};
   this.firstview = true; // set to false when the field has been touched/modified. Used to know if we put the errors
 
-  for (var i in this.code)
+  for (var i = 0, l = code.children.length; i < l; i++)
   {
-    switch (code[i].tag)
+    switch (code.children[i].tag)
     {
-      case 'defaultvalue': this.defaultvalue = code[i].data?code[i].data:''; break;
-      case 'helpdescription': this.helpmessage = code[i].data; break;
-      case 'statusnotnull': this.errormessages.statusnotnull = code[i].data; this.errors.statusnotnull = false; break;
-      case 'statustooshort': this.errormessages.statustooshort = code[i].data; this.errors.statustooshort = false; break;
-      case 'statustoolong': this.errormessages.statustoolong = code[i].data; this.errors.statustoolong = false; break;
-      case 'statustoofewwords': this.errormessages.statustoofewwords = code[i].data; this.errors.statustoofewwords = false; break;
-      case 'statustoomanywords': this.errormessages.statustoomanywords = code[i].data; this.errors.statustoomanywords = false; break;
-      case 'statuscheck': this.errormessages.statuscheck = code[i].data; this.errors.statuscheck = false; break;
+      case 'defaultvalue': this.defaultvalue = code.children[i].data?code.children[i].data:''; break;
+      case 'helpdescription': this.helpmessage = code.children[i].data; break;
+      case 'statusnotnull': this.errormessages.statusnotnull = code.children[i].data; this.errors.statusnotnull = false; break;
+      case 'statustooshort': this.errormessages.statustooshort = code.children[i].data; this.errors.statustooshort = false; break;
+      case 'statustoolong': this.errormessages.statustoolong = code.children[i].data; this.errors.statustoolong = false; break;
+      case 'statustoofewwords': this.errormessages.statustoofewwords = code.children[i].data; this.errors.statustoofewwords = false; break;
+      case 'statustoomanywords': this.errormessages.statustoomanywords = code.children[i].data; this.errors.statustoomanywords = false; break;
+      case 'statuscheck': this.errormessages.statuscheck = code.children[i].data; this.errors.statuscheck = false; break;
     }
   }
   // NODES

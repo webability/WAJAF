@@ -46,6 +46,33 @@
       </element>
     </zone>
     <zone type="field">
+      <element type="colorfieldElement" id="color" size="200" visible="1234" info="34" disabled="" readonly="" notnull="123" helpmode="12">
+        Choose a color:
+        <defaultvalue></defaultvalue>
+        <helpdescription>Help: This field permits to write or choose a color</helpdescription>
+        <statusnotnull>The value must not be null</statusnotnull>
+        <statusbadformat>The value has a bad format</statusbadformat>
+      </element>
+    </zone>
+    <zone type="field">
+      <element type="datefieldElement" id="date" size="400" visible="1234" info="34" disabled="" readonly="" notnull="123" helpmode="12">
+        Choose a date:
+        <defaultvalue></defaultvalue>
+        <helpdescription>Help: This field permits to select a date</helpdescription>
+        <statusnotnull>The value must not be null</statusnotnull>
+        <statusbadformat>The value has a bad format</statusbadformat>
+      </element>
+    </zone>
+    <zone type="field">
+      <element type="mmcfieldElement" id="mmc" size="400" visible="1234" info="34" disabled="" readonly="" notnull="123" helpmode="12">
+        Choose a multimedia file:
+        <defaultvalue></defaultvalue>
+        <helpdescription>Help: This field permits to upload a multimedia file</helpdescription>
+        <statusnotnull>The value must not be null</statusnotnull>
+        <statusbadformat>The value has a bad format</statusbadformat>
+      </element>
+    </zone>
+    <zone type="field">
       <element type="textareafieldElement" id="comments" areawidth="400" areaheight="150" minlength="" maxlength="4000" minwords="" maxwords="" visible="1234" info="34" disabled="" readonly="" notnull="" helpmode="12">
         Some comments:
         <defaultvalue></defaultvalue>

@@ -21,299 +21,9 @@
 */
 
 // WA is the main WAJAF Object that will contain anything else (except for the native JS object prototypes)
-var WA = { version: '2.00.04',
+var WA = { version: '3.0.2',
            running: false };
 
-// Main Javascript Native Object Prototypes
-
-// builds a function based on the transformation of the main function.
-// The parameters are sent to the prefunction to be transformed if necesary
-// The result of the main funciton is sent to the post function with the same parameters to be transformed if necesary.
-Function.prototype.buildTransformer = function(prefct, postfct, scope)
-{
-  var self = this;
-  if (!WA.isFunction(prefct) && !WA.isFunction(postfct))
-    return this;
-  return function()
-    {
-      var args = WA.isFunction(prefct)?prefct.apply(scope || self, arguments):arguments;
-      var ret = self.apply(scope || self, args);
-      return WA.isFunction(postfct)?postfct.apply(scope || self, [ret]):ret;
-    }
-}
-
-// will call our fct before executing the main Function.
-// fct accept the same parameters as main Function.
-// if fct returns true, the main Function is executed, otherwise no.
-Function.prototype.buildFilter = function(fct, scope)
-{
-  var self = this;
-  if (!WA.isFunction(fct))
-    return this;
-  return function()
-    {
-      return (fct.apply(scope || self, arguments) == true) ? self.apply(scope || self, arguments) : undefined;
-    }
-}
-
-// Builds a callback function based on the main function scope with the specified parameters to be able to call it without parameters by another instance.
-Function.prototype.buildCompact = function()
-{
-  var self = this;
-  var args = arguments;
-  return function()
-    {
-      var r1 = Array.prototype.slice.call(args);
-      var r2 = Array.prototype.slice.call(arguments);
-      return self.apply(self, r1.concat(r2));
-    }
-}
-
-Function.prototype.delay = function(delay)
-{
-  var self = this;
-  var args = [];
-  for (var i = 1, l = arguments.length; i < l; args.push(arguments[i++]));
-  var t = setTimeout(function() { return self.apply(self, args); }, delay);
-  return t;
-}
-
-// String prototypes
-String.prototype.sprintf = function()
-{
-  if (WA.isObject(arguments[0]))
-  {
-    var args = arguments[0];
-    return this.replace(/\{([A-Za-z0-9\-_\.]+)\}/g, function(p0, p1){ return args[p1]; });
-  }
-  else
-  {
-    var args = arguments;
-    return this.replace(/\{(\d+)\}/g, function(p0, p1){ return args[p1]; });
-  }
-}
-
-String.prototype.escape = String.escape = function(value)
-{
-  var newstr = (value != undefined && value != null) ? value : this;
-  return newstr.replace(/("|'|\\)/g, "\\$1");
-}
-
-String.prototype.padding = String.padding = function(size, pad, value)
-{
-  if (!pad) pad = ' ';
-  var newstr = new String((value != undefined && value != null) ? value : this);
-  while (newstr.length < size)
-  {
-    newstr = pad + newstr;
-  }
-  return newstr;
-}
-
-String.prototype.trim = String.trim = function(value)
-{
-  var newstr = (value != undefined && value != null) ? value : this;
-  return newstr.replace(/^(\s|&nbsp;)*|(\s|&nbsp;)*$/g, '');
-};
-
-// Array prototypes
-Array.prototype.indexOf = function(val, field)
-{
-  for (var i = 0, l = this.length; i < l; i++)
-  {
-    if ((field && this[i][field] == val) || (!field && this[i] == val))
-      return i;
-  }
-  return false;
-}
-
-Array.prototype.remove = function(o, field)
-{
-  var index = this.indexOf(o, field);
-  if(index != -1)
-  {
-    this.splice(index, 1);
-  }
-  return this;
-}
-
-// Date basic functions
-Date.prototype.setNames = function(days, shortdays, months, shortmonths)
-{
-  Date.prototype.days = days;
-  Date.prototype.shortdays = shortdays;
-  Date.prototype.months = months;
-  Date.prototype.shortmonths = shortmonths;
-}
-
-// english by default
-Date.prototype.setNames(
-  ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-  ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-  ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-  ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-);
-
-Date.prototype.basicdays = [31,28,31,30,31,30,31,31,30,31,30,31];
-
-Date.isDate = Date.prototype.isDate = function(year, month, day)
-{
-  var numdays = Date.prototype.basicdays[month-1];
-  return day>0 && !!numdays && (day<=numdays || day==29 && year%4==0 && (year%100!=0 || year%400==0) );
-}
-
-Date.isTime = Date.prototype.isTime = function(hour, min, sec)
-{
-  return hour>=0 && hour<=23 && min>=0 && min<=59 && sec>=0 && sec<=59;
-}
-
-Date.isValid = Date.prototype.isValid = function(year, month, day, hour, min, sec, ms)
-{
-  hour = hour || 0;
-  min = min || 0;
-  sec = sec || 0;
-  ms = ms || 0;
-  return Date.isDate(year, month, day) && Date.isTime(hour, min, sec) && ms >= 0 && ms <= 999;
-}
-
-Date.prototype.isLeapYear = function()
-{
-  var year = this.getFullYear();
-  return (year%4==0 && (year%100!=0 || year%400==0));
-}
-
-Date.prototype.getOrdinalSuffix = function()
-{
-  switch (this.getDate())
-  {
-    case 1: case 21: case 31: return 'st';
-    case 2: case 22:          return 'nd';
-    case 3: case 23:          return 'rd';
-    default:                  return 'th';
-  }
-}
-
-Date.prototype.getMaxMonthDays = function()
-{
-  var numdays = this.basicdays[this.getMonth()];
-  if (numdays == 28 && this.isLeapYear())
-    numdays++;
-  return numdays;
-}
-
-Date.prototype.getDayOfYear = function()
-{
-  var day = this.getDate();
-  for (var i = 0; i <= this.getMonth()-1; i++)
-    day += this.basicdays[i] + (i==1&&this.isLeapYear()?1:0);
-  return day;
-}
-
-// adapted from http://www.merlyn.demon.co.uk/weekcalc.htm
-Date.prototype.getWeekOfYear = function()
-{
-  var ms1d = 86400000;
-  var ms7d = 604800000;
-  var DC3 = Date.UTC(this.getFullYear(), this.getMonth(), this.getDate() + 3) / ms1d;
-  var AWN = Math.floor(DC3 / 7);
-  var Wyr = (new Date(AWN * ms7d)).getUTCFullYear();
-  return AWN - Math.floor(Date.UTC(Wyr, 0, 7) / ms7d) + 1;
-}
-
-Date.prototype.getGMTOffset = function(colon)
-{
-  return (this.getTimezoneOffset() > 0 ? '-' : '+')
-      + String.padding(2, '0', Math.floor(Math.abs(this.getTimezoneOffset()) / 60))
-      + (colon ? ':' : '')
-      + String.padding(2, '0', Math.abs(this.getTimezoneOffset() % 60));
-}
-
-// by extJS
-Date.prototype.getTimezone = function()
-{
-  return this.toString().replace(/^.* (?:\((.*)\)|([A-Z]{1,4})(?:[\-+][0-9]{4})?(?: -?\d+)?)$/, '$1$2').replace(/[^A-Z]/g, '');
-}
-
-// original idea of structure/pattern by extJS
-Date.prototype.grabformats = {
-  j: "this.getDate()",                                           // day of the month, no leading 0
-  d: "String.padding(2, '0', this.getDate())",                   // day of the month, leading 0
-  D: "this.shortdays[this.getDay()]",                            // short name of day
-  l: "this.days[this.getDay()]",                                 // full name of day
-
-  w: "this.getDay()",                                            // day of the week, 0 = sunday
-  N: "(this.getDay()==0?7:this.getDay())",                       // ISO day of the week, 1 = monday
-  S: "this.getOrdinalSuffix()",                                  // english day of the week suffix
-
-  z: "this.getDayOfYear()",                                      // day of the year, 0 to 365
-
-  W: "String.padding(2, '0', this.getWeekOfYear())",             // ISO week of the year, leading 0
-
-  n: "(this.getMonth() + 1)",                                    // number of month, 1 to 12, no leading 0
-  m: "String.padding(2, '0', this.getMonth() + 1)",              // number of month, 01 to 12, leading 0
-  M: "this.shortmonths[this.getMonth()]",                        // short name of month
-  F: "this.months[this.getMonth()]",                             // full name of month
-  t: "this.getMaxMonthDays()",                                   // number of days into the month
-
-  L: "(this.isLeapYear() ? 1 : 0)",
-  o: "(this.getFullYear() + (this.getWeekOfYear() == 1 && this.getMonth() > 0 ? +1 : (this.getWeekOfYear() >= 52 && this.getMonth() < 11 ? -1 : 0)))",
-  Y: "this.getFullYear()",
-  y: "('' + this.getFullYear()).substring(2, 4)",
-
-  a: "(this.getHours() < 12 ? 'am' : 'pm')",
-  A: "(this.getHours() < 12 ? 'AM' : 'PM')",
-  g: "((this.getHours() % 12) ? this.getHours() % 12 : 12)",
-  G: "this.getHours()",
-  h: "String.padding(2, '0', (this.getHours() % 12) ? this.getHours() % 12 : 12)",
-  H: "String.padding(2, '0', this.getHours())",
-
-  i: "String.padding(2, '0', this.getMinutes())",
-  s: "String.padding(2, '0', this.getSeconds())",
-  u: "String.padding(3, '0', this.getMilliseconds())",
-
-  O: "this.getGMTOffset()",
-  P: "this.getGMTOffset(true)",
-  T: "this.getTimezone()",
-  Z: "(this.getTimezoneOffset() * -60)",
-  c: "this.getUTCFullYear() + '-' + String.padding(2, '0', this.getUTCMonth() + 1) + '-' + String.padding(2, '0', this.getUTCDate()) + 'T' + "
-        + "String.padding(2, '0', this.getUTCHours()) + ':' + String.padding(2, '0', this.getUTCMinutes()) + ':' + "
-        + "String.padding(2, '0', this.getUTCSeconds()) + this.getGMTOffset(true)",
-  U: "Math.round(this.getTime() / 1000)"
-};
-
-Date.prototype.format = function(str)
-{
-  var code = [];
-  for (var i = 0, l = str.length; i < l; i++)
-  {
-    var c = str.charAt(i);
-    if (c == '\\')
-    {
-      i++;
-      code.push("'" + String.escape(str.charAt(i)) + "'");
-    }
-    else
-    {
-      this.grabformats[c]!=undefined?code.push(this.grabformats[c]):code.push("'" + String.escape(c) + "'");
-    }
-  }
-
-  var f = new Function('return ' + code.join('+') + ';');
-  return f.call(this);
-}
-
-
-/*
-
-NON INVASIVE CODE. SHOULD WE ACTIVATE IT INSTEAD OF THE PROTOTYPES DEFINITION ?
-
-PROS: - no invasive code
-CONS: - heavy code to manage and call, not really usefull,
-      - better make a function with the *this* object as 1rst parameter
-
-// builds a function based on the transformation of the main function.
-// The parameters are sent to the prefunction to be transformed if necesary
-// The result of the main funciton is sent to the post function with the same parameters to be transformed if necesary.
 WA.Function = {};
 WA.Function.buildTransformer = function(prefct, postfct, scope)
 {
@@ -343,15 +53,14 @@ WA.Function.buildFilter = function(fct, scope)
 }
 
 // Builds a callback function based on the main function scope with the specified parameters to be able to call it without parameters by another instance.
-WA.Function.buildCompact = function()
+WA.Function.buildCompact = function(self)
 {
-  var self = this;
-  var args = arguments;
+  var args = Array.prototype.slice.call(arguments);
+  args.shift();
   return function()
     {
-      var r1 = Array.prototype.slice.call(args);
-      var r2 = Array.prototype.slice.call(arguments);
-      return self.apply(self, r1.concat(r2));
+      var arg2 = Array.prototype.slice.call(arguments);
+      return self.apply(self, args.concat(arg2));
     }
 }
 
@@ -368,16 +77,8 @@ WA.Function.delay = function(delay)
 WA.String = {};
 WA.String.sprintf = function()
 {
-  if (WA.isObject(arguments[0]))
-  {
-    var args = arguments[0];
-    return this.replace(/\{([A-Za-z0-9\-_\.]+)\}/g, function(p0, p1){ return args[p1]; });
-  }
-  else
-  {
-    var args = arguments;
-    return this.replace(/\{(\d+)\}/g, function(p0, p1){ return args[p1]; });
-  }
+  var args = arguments[1];
+  return arguments[0].replace(/\{([A-Za-z0-9\-_\.]+)\}/g, function(p0, p1){ return args[p1]; });
 }
 
 WA.String.escape = function(value)
@@ -466,9 +167,9 @@ WA.Date.isValid = function(year, month, day, hour, min, sec, ms)
   return WA.Date.isDate(year, month, day) && WA.Date.isTime(hour, min, sec) && ms >= 0 && ms <= 999;
 }
 
-WA.Date.isLeapYear = function()
+WA.Date.isLeapYear = function(d)
 {
-  var year = this.getFullYear();
+  var year = d.getFullYear();
   return (year%4==0 && (year%100!=0 || year%400==0));
 }
 
@@ -483,11 +184,13 @@ WA.Date.getOrdinalSuffix = function()
   }
 }
 
-WA.Date.getMaxMonthDays = function()
+WA.Date.getMaxMonthDays = function(d)
 {
-  var numdays = WA.Date.basicdays[this.getMonth()];
-  if (numdays == 28 && WA.Date.isLeapYear.call(this))
+  var numdays = WA.Date.basicdays[d.getMonth()];
+  if (numdays == 28 && WA.Date.isLeapYear(d))
+  {
     numdays++;
+  }
   return numdays;
 }
 
@@ -495,7 +198,7 @@ WA.Date.getDayOfYear = function()
 {
   var day = this.getDate();
   for (var i = 0; i <= this.getMonth()-1; i++)
-    day += WA.Date.basicdays[i] + (i==1&&WA.Date.isLeapYear.call(this)?1:0);
+    day += WA.Date.basicdays[i] + (i==1&&WA.Date.isLeapYear(this)?1:0);
   return day;
 }
 
@@ -545,7 +248,7 @@ WA.Date.grabformats = {
   F: "WA.Date.months[this.getMonth()]",                          // full name of month
   t: "WA.Date.getMaxMonthDays.call(this)",                       // number of days into the month
 
-  L: "(WA.Date.isLeapYear.call(this) ? 1 : 0)",
+  L: "(WA.Date.isLeapYear(this) ? 1 : 0)",
   o: "(this.getFullYear() + (WA.Date.getWeekOfYear.call(this) == 1 && this.getMonth() > 0 ? +1 : (WA.Date.getWeekOfYear.call(this) >= 52 && this.getMonth() < 11 ? -1 : 0)))",
   Y: "this.getFullYear()",
   y: "('' + this.getFullYear()).substring(2, 4)",
@@ -571,7 +274,7 @@ WA.Date.grabformats = {
   U: "Math.round(this.getTime() / 1000)"
 };
 
-WA.Date.format = function(str)
+WA.Date.format = function(d, str)
 {
   var code = [];
   for (var i = 0, l = str.length; i < l; i++)
@@ -590,9 +293,8 @@ WA.Date.format = function(str)
   }
 
   var f = new Function('return ' + code.join('+') + ';');
-  return f.call(this);
+  return f.call(d);
 }
-*/
 
 // Main WAJAF Object definition
 
@@ -666,14 +368,37 @@ WA.extend = function(collector, source)
 
 WA.clone = function(obj)
 {
-  var cloned = {};
-  for (var i in obj)
+  // do better and faster pls
+  return JSON.parse(JSON.stringify(obj));
+  
+  if (obj == undefined)
+    return undefined;
+  if (obj == null)
+    return null;
+  var cloned;
+  if (WA.isArray(obj))
   {
-    if (typeof obj[i] == 'object')
-      cloned[i] = WA.clone(obj[i]);
-    else
-      cloned[i] = obj[i];
+    cloned = [];
+    for (var i = 0, l = obj.length; i < l; i++)
+    { 
+      cloned.push(WA.clone(obj[i]));
+    }
   }
+  else if (WA.isObject(obj))
+  {
+    cloned = {};
+    for (var i in obj)
+    {
+      if (!obj.hasOwnProperty(i))
+        continue;
+      if (WA.isObject(obj[i]))
+        cloned[i] = WA.clone(obj[i]);
+      else
+        cloned[i] = obj[i];
+    }
+  }
+  else
+    cloned = obj;
   return cloned;
 }
 
@@ -806,7 +531,7 @@ WA.get = function(n)
   this.closeH = function(s, f, w) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.closeH(_nodes[i], s, w, f); return self; }
   this.open = function(s, f, w, h) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.open(_nodes[i], s, w, h, f); return self; }
   this.close = function(s, f, w, h) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.close(_nodes[i], s, w, h, f); return self; }
-  this.move = function(s, x, y, f, l, t) { if (!WA.Managers.anim) return null; for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.anim.move(_nodes[i], s, l, t, x, y, f); return self; }
+  this.move = function(s, x, y, f, l, t) { if (!WA.Managers.anim) return null; for (var i = 0, lx = _nodes.length; i < lx; i++) WA.Managers.anim.move(_nodes[i], s, l, t, x, y, f); return self; }
 
   // generic mouse event binder
   this.on = function(e, f) { for (var i = 0, l = _nodes.length; i < l; i++) WA.Managers.event.on(e, _nodes[i], f, true); return self; }
@@ -1070,55 +795,29 @@ WA.Entities.decode = function(str)
 // @level: integer
 WA.debug = function() {}
 
-WA.debug.Console = null;    // node value if debug available
-WA.debug.Level = 4;         // 1 = system main & user, 2 = main & user, 3 = user only, 4 = nothing, errors are always shown on level 1,2,3
-WA.debug.filter = null;     // array of filtered words, null = all shown
+WA.debug.console = null;
+// level 1 is ALWAYS shown (error, break execution etc)
+// max level to show: 1 = error, 2 = managers, 3 = wa4gl, 4 = user, by default: user
+WA.debug.level = 4;
 
-WA.debug.explain = function(message, level)
+WA.debug.log = function(message, level)
 {
-  if (!level) // no level = user level
-    level = 3;
-  if ((!WA.debug.Console && !window.console) || level < WA.debug.Level)
+  if (level != 1 && level < WA.debug.level)
     return;
-  if (typeof WA.debug.filter == 'array')
-  {
-    var visible = false;
-    for (var i in WA.debug.filter)
-    {
-      if (!WA.isString(WA.debug.filter[i]))    // we are only interested by strings
-        continue;
-      if (message.match(WA.debug.filter[i]))
-      {
-        visible = true;
-        break;
-      }
-    }
-    if (!visible)
-      return;
-  }
-  if (WA.isObject(message))
-  {
-    var txt = '';
-    for (var i in message)
-      txt += i + ': ' + message[i];
-    message = txt;
-  }
-
-  if (console && console.log)
+  if (WA.debug.console && WA.debug.console.write)
+    WA.debug.console.write(message+'<br />');
+  else if (WA.debug.console)
+    WA.debug.console.innerHTML += message+'<br />';
+  else if (console && console.log)
     console.log(message);
-  if (window.console && window.console.firebug && !WA.debug.Console)
+  else if (window.console && window.console.firebug)
     window.console.log(message);
-  else if (WA.debug.Console && WA.debug.Console.write)
-    WA.debug.Console.write(message+'<br />');
-  else if (WA.debug.Console)
-    WA.debug.Console.innerHTML += message+'<br />';
 }
 
 // json
 WA.JSON = function() {}
-WA.JSON.withalert = false;
 
-WA.JSON.decode = function(json)
+WA.JSON.decode = function(json, execerror)
 {
   var code = null;
   try
@@ -1128,23 +827,17 @@ WA.JSON.decode = function(json)
   }
   catch (e)
   {
-    if (WA.JSON.withalert)
-      alert(WA.i18n.getMessage('json.error') + e.message + '\n' + json);
     throw e;
   }
   if (code.debug)
   {
-    WA.debug.explain(code.system, 3);
+    WA.debug.log(code.system, 1);
     code = code.code;
   }
-  if (code.error && !code.login)
+  if (execerror && code.error && !code.login)
   {
-    WA.debug.explain(code.messages, 3);
+    WA.debug.log(code.messages, 1);
     code = null;
-  }
-  if (code.login)
-  {
-    WA.Managers.wa4gl.callGlobalLogin(null, null);
   }
   return code;
 }
@@ -1170,6 +863,14 @@ WA.JSON.encode = function(data)
   {
     json += 'undefined';
   }
+  else if (WA.isNumber(data))
+  {
+    json += data;
+  }
+  else if (WA.isString(data))
+  {
+    json += '"' + (data.replace(/\\/g, "\\\\").replace(/"/g, "\\\"").replace(/\n/g, "\\n")) + '"';
+  }
   else if (WA.isObject(data))
   {
     json += '{';
@@ -1181,14 +882,6 @@ WA.JSON.encode = function(data)
       json += (item++?',':'')+'"'+i+'":'+WA.JSON.encode(data[i]);
     }
     json += '}';
-  }
-  else if (WA.isNumber(data))
-  {
-    json += data;
-  }
-  else if (WA.isString(data))
-  {
-    json += '"' + data.replace('\\', '\\\\', 'gm').replace('"', '\\"', 'gm') + '"';
   }
   else if (WA.isBool(data))
   {
@@ -1235,7 +928,7 @@ WA.browser = function()
   WA.browser.normalizedMouseButton = WA.browser.isMSIE ? {1:0, 2:2, 4:1} : (WA.browser.isSafari2 ? {1:0, 2:1, 3:2} : {0:0, 1:1, 2:2});
 
   // remove css image flicker
-	if (WA.browser.isMSIE6)
+  if (WA.browser.isMSIE6)
     try { document.execCommand('BackgroundImageCache', false, true); } catch(e) {}
 }
 
@@ -1316,17 +1009,23 @@ WA.browser.getScrollLeft = function()
 
 WA.browser.getScrollTop = function()
 {
-  // ie6 and before use BAD the documentelement on dom!
-  if (WA.browser.isDom) // && (WA.browser.isMSIE7 || !WA.browser.isMSIE))
-    return document.documentElement.scrollTop;
-
-  // ie6 and before
-  if (document.body && document.body.scrollTop)
-    return document.body.scrollTop;
-
   // others without dom
   if (typeof window.pageYOffset == 'number')
     return window.pageYOffset;
+
+  if (typeof window.scrollY == 'number')
+    return window.scrollY;
+
+  // should be supported by all browsers
+  if (document.body && document.body.scrollTop)
+    return document.body.scrollTop;
+    
+  // ie6 and before use BAD the documentelement on dom!
+  if (WA.browser.isDom) // && (WA.browser.isMSIE7 || !WA.browser.isMSIE))
+    return document.body.scrollTop;
+
+  // ie6 and before
+
 
   return 0;
 }
@@ -1347,7 +1046,7 @@ WA.browser.getNodeDocumentLeft = function(node)
 {
   var l = node.offsetLeft;
   if (node.offsetParent != null)
-    l += WA.browser.getNodeDocumentLeft(node.offsetParent) + WA.browser.getNodeBorderLeftWidth(node.offsetParent); // + WA.browser.getNodeMarginLeftWidth(node.offsetParent);
+    l += WA.browser.getNodeDocumentLeft(node.offsetParent) + WA.browser.getNodeBorderLeftWidth(node.offsetParent) + WA.browser.getNodeMarginLeftWidth(node.offsetParent);
   return l;
 }
 
@@ -1356,7 +1055,7 @@ WA.browser.getNodeDocumentTop = function(node)
 {
   var t = node.offsetTop;
   if (node.offsetParent != null)
-    t += WA.browser.getNodeDocumentTop(node.offsetParent) + WA.browser.getNodeBorderTopHeight(node.offsetParent); // + WA.browser.getNodeMarginTopHeight(node.offsetParent);
+    t += WA.browser.getNodeDocumentTop(node.offsetParent) + WA.browser.getNodeBorderTopHeight(node.offsetParent) + WA.browser.getNodeMarginTopHeight(node.offsetParent);
   return t;
 }
 
@@ -1405,6 +1104,14 @@ WA.browser.getNodeScrollTop = function(node)
     return node.pageYOffset;
 
   return 0;
+}
+
+WA.browser.getNodeTotalScrollTop = function(node)
+{
+  var t = WA.browser.getNodeScrollTop(node);
+  if (node.offsetParent != null)
+    t += WA.browser.getNodeTotalScrollTop(node.offsetParent);
+  return t;
 }
 
 // get the maximum scroll available
@@ -1657,6 +1364,22 @@ WA.browser.getCursorDocumentY = function(e)
   return ev.pageY - (document.documentElement.clientTop || 0);  // MSIE 7 has a weird 2 pixels offset for mouse coords !
 }
 
+  // returns the absolute position of the event in the document
+WA.browser.getTouchDocumentX = function(e)
+{
+  var ev = e || window.event;
+  var touchobj = event.changedTouches[0];
+  return touchobj.pageX;
+}
+
+  // returns the absolute position of the event in the document
+WA.browser.getTouchDocumentY = function(e)
+{
+  var ev = e || window.event;
+  var touchobj = event.changedTouches[0];
+  return touchobj.pageY;
+}
+
   // returns the absolute position of the event in the browserwindow
 WA.browser.getCursorWindowX = function(e)
 {
@@ -1780,6 +1503,8 @@ WA.browser.getWheel = function(e)
 WA.browser.cancelEvent = function(e)
 {
   var ev = e || window.event;
+  if (!ev)
+    return false;
   if (ev.stopPropagation)
     ev.stopPropagation();
   if (ev.preventDefault)

@@ -1,0 +1,72 @@
+<?php
+
+/* We simulate a table with 10 records.
+   We simulate insert, update, delete but do not do it really
+*/
+class ex_gridContainer
+{
+  function mygrid()
+  {
+    $order = null;
+    if (isset($_POST['Order']))
+      $order = $_POST['Order'];
+    if (isset($_POST['key']))
+      $key = $_POST['key'];
+    if (!$order)
+      return json_encode( array('error' => true, 'errormessage' => 'Error: there is no order or mode to listen to the form' ));
+
+    switch($order)
+    {
+      case 'get':
+        $r = $this->getData();
+        return json_encode($r);
+      
+      case 'getrecord':
+        $r = $this->getRecord($key);
+        return json_encode($r);
+      case 'first':
+        $r = $this->getRecord(1);
+        return json_encode($r);
+      case 'last':
+        $r = $this->getRecord(10);
+        return json_encode($r);
+      case 'previous':
+        if ($key > 1)
+          $key--;
+        $r = $this->getRecord($key);
+        return json_encode($r);
+      case 'next':
+        if ($key < 10)
+          $key++;
+        $r = $this->getRecord($key);
+        return json_encode($r);
+      case 'submit':
+        break;
+    }
+
+    // randomly return a sucess or an error
+    if (rand(0, 1000) < 500)
+      return json_encode( array('success' => true ));
+    return json_encode( array('success' => false, 'messages' => array('text' => 'Error: This is a simulated error from the server. It happens randomly to show how the errors are handled.')));
+  }
+  
+  function getData()
+  {
+    $rec = array('maxlines' => 10000, 'row' => array());
+    // gets the 50 first records
+    for ($i = 1; $i <= 50; $i++)
+    {
+      $rec['row'][$i] = $this->getRecord($i);
+    }
+    return $rec;
+  }
+
+  function getRecord($key)
+  {
+    if (!$key || !is_numeric($key) || $key < 1 || $key > 10000)
+      return null;
+    return array('key' => $key, 'name' => 'Name of '.$key);
+  }
+}
+
+?>

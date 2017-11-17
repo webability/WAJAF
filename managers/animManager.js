@@ -46,7 +46,7 @@ WA.Managers.anim = new function()
     if (self.sprites[id])
       return self.sprites[id];
 
-    WA.debug.explain('animManager.createSprite('+id+')');
+    WA.debug.log('animManager.createSprite('+id+')', 2);
     var sp = new WA.Managers.anim.Sprite(id, domNode, callback, script);
     self.sprites[id] = sp;
     return sp;
@@ -62,7 +62,7 @@ WA.Managers.anim = new function()
     if (self.animator[id])
       return self.animator[id];
 
-    WA.debug.explain('animManager.createAnimator('+id+')');
+    WA.debug.log('animManager.createAnimator('+id+')', 2);
     var an = new WA.Managers.anim.Animator(id, domNode, image, positions, animations, sounds, callback);
     self.animator[id] = an;
     return an;
@@ -157,7 +157,7 @@ WA.Managers.anim = new function()
   {
     if (self.sprites[id])
     {
-      WA.debug.explain('animManager.destroySprite('+id+')');
+      WA.debug.log('animManager.destroySprite('+id+')', 2);
       self.sprites[id].destroy();
       delete self.sprites[id];
     }
@@ -317,7 +317,7 @@ WA.Managers.anim.Sprite = function(id, domNode, callback, script)
       if (order.xend != undefined)
       {
         if (order.xinit === undefined || order.xinit === null)
-          order.xinit = WA.browser.getNodeLeft(self.domNode);
+          order.xinit = WA.browser.getNodeNodeLeft(self.domNode);
         var x = order.xinit + Math.ceil((order.xend-order.xinit)/order.time*diff);
         self.domNode.style.left = x + 'px';
       }
@@ -346,7 +346,7 @@ WA.Managers.anim.Sprite = function(id, domNode, callback, script)
       {
         if (!order.rinit || !order.ginit || !order.binit)
         {
-//          order.xinit = WA.browser.getNodeLeft(self.domNode);
+          order.xinit = WA.browser.getNodeNodeLeft(self.domNode);
         }
 
         var r = order.rinit + Math.ceil((order.rend-order.rinit)/order.time*diff);
@@ -358,7 +358,7 @@ WA.Managers.anim.Sprite = function(id, domNode, callback, script)
       {
         if (!order.rinit || !order.ginit || !order.binit)
         {
-//          order.xinit = WA.browser.getNodeLeft(self.domNode);
+          order.xinit = WA.browser.getNodeNodeLeft(self.domNode);
         }
 
         var br = order.brinit + Math.ceil((order.brend-order.brinit)/order.time*diff);
@@ -370,7 +370,7 @@ WA.Managers.anim.Sprite = function(id, domNode, callback, script)
       {
         if (!order.tinit)
         {
-//          order.xinit = WA.browser.getNodeLeft(self.domNode);
+          order.xinit = WA.browser.getNodeNodeLeft(self.domNode);
         }
 
         var t = order.tinit + Math.ceil((order.tend-order.tinit)/order.time*diff);

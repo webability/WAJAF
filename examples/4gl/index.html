@@ -12,7 +12,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=8" />
   <link rel="stylesheet" href="../prettify/prettify.css" type="text/css" />
   <script language="javascript" type="text/javascript" src="../prettify/prettify.js"></script>
-  <script language="javascript" type="text/javascript" src="js.php?JS=wajaf.js"></script>
+  <script language="javascript" type="text/javascript" src="js.php?js=wajaf.js"></script>
 </head>
 
 <body>
@@ -23,15 +23,8 @@
 
 <script type="text/javascript">
 
-// we set routes for all the managers
-WA.Managers.sound.setFlashManager('../../skins/flash/soundmanager2.swf');
-WA.Managers.help.soundshow = '../../skins/sounds/help-show.mp3';
-WA.Managers.help.soundclose = '../../skins/sounds/help-close.mp3';
-// sound will contain all the default sounds we are going to use in the containers and elements if needed.
-WA.Managers.sound.tabcontainersoundopen = '../../skins/sounds/tab-open.mp3';
-WA.Managers.sound.tabcontainersoundchange = '../../skins/sounds/tab-change.mp3';
-WA.Managers.sound.tabcontainersoundclose = '../../skins/sounds/tab-close.mp3';
-WA.Managers.wa4gl.setURL('app.php', 'js.php');
+WA.Managers.wa4gl.setURL('', 'js.php');
+WA.Managers.wa4gl.prelib = ''; // we remove the first / since we are in relative directory for those examples
 
 window.onload =
   function()
@@ -40,8 +33,7 @@ window.onload =
     // we load the debug system
     var popupdebug = window.open('', 'debug', 'scrollbars=1,width=400,height=600');
     popupdebug.moveTo(0,0);
-    WA.debug.Console = popupdebug.document;
-    WA.debug.Level = 1;
+    WA.debug.console = popupdebug.document;
 */
     // we load the styles sheets with the manager so we can play with dynamic skins reload
     WA.Managers.ondemand.loadCSS('../../skins/css/reset.css', null, true);

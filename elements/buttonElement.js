@@ -22,7 +22,7 @@
 
 /* Known code.attributes of element:
    * type, id
-   * left, top, anchorleft, anchortop, width, height
+   * left, top, bottom, right, width, height
    * display           default display: ''
    * style
    * classname         default class: button
@@ -54,18 +54,21 @@ WA.Elements.buttonElement = function(domNodeFather, domID, code, listener)
   this.focus = false;
   this.record = false;
 
-  this.defaulttitle = 'Submit';
+  this.defaulttitle = '';
   if (this.code.data)
     this.defaulttitle = this.code.data;
   this.title = ['','','',''];
-  for (var i in code)
+  if (code.children)
   {
-    if (code[i].tag == 'titleinsert')
-      self.title[1] = code[i].data;
-    if (code[i].tag == 'titleupdate')
-      self.title[2] = code[i].data;
-    if (code[i].tag == 'titledelete')
-      self.title[3] = code[i].data;
+    for (var i = 0, l = code.children.length; i < l; i++)
+    {
+      switch (code.children[i].tag)
+      {
+        case 'titleinsert': self.title[1] = code.children[i].data; break;
+        case 'titleupdate': self.title[2] = code.children[i].data; break;
+        case 'titledelete': self.title[3] = code.children[i].data; break;
+      }
+    }
   }
 
 //  this.domNode.type = 'button';

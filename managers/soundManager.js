@@ -37,24 +37,10 @@ WA.Managers.sound = new function()
   this.sounds = {};
   this.volume = 100;
   this.on = true;
-  this.domNode = null;
-  this.flashmanager = null;
-  this.flash = null;
+  
   this.sounds = {};
+  
   this.hook = null;
-
-  this.running = false;
-
-  this.ready = false;
-  this.timer = null;     // timer to check readyness
-  this.soundqueue = {};  // while not ready, we queue the needed sounds
-
-  this.setFlashManager = setFlashManager;
-  function setFlashManager(flashmanager)
-  {
-    self.flashmanager = flashmanager;
-    reboot();
-  }
 
   this.setHook = setHook;
   function setHook(hook)
@@ -62,87 +48,12 @@ WA.Managers.sound = new function()
     self.hook = hook;
   }
 
-  this.reboot = reboot;
-  function reboot()
-  {
-    if (self.domNode)
-    {
-      self.domNode.parentNode.removeChild(self.domNode);
-      self.domNode = null;
-    }
-    self.running = false;
-    self.ready = false;
-
-    if (self.hook)
-      self.hook('reboot');
-
-    create();
-  }
-
-  function isready()
-  {
-    self.timer = null;
-    if (self.flash && self.flash._createSound)
-    {
-      self.ready = true;
-      // call hook
-      if (self.hook)
-        self.hook('ready');
-      // launch existing sounds
-      for (var i in self.sounds)
-        self.sounds[i].create();
-      // put the queued sounds
-      for (var i in self.soundqueue)
-        self.addSound(self.soundqueue[i][0], self.soundqueue[i][1], self.soundqueue[i][2], self.soundqueue[i][3], self.soundqueue[i][4]);
-      return;
-    }
-    self.timer = setTimeout(isready, 100);
-  }
-
-  function create()
-  {
-    if (!self.flashmanager)
-      return;
-
-    // create sound division
-    self.domNode = document.createElement("div");
-    // we CANT hide the division or the flash is NOT executed !!!!
-    self.domNode.style.top = '-1000px';
-    self.domNode.style.left = '-1000px';
-    self.domNode.style.height = '8px';
-    self.domNode.style.width = '8px';
-    self.domNode.style.overflow = 'hidden';
-    document.body.appendChild(self.domNode);
-
-    if (WA.browser.isMSIE)
-    {
-      // IE is "special".
-      var html = '<object id="soundManagerObject" data="'+self.flashmanager+'" type="application/x-shockwave-flash" width="0" height="0"><param name="movie" value="'+self.flashmanager+'" /><param name="AllowScriptAccess" value="always" /><param name="quality" value="high" /></object>';
-    }
-    else
-    {
-      var html = '<embed name="soundManagerObject" id="soundManagerObject" src="'+self.flashmanager+'" width="0" height="0" quality="high" allowScriptAccess="always" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash"></embed>';
-    }
-
-    WA.browser.setInnerHTML(self.domNode, html);
-    self.flash = WA.toDOM('soundManagerObject');
-//    WA.Managers.event.off('load', window, create);
-
-    self.running = true;
-    self.timer = setTimeout(isready, 100);
-  }
-
   this.addSound = addSound;
   function addSound(soundID, soundlink, autoplay, whileloading, hook)
   {
     if (!soundlink)
       return;
-    // we wait for flash to load for security (many scripts adds the sounds at the beginning)
-    if (!self.ready)
-    {
-      self.soundqueue[soundID] = [soundID, soundlink, autoplay, whileloading, hook];
-      return null;
-    }
+    
     var s = new WA.Managers.sound.sound(self, soundID, soundlink, !!autoplay, whileloading?1:0, hook);
     self.sounds[soundID] = s;
     return s;
@@ -157,7 +68,7 @@ WA.Managers.sound = new function()
   this.startSound = startSound;
   function startSound(soundID)
   {
-    if (!self.ready || !self.sounds[soundID])
+    if (!self.sounds[soundID])
       return false;
     return self.sounds[soundID].start();
   }
@@ -165,7 +76,7 @@ WA.Managers.sound = new function()
   this.pauseSound = pauseSound;
   function pauseSound(soundID)
   {
-    if (!self.ready || !self.sounds[soundID])
+    if (!self.sounds[soundID])
       return false;
     return self.sounds[soundID].pause();
   }
@@ -173,7 +84,7 @@ WA.Managers.sound = new function()
   this.stopSound = stopSound;
   function stopSound(soundID)
   {
-    if (!self.ready || !self.sounds[soundID])
+    if (!self.sounds[soundID])
       return false;
     return self.sounds[soundID].stop();
   }
@@ -182,7 +93,7 @@ WA.Managers.sound = new function()
   this.setVolume = setVolume;
   function setVolume(soundID, volume)
   {
-    if (!self.ready || !self.sounds[soundID])
+    if (!self.sounds[soundID])
       return false;
     return self.sounds[soundID].volume(volume);
   }
@@ -191,7 +102,7 @@ WA.Managers.sound = new function()
   this.setPan = setPan;
   function setPan(soundID, pan)
   {
-    if (!self.ready || !self.sounds[soundID])
+    if (!self.sounds[soundID])
       return;
     return self.sounds[soundID].pan(pan);
   }
@@ -213,15 +124,11 @@ WA.Managers.sound = new function()
   // flush
   function destroy()
   {
-    self.flash = null;
-    self.domNode = null;
     delete self.sounds;
     delete self.soundqueue;
     self = null;
   }
 
-  // creates the flash holder to use
-  // WA.Managers.event.addListener('load', window, create);
   WA.Managers.event.registerFlush(destroy);
 
 }();
@@ -235,12 +142,18 @@ WA.Managers.sound.sound = function(m, id, l, a, w, h)
   this.autoplay = a;
   this.whileloading = w;
   this.hook = h;
+  this.node = null;
 
   this.create = create;
   function create(firstload)
   {
-    self.manager.flash._createSound(self.id, self.callback);
-    self.manager.flash._load(self.id, self.link, true, firstload&&self.autoplay, firstload?self.whileloading:0);
+    var node = WA.createDomNode('audio', self.id, null);
+    node.src = self.link;
+    node.style.display = 'none';
+    self.node = node;
+    document.getElementsByTagName('body')[0].appendChild(node);
+    if (self.autoplay)
+      node.play();
   }
 
   this.callback = callback;
@@ -252,35 +165,35 @@ WA.Managers.sound.sound = function(m, id, l, a, w, h)
   this.start = start;
   function start()
   {
-    self.manager.flash._start(self.id,1,0);
+    self.node.play();
     return true;
   }
 
   this.pause = pause;
   function pause()
   {
-    self.manager.flash._pause(self.id);
+    self.node.pause();
     return true;
   }
 
   this.stop = stop;
   function stop()
   {
-    self.manager.flash._stop(self.id);
+    self.node.stop();
     return true;
   }
 
   this.volume = volume;
   function volume(v)
   {
-    self.manager.flash._setVolume(self.id, v);
+    self.node.volume(v);
     return true;
   }
 
   this.pan = pan;
   function pan(p)
   {
-    self.manager.flash._setPan(self.id, p);
+    self.node.pan(p);
     return true;
   }
 

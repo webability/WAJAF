@@ -194,6 +194,14 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
     self.parameters = null;
   }
 
+  function buildParametersPost()
+  {
+    var data = self.data || '';
+    for (i in self.parameters)
+      data += (data.length > 0?'&':'') + encodeURIComponent(i) + '=' + encodeURIComponent(self.parameters[i]);
+    return data;
+  }
+
   function buildParameters()
   {
     var data = self.data || '';
@@ -205,14 +213,16 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
   // Ajax control
   function headers()
   {
-    self.request.setRequestHeader('X-Requested-With', 'WAJAF::Ajax - WebAbility(r) v5');
-    if (self.method == 'POST')
+    self.request.setRequestHeader('X-Requested-With', 'WAJAF::Ajax - WebAbility(r) v6');
+    if (self.method == 'POST' || self.method == 'PUT')
     {
       self.request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    }
+/*
       if (self.request.overrideMimeType)
         self.request.setRequestHeader('Connection', 'close');
-      self.request.setRequestHeader('Method', 'POST ' + self.url + ' HTTP/1.1');
-    }
+*/
+//    self.request.setRequestHeader('Method', self.method + ' ' + self.url + ' HTTP/1.1');
   }
 
   this.send = send;
@@ -229,19 +239,30 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
     try
     {
       var url = self.url;
-      var parameters = buildParameters();
-      if (self.method == 'GET' && parameters.length > 0)
-        url += (url.match(/\?/) ? '&' : '?') + parameters;
+      if (self.method == 'GET')
+      {
+        var parameters = buildParameters();
+        if (parameters.length > 0)
+          url += (url.match(/\?/) ? '&' : '?') + parameters;
+      }
       self.request.open(self.method, url, true);
       headers();
       callNotify('start');
-      self.request.send(self.method == 'POST' ? parameters : null);
+      if (self.method == 'POST')
+      {
+        var parameters = buildParametersPost();
+        self.request.send(parameters);
+      }
+      else if (self.method == 'PUT')
+        self.request.send(WA.JSON.encode(self.parameters));
+      else
+        self.request.send(null);
       self.state = 1;
-      WA.debug.explain(WA.i18n.getMessage('ajax.send')+url, 2);
+      WA.debug.log(WA.i18n.getMessage('ajax.send')+url, 2);
     }
     catch (e)
     {
-      WA.debug.explain(WA.i18n.getMessage('ajax.errorcreation')+url, 2);
+      WA.debug.log(WA.i18n.getMessage('ajax.errorcreation')+url, 1);
       self.state = 3;
       processError(1, e);
     }
@@ -255,7 +276,7 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
       {
         if (self.request.status == 200)
         {
-          WA.debug.explain(WA.i18n.getMessage('ajax.received')+self.url, 2);
+          WA.debug.log(WA.i18n.getMessage('ajax.received')+self.url, 2);
           if (self.timerabort)
           {
             clearTimeout(self.timerabort);
@@ -270,10 +291,10 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
         }
         else
         {
-          WA.debug.explain(WA.i18n.getMessage('ajax.errorreception')+self.url, 2);
+          WA.debug.log(WA.i18n.getMessage('ajax.errorreception')+self.url, 1);
           self.state = 3;
           // we call error feedback, or alert
-          processError(3, WA.i18n.getMessage('ajax.error')+self.request.status+':\n' + self.request.statusText);
+          processError(3, WA.i18n.getMessage('ajax.error')+self.request.status+':\n' + self.request.statusText, self.request);
         }
         self.request.onreadystatechange = WA.nothing;  // IE6 CANNOT assign null !!!
         var state = checkPeriod();
@@ -287,7 +308,7 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
     }
     catch(e)
     {
-      WA.debug.explain(WA.i18n.getMessage('ajax.fatalerror')+self.url+' '+e, 2);
+      WA.debug.log(WA.i18n.getMessage('ajax.fatalerror')+self.url+' '+e, 1);
       self.state = 3;
       processError(2, e);
     }
@@ -316,14 +337,20 @@ WA.Managers.ajax.Request = function(url, method, data, feedback, autosend, liste
 
   // any error
   // type = 1: error sending, 2: error during process, 3: error state != 200, 4: timeout forced
-  function processError(type, error)
+  function processError(type, error, request)
   {
+    WA.debug.log(error, 1);
+
+    if (self.statefeedback)
+      self.statefeedback('error', type, error, request);
+
+    throw error;
+/*
     callNotify('error', type);
     if (typeof error == 'object')
       error = error.message;
     // abort and call feedback error
-    if (self.statefeedback)
-      self.statefeedback('error', type, error);
+*/
     // Default behaviour is to be silent on error
 //    else
 //      alert('Error: '+type+', '+error);

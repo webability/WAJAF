@@ -450,7 +450,10 @@ WA.Containers.widgetContainer.widgetZone = function(maincontainer, domID, code, 
   this.opencloseable = (code.attributes.opencloseable=='yes');
   this.editable = (code.attributes.editable=='yes');
   this.closeable = (code.attributes.closeable=='yes');
-  this.title = code.attributes.title;
+  if(code.attributes.title == undefined)
+    this.title = '';
+    //this.title = code.attributes.title;
+
   this.column = code.attributes.column?code.attributes.column:0;
   this.statusopenclose = true;
   this.statuseditor = false;

@@ -121,40 +121,42 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   this.title = ['','Insert','Update','Delete','View'];
   this.result = ['','Insert ok','Update ok','Delete ok'];
 
-  for (var i in code)
+  for (var i = 0, l = code.children.length; i < l; i++)
   {
-    if (code[i].tag == 'dataset' && code[i].data)
+    if (code.children[i].tag == 'dataset' && code.children[i].data)
     {
       try
       {
-        self.data = WA.JSON.decode(code[i].data);
+        self.data = WA.JSON.decode(code.children[i].data);
         if (self.data[self.varkey] == self.currentkey)
           self.dataloaded = true;
       }
       catch (e)
       {
+        WA.debug.log('Error on the dataset of groupContainer:', 1);
+        WA.debug.log(e, 1);
         // what do we do if there is an error in the dataset ? error ? alert ? debug ?
       }
       continue;
     }
-    if (code[i].tag == 'alertmessage')
-      self.mainerroralert = code[i].data;
-    if (code[i].tag == 'servermessage')
-      self.servererroralert = code[i].data;
-    if (code[i].tag == 'titleinsert')
-      self.title[1] = code[i].data;
-    if (code[i].tag == 'titleupdate')
-      self.title[2] = code[i].data;
-    if (code[i].tag == 'titledelete')
-      self.title[3] = code[i].data;
-    if (code[i].tag == 'titleview')
-      self.title[4] = code[i].data;
-    if (code[i].tag == 'insertok')
-      self.result[1] = code[i].data;
-    if (code[i].tag == 'updateok')
-      self.result[2] = code[i].data;
-    if (code[i].tag == 'deleteok')
-      self.result[3] = code[i].data;
+    if (code.children[i].tag == 'alertmessage')
+      self.mainerroralert = code.children[i].data;
+    if (code.children[i].tag == 'servermessage')
+      self.servererroralert = code.children[i].data;
+    if (code.children[i].tag == 'titleinsert')
+      self.title[1] = code.children[i].data;
+    if (code.children[i].tag == 'titleupdate')
+      self.title[2] = code.children[i].data;
+    if (code.children[i].tag == 'titledelete')
+      self.title[3] = code.children[i].data;
+    if (code.children[i].tag == 'titleview')
+      self.title[4] = code.children[i].data;
+    if (code.children[i].tag == 'insertok')
+      self.result[1] = code.children[i].data;
+    if (code.children[i].tag == 'updateok')
+      self.result[2] = code.children[i].data;
+    if (code.children[i].tag == 'deleteok')
+      self.result[3] = code.children[i].data;
   }
 
 
@@ -212,8 +214,9 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     }
     catch (e)
     {
-      alert(e);
-      alert(request.responseText);
+      WA.debug.log('Error on the .getData of groupContainer:', 1);
+      WA.debug.log(e, 1);
+      WA.debug.log(request.responseText, 1);
       // we remove the "loading" stuff
       stopLoading();
     }
@@ -269,7 +272,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       startLoading();
 
       // ask to the server the data
-      var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', self.varorder+'=getrecord'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
+      var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', self.varorder+'=getrecord'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
 
       // we should capture errors and call fillData again on any error to continue the loading process try
 
@@ -620,8 +623,9 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     }
     catch (e)
     {
-      alert(e);
-      alert(request.responseText);
+      WA.debug.log('Error on the .getResult of groupContainer:', 1);
+      WA.debug.log(e, 1);
+      WA.debug.log(request.responseText, 1);
     }
 
     // we remove the "loading" stuff
@@ -656,7 +660,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     startLoading();
 
     // send information to server based on mode
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', null, self.getResult, false);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', null, self.getResult, false);
     if (request)
     {
       self.datatemporal = {};
@@ -701,7 +705,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     self.dataloaded = false;
 
     // ask to the server the data
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', self.varorder+'=next'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', self.varorder+'=next'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
   }
 
   this.doPrevious = doPrevious;
@@ -712,7 +716,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     self.dataloaded = false;
 
     // ask to the server the data
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', self.varorder+'=previous'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', self.varorder+'=previous'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
   }
 
   this.doFirst = doFirst;
@@ -723,7 +727,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     self.dataloaded = false;
 
     // ask to the server the data
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', self.varorder+'=first'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', self.varorder+'=first'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
   }
 
   this.doLast = doLast;
@@ -734,7 +738,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     self.dataloaded = false;
 
     // ask to the server the data
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', self.varorder+'=last'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', self.varorder+'=last'+'&'+self.varmode+'='+self.mode+'&'+self.varkey+'='+self.currentkey, getData, true);
   }
 
   this.setMessages = setMessages;

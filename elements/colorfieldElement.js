@@ -1,8 +1,8 @@
 
 /*
-    textfieldElement.js, WAJAF, the WebAbility(r) Javascript Application Framework
-    Contains element to control a simple text field
-    (c) 2008-2012 Philippe Thomassigny
+    colorfieldElement.js, WAJAF, the WebAbility(r) Javascript Application Framework
+    Contains element to control a field to select a color
+    (c) 2008-2010 Philippe Thomassigny
 
     This file is part of WAJAF
 
@@ -20,10 +20,10 @@
     along with WAJAF.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
+WA.Elements.colorfieldElement = function(fatherNode, domID, code, listener)
 {
   var self = this;
-  WA.Elements.textfieldElement.sourceconstructor.call(this, fatherNode, domID, code, 'div', { classname:'textfield' }, listener);
+  WA.Elements.colorfieldElement.sourceconstructor.call(this, fatherNode, domID, code, 'div', { classname:'colorfield' }, listener);
 
   this.id = this.code.attributes.id; // name of field, to use to send to the server
 
@@ -31,6 +31,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   this.formtype = 'field';
   this.record = (this.code.attributes.record&&this.code.attributes.record=='no'?false:true);
   this.editable = true;  // it's a text field, so yes
+  var statusselector = false;
 
   this.status = 0; // 0 = neutral, 1 = ok, 2 = error, 3 = r/o, 4 = disabled
   this.edition = false;
@@ -55,15 +56,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   }
 
   // validity checks
-  this.password = (this.code.attributes.password&&this.code.attributes.password=='yes'?true:false);
-  this.format = (this.code.attributes.format?new RegExp(this.code.attributes.format):null);
-  this.minlength = (this.code.attributes.minlength?this.code.attributes.minlength:'');
-  this.maxlength = (this.code.attributes.maxlength?this.code.attributes.maxlength:'');
   this.size = (this.code.attributes.size?this.code.attributes.size:'');
-  this.minwords = (this.code.attributes.minwords?this.code.attributes.minwords:null);
-  this.maxwords = (this.code.attributes.maxwords?this.code.attributes.maxwords:null);
-  // defaultvalue is the default for insert mode (code from the code, set below)
-  // value is the value set in this mode by setValues, if we want to undo changes
   this.defaultvalue = this.value = '';
 
   // errors on checks
@@ -82,14 +75,11 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
         case 'helpdescription': this.helpmessage = code.children[i].data; break;
         case 'statusnotnull': this.errormessages.statusnotnull = code.children[i].data; this.errors.statusnotnull = false; break;
         case 'statusbadformat': this.errormessages.statusbadformat = code.children[i].data; this.errors.statusbadformat = false; break;
-        case 'statustooshort': this.errormessages.statustooshort = code.children[i].data; this.errors.statustooshort = false; break;
-        case 'statustoolong': this.errormessages.statustoolong = code.children[i].data; this.errors.statustoolong = false; break;
-        case 'statustoofewwords': this.errormessages.statustoofewwords = code.children[i].data; this.errors.statustoofewwords = false; break;
-        case 'statustoomanywords': this.errormessages.statustoomanywords = code.children[i].data; this.errors.statustoomanywords = false; break;
         case 'statuscheck': this.errormessages.statuscheck = code.children[i].data; this.errors.statuscheck = false; break;
       }
     }
   }
+
   // NODES
   this.domNodeLabel = WA.createDomNode('label', domID+'_label', this.classes.classname + 'label');
   this.father.domNode.insertBefore(this.domNodeLabel, this.domNode);
@@ -108,8 +98,12 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     this.domNodeField.style.width = this.size+'px';
   this.domNode.appendChild(this.domNodeField);
 
-  this.domNodeCount = WA.createDomNode('span', domID+'_count', 'count');
-  this.domNode.appendChild(this.domNodeCount);
+  this.domNodeColor = WA.createDomNode('div', domID+'_color', 'color');
+  this.domNode.appendChild(this.domNodeColor);
+
+  this.domNodeSelector = WA.createDomNode('div', domID+'_selector', 'selector');
+  this.domNode.appendChild(this.domNodeSelector);
+  fillselector();
 
   this.domNodeHelp = WA.createDomNode('p', domID+'_help', 'help');
   this.domNode.appendChild(this.domNodeHelp);
@@ -133,11 +127,6 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     this.group = this.father.father;
     this.group.registerField(this);
   }
-  else
-  {
-    if (this.defaultvalue)
-      this.domNodeField.value = this.defaultvalue;
-  }
 
   // If we control some other fields
   this.synchronizer = null;
@@ -149,7 +138,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
 
   function resize()
   {
-    WA.Elements.textfieldElement.source.resize.call(self);
+    WA.Elements.colorfieldElement.source.resize.call(self);
     // size mode for responsive design, not activated for now
 /*
     var RW = WA.browser.getNodeOuterWidth(self.father.domNode);
@@ -194,7 +183,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     {
       self.status = 0;
       self.domNodeError.innerHTML = '';
-      self.domNodeCount.innerHTML = '';
+      self.domNodeColor.innerHTML = '';
       return;
     }
 
@@ -227,7 +216,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     {
       self.status = 0;
       self.domNodeError.innerHTML = '';
-      self.domNodeCount.innerHTML = '';
+      self.domNodeColor.innerHTML = '';
       return;
     }
 
@@ -271,7 +260,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
         self.status = 2;
         self.errors.statustoomanywords = true;
       }
-      self.domNodeCount.innerHTML = numpalabras + '/' + value.length;
+      self.domNodeColor.innerHTML = numpalabras + '/' + value.length;
     }
     if (self.errorexternal)
       self.status = 2;
@@ -370,7 +359,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
 
     self.domNodeHelp.style.display = (self.help[mode]?'':'none');
     self.domNodeField.style.display = (self.info[mode]?'none':'');
-    self.domNodeCount.style.display = (self.info[mode]?'none':'');
+    self.domNodeColor.style.display = (self.info[mode]?'none':'');
     self.domNodeError.style.display = (self.info[mode]?'none':'');
     self.edition = !self.info[mode];
     if (mode == 1)
@@ -420,11 +409,18 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
       self.father.setStatus(1);
   }
 
+  function onclick(e)
+  {
+    statusselector = !statusselector;
+    self.domNodeSelector.style.display = statusselector?'block':'none';
+  }
+  
   function start()
   {
     WA.Managers.event.on('keyup', self.domNodeField, onkeyup, true);
     WA.Managers.event.on('focus', self.domNodeField, onfocus, true);
     WA.Managers.event.on('blur', self.domNodeField, onblur, true);
+    WA.Managers.event.on('click', self.domNodeColor, onclick, true);
 
     // If we are controled by another field
     if (self.code.attributes.synchronizer)
@@ -445,18 +441,13 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   this.setValues = setValues;
   function setValues(values)
   {
-    if (self.group)
-    {
-      self.firstview = true;
-      self.value = self.domNodeField.value = values;
-      if (values != undefined && values != null)
-        self.domNodeValue.innerHTML = values;
-      else
-        reset();
-      checkAll();
-    }
+    self.firstview = true;
+    self.value = self.domNodeField.value = values;
+    if (values != undefined && values != null)
+      self.domNodeValue.innerHTML = values;
     else
-      self.domNodeField.value = values;
+      reset();
+    checkAll();
   }
 
   this.stop = stop;
@@ -472,7 +463,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   this.destroy = destroy;
   function destroy(fast)
   {
-    WA.Elements.textfieldElement.source.destroy.call(self, fast);
+    WA.Elements.colorfieldElement.source.destroy.call(self, fast);
 
     self.synchronizer = null;
     self.synchronizeelements = [];
@@ -480,7 +471,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     self.domNodeError = null;
     self.domNodeHelp = null;
     self.domNodeValue = null;
-    self.domNodeCount = null;
+    self.domNodeColor = null;
     self.domNodeField = null;
     self.domNodeLabel = null;
     self.errormessages = null;
@@ -493,7 +484,13 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     self.help = null;
     self = null;
   }
+  
+  function fillselector()
+  {
+    var node = WA.$N('main|single|colortheme');
+    self.domNodeSelector.innerHTML = node.domNode.innerHTML;
+  }
 }
 
 // Add basic element code
-WA.extend(WA.Elements.textfieldElement, WA.Managers.wa4gl._element);
+WA.extend(WA.Elements.colorfieldElement, WA.Managers.wa4gl._element);

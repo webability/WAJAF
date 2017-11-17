@@ -149,9 +149,10 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
   }
 
   // any record change should call this
-  function fillData()
+  this.fillData = fillData;
+  function fillData(newdataset)
   {
-    if (!self.loaded && self.serverlistener)
+    if (!newdataset && !self.loaded && self.serverlistener)
     {
       if (self.countload++ > 3)
       {
@@ -160,29 +161,47 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
       }
 
       // ask to the server the data
-      var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.app.applicationID + '.' + self.id + '.json', 'POST', 'Order=get', getData, true);
+      var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', 'Order=get', getData, true);
 
       // we put the "loading"
 
       return;
     }
-
-    // do we populate data from here ?
-    if (self.data && self.data.row)
+    
+    var dataset = null;
+    if (newdataset)
     {
-      for (var i = 0, l = self.data.row.length; i < l; i++)
+      dataset = newdataset;
+      if (self.data && self.data.row)
+        self.data.row.concat(newdataset);
+      else
       {
-        var myt = WA.clone(self.templates[self.data.row[i].template]);
-        WA.replaceTemplate(myt, self.data.row[i]);
+        if (!self.data) self.data = {};
+        self.data.row = newdataset;
+      }
+    }
+    else
+    {
+      if (self.data && self.data.row)
+        dataset = self.data.row;
+    }
+    
+    // do we populate data from here ?
+    if (dataset)
+    {
+      for (var i = 0, l = dataset.length; i < l; i++)
+      {
+        var myt = WA.clone(self.templates[dataset[i].template]);
+        WA.replaceTemplate(myt, dataset[i]);
         myt.tag = 'zone';
         if (!myt.attributes)
           myt.attributes = {};
-        myt.attributes.id = self.data.row[i].id;
-        myt.attributes.father = self.data.row[i].father;
-        myt.attributes.closeable = self.data.row[i].closeable?'yes':'no';
-        myt.attributes.closed = self.data.row[i].closed?'yes':'no';
-        myt.attributes.loadable = self.data.row[i].loadable?'yes':'no';
-        myt.attributes.loaded = self.data.row[i].loaded?'yes':'no';
+        myt.attributes.id = dataset[i].id;
+        myt.attributes.father = dataset[i].father;
+        myt.attributes.closeable = dataset[i].closeable?'yes':'no';
+        myt.attributes.closed = dataset[i].closed?'yes':'no';
+        myt.attributes.loadable = dataset[i].loadable?'yes':'no';
+        myt.attributes.loaded = dataset[i].loaded?'yes':'no';
         // create the tree
         self.app.createTree(self, myt);
       }
@@ -193,11 +212,11 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
   this.parseTemplates = parseTemplates;
   function parseTemplates(code)
   {
-    for (var i in code)
+    for (var i = 0, l = code.children.length; i < l; i++)
     {
-      if (code[i].tag == 'template')
+      if (code.children[i].tag == 'template')
       {
-        self.templates[code[i].attributes.name] = code[i];
+        self.templates[code.children[i].attributes.name] = code.children[i];
       }
     }
   }
@@ -205,11 +224,11 @@ WA.Containers.treeContainer = function(fatherNode, domID, code, listener)
   this.parseData = parseData;
   function parseData(code)
   {
-    for (var i in code)
+    for (var i = 0, l = code.children.length; i < l; i++)
     {
-      if (code[i].tag == 'dataset')
+      if (code.children[i].tag == 'dataset')
       {
-        self.data = WA.JSON.decode(code[i].data);
+        self.data = WA.JSON.decode(code.children[i].data);
         self.loaded = true;
       }
     }
@@ -278,13 +297,19 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
   this.childrenLoaded = childrenLoaded;
   function childrenLoaded(r)
   {
-    // get the ajax request
+    var data = WA.JSON.decode(r.responseText);
+    self.loaded = true;
+    self.father.fillData(data.row);
   }
 
   this.loadChildren = loadChildren;
   function loadChildren()
   {
     // start an ajax request
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.father.app.applicationID + WA.Managers.wa4gl.premethod + self.father.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', null, childrenLoaded, false);
+    request.addParameter('Order', 'getchildren');
+    request.addParameter('father', self.code.attributes.id);
+    request.send();
   }
 
   function getResponse(request)
@@ -298,7 +323,7 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
     if (!self.father.serverlistener)
       return;
     // send information to server based on mode
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self.father.app.applicationID + '.' + self.father.id + '.json', 'POST', 'Order='+order, getResponse, false);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.father.app.applicationID + WA.Managers.wa4gl.premethod + self.father.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', 'Order='+order, getResponse, false);
     if (request)
     {
       for (var i in code)
@@ -324,6 +349,9 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
     self.sendServer('openclose', {id:self.code.attributes.id,status:self.closed});
     self._callNotify('resize'); // resize us
     self._callNotify('pleaseresize'); // resize children
+  
+    if (self.loadable && !self.loaded && ((self.closeable && !self.closed) || !self.closeable) )
+      loadChildren();
   }
 
   this._callNotify = _callNotify;
@@ -388,6 +416,7 @@ WA.Containers.treeContainer.treeZone = function(father, domID, container, code, 
 
     self.children = null;
     self.container = null;
+    self.domNodeMain.parentNode.removeChild(self.domNodeMain);
     self.domNodeMain = null;
     self.domNodeOpenClose = null;
     self.domNodeChildren = null;

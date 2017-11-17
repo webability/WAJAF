@@ -34,12 +34,12 @@ class js
 
   function getJS($BASEDIR, $REPOSITORYDIR)
   {
-    if (isset($_GET["JS"]) && $_GET["JS"])
+    if (isset($_GET["js"]) && $_GET["js"])
     {
-      if (strpos($_GET["JS"], "/") !== false || strpos($_GET["JS"], "\\") || strpos($_GET["JS"], "%2F") || strpos($_GET["JS"], "%5C"))  // No / \ or rawurlencoded allowed
+      if (strpos($_GET["js"], "/") !== false || strpos($_GET["js"], "\\") || strpos($_GET["js"], "%2F") || strpos($_GET["js"], "%5C"))  // No / \ or rawurlencoded allowed
         return $this->notFound();
       $dirs = array('/system/', '/managers/', '/containers/', '/elements/', '../dominion/js/containers/', '../dominion/js/elements/');
-      $xF = explode(',', $_GET["JS"]);
+      $xF = explode(',', $_GET["js"]);
       if (!$xF)
         return null;
       $code = '';

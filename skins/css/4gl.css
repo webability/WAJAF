@@ -105,6 +105,27 @@
 .group>fieldset>.control { padding: 17px 20px 18px; padding-left: 160px; margin-top: 5px; margin-bottom: 5px; border-bottom: 1px solid #ddf; }
 
 
+/* grid CONTAINER CLASSES */
+
+.grid { margin: 0; display: block; }
+
+/* 3 types of zones: title, field, control */
+.grid .grid-header { position: absolute; left: 0px; right: 0px; top: 0px; height: 20px; background-color: #eee; border-bottom: 1px solid #ccc; overflow: hidden; }
+.grid .grid-header-content { position: relative; }
+.grid .grid-header-column { float: left; }
+.grid .grid-header-column-title { background-color: white; height: 16px; padding-top: 3px; padding-left: 5px; border-bottom: 1px solid #999; border-right: 1px solid #999; }
+.grid .grid-header-column-sizer { float: right; background-color: green; width: 3px; height: 20px; cursor: col-resize; }
+
+
+.grid .grid-body { position: absolute; left: 0px; right: 0px; top: 21px; bottom: 21px; background-color: #eee; overflow: auto; }
+.grid .grid-body-content { position: relative; }
+.grid .grid-body-column { position: relative; float: left; }
+.grid .grid-body-cell { background-color: white; border-bottom: 1px dotted #666; border-right: 1px dotted #666; padding: 3px; height: 13px; overflow: hidden; }
+
+.grid .grid-footer { position: absolute; left: 0px; right: 0px; height: 20px; bottom: 0px; background-color: #ddd; border-top: 1px solid black; }
+
+
+
 /* 1. SIMPLE ELEMENTS */
 
 /* htmlElement default class */
@@ -304,6 +325,37 @@ margin-left: 0px; }
 .dommasklovfield.maskeditionerror .entryinput { border: 0px; border-left: 1px solid #cc8800; border-bottom: 1px solid #cc8800; background-color: #ffeeee; padding: 2px; height: 15px; }
 .dommasklovfield.maskreadonly .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
 .dommasklovfield.maskdisabled .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
+
+/* colorfield */
+
+/* we force tiny until we liberate responsive design */
+.colorfieldlabel { float: left; width: 140px; padding-top: 1px; color-align: right; display: block; color: #333; font-size: 12px; font-weight: bold; line-height: 18px;
+width: auto; float: none; color-align: left; padding-left: 20px; }
+.colorfieldlabel.error { color: red; }
+.colorfield { margin-left: 140px; padding-left: 20px; background-repeat: no-repeat; background-position: 2px 4px; position: relative;
+margin-left: 0px; }
+.colorfield.ok { background-image: url('../../skins/4gl/field-ok.png'); }
+.colorfield.error { background-image: url('../../skins/4gl/field-error.png'); }
+.colorfield.edition { background-image: url('../../skins/4gl/field-edition.png'); }
+.colorfield>.color { width: 30px; height: 20px; border: 1px solid black; cursor: pointer; display: inline-block; margin-top: 5px; }
+.colorfield>.selector { display: none; width: 300px; height: 250px; border: 1px solid black; top: 30px; left: 200px; position: absolute; z-index: 1; background-color: red; }
+.colorfield>.value {  }
+.colorfield>.field { width: 230px; border: 0px; padding: 2px; height: 15px; border-left: 1px solid #aaa; border-bottom: 1px solid #aaa; background-color: #eee; }
+.colorfield.ok>.field { border-left: 1px solid #44aa44; border-bottom: 1px solid #44aa44; background-color: #eef8cc; }
+.colorfield.error>.field { border-left: 1px solid #cc8800; border-bottom: 1px solid #cc8800; background-color: #ffeeee; }
+.colorfield.edition>.field { border-left: 1px solid #8888ff; border-bottom: 1px solid #8888ff; background-color: #eeeeff; }
+
+.colorfield>.help { display: block; padding: 5px; color: #999; float: right; width: 400px; }
+.colorfield>.error { display: block; padding: 5px; color: #f00; float: right; width: 400px; }
+
+.colorfieldlabel.medium { }
+
+.colorfieldlabel.tiny { width: auto; float: none; color-align: left; padding-left: 20px; }
+.colorfield.tiny { margin-left: 0px; }
+
+.dommaskcolorfield.maskreadonly .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
+.dommaskcolorfield.maskdisabled .entryinput { border: 0px; background-color: #eeeeee; padding: 2px; height: 15px; }
+
 
 
 

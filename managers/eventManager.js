@@ -30,6 +30,7 @@ WA.Managers.event = new function()
   beforeflushs = [];
   flushs = [];
   keys = [];
+  this.keys = keys;
   specialkeys =
   {
     'esc': 27, 'escape': 27,
@@ -57,7 +58,7 @@ WA.Managers.event = new function()
     eventnode = WA.toDOM(eventnode);
     if (!eventnode) // no node found ?
       return false;
-    WA.debug.explain('eventManager.addListener('+eventname+', '+eventnode.id+')');
+    WA.debug.log('eventManager.addListener('+eventname+', '+eventnode.id+')', 2);
 
     // link the UID to the node
     if (eventnode.listeneruid == undefined)
@@ -140,7 +141,7 @@ WA.Managers.event = new function()
     eventnode = WA.toDOM(eventnode);
     if (!eventnode) // no node found ?
       return;
-    WA.debug.explain('eventManager.removeListener('+eventname+', '+eventnode.id+')');
+    WA.debug.log('eventManager.removeListener('+eventname+', '+eventnode.id+')', 2);
     if (eventnode.listeneruid == undefined) // node not registered here
       return;
     if (eventfunction.functionuid == undefined) // function not registered here
@@ -186,7 +187,7 @@ WA.Managers.event = new function()
   this.addKey = this.key = addKey;
   function addKey(key, callback)
   {
-    WA.debug.explain('eventManager.addKey('+key+')');
+    WA.debug.log('eventManager.addKey('+key+')', 2);
     var xkey = key.toLowerCase().split("+");
     for (var i = 0, l = xkey.length; i < l; i++)
     {
@@ -210,8 +211,10 @@ WA.Managers.event = new function()
   this.removeKey = removeKey;
   function removeKey(key)
   {
-    WA.debug.explain('eventManager.removeKey('+key+')');
-    keys.remove(key, 'skey');
+    WA.debug.log('eventManager.removeKey('+key+')', 2);
+    for (var i = 0, l=keys.length; i<l; i++)
+      if (keys[i].skey == key)
+        keys.splice(i, 1);
   }
 
   /* private method */
@@ -349,3 +352,5 @@ WA.Managers.event = new function()
   this.addListener('keydown', document, keycallbackdown, false);
   this.addListener('keyup', document, keycallbackup, false);
 }();
+
+

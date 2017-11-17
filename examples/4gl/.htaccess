@@ -1,0 +1,10 @@
+# rewriteengine begin
+RewriteEngine On    # Turn on the rewriting engine
+# RewriteBase /
+# rewriteengine end
+
+# rewritesite begin
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . app.php [L]
+# rewritesite end

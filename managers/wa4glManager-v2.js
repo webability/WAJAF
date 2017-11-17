@@ -294,7 +294,7 @@ WA.checkAvailability = function(library)
   {
     if (!WA.libraries[library])
     {
-      WA.debug.log('WA.checkAvailability: library added to load: ' + library, 3);
+      WA.debug.explain('WA.checkAvailability: library added to load: ' + library);
       WA.libraries[library] = true;
     }
     return false;
@@ -304,7 +304,7 @@ WA.checkAvailability = function(library)
 
 WA.librariesLoaded = function()
 {
-  WA.debug.log('WA.librariesLoaded: all required libraries loaded<br />', 3);
+  WA.debug.explain('WA.librariesLoaded: all required libraries loaded<br />');
   // all libraries should be loaded, we check it
   for (var i in WA.libraries)
   {
@@ -338,7 +338,7 @@ WA.callLibraries = function()
     t += (num++?',':'') + l + '.js';
   }
   if (num > 0)
-    WA.Managers.ondemand.loadJS(WA.Managers.wa4gl.urljs+'?js='+t+'&v='+WA.version, WA.librariesLoaded, true);
+    WA.Managers.ondemand.loadJS(WA.Managers.wa4gl.urljs+'?js='+t, WA.librariesLoaded, true);
   else
   {
     WA.librariescaller = [];
@@ -408,12 +408,7 @@ WA.replaceTemplate = function(obj, rep)
 {
   for (var i in obj)
   {
-    if (WA.isArray(obj[i]))            // children mainly
-    {
-      for (var j = 0, l = obj[i].length; j < l; j++)
-        WA.replaceTemplate(obj[i][j], rep);
-    }
-    else if (WA.isString(obj[i]))            // we are only interested by strings
+    if (WA.isString(obj[i]))            // we are only interested by strings
       obj[i] = WA.String.sprintf(obj[i], rep);
     else if (WA.isObject(obj[i]))       // and sub objects
       WA.replaceTemplate(obj[i], rep);
@@ -628,14 +623,6 @@ WA.Managers.wa4gl = new function()
     return;
   }
 
-  this.reloadApplication = reloadApplication;
-  function reloadApplication(node, applicationID, instanceID, params)
-  {
-    destroyApplication(applicationID, instanceID);
-    var newapp = startApplication(node, applicationID, instanceID, params, '');
-    return newapp;
-  }
-  
   // ===========================================================
   // GENERAL PURPOSE FUNCTIONS
   this.getApplication = getApplication;
@@ -697,7 +684,7 @@ WA.Managers.wa4gl._4glnode = function(father, domID, supertype, code, type, clas
 
   this.visible = (this.code.attributes.display)?this.code.attributes.display!='none':true;
   this.serverlistener = (this.code.attributes.haslistener==='yes');
-  
+
   // set to the inner application if apply (only in zones)
   this.application = null;
 
@@ -759,29 +746,33 @@ WA.Managers.wa4gl._4glnode.prototype.removeEvent = function(type)
 
 WA.Managers.wa4gl._4glnode.prototype.registerEvents = function()
 {
-  if (!this.code || !this.code.children)
+  if (!this.code)
     return;
-  for (var i=0, l=this.code.children.length; i < l; i++)
+  for (var i in this.code)
   {
-    if (this.code.children[i].tag == 'event')
+    if (i == 'tag' || i == 'attributes' || i == 'data' || !WA.isObject(this.code[i]))    // we are only interested by objects
+      continue;
+    if (this.code[i].tag == 'event')
     {
       var code = '';
-      for (var j=0, m=this.code.children[i].children.length; j < m; j++)
+      for (var j in this.code[i])
       {
-        if (this.code.children[i].children[j].tag == 'code')
-          code += this.code.children[i].children[j].data;
+        if (j == 'tag' || j == 'attributes' || j == 'data' || !WA.isObject(this.code[i][j]))   // we are only interested by objects
+          continue;
+        if (this.code[i][j].tag == 'code')
+          code += this.code[i][j].data;
       }
-      eval('this.events[this.code.children[i].attributes.type] = '+code+';');
+      eval('this.events[this.code[i].attributes.type] = '+code+';');
       // if the event is a JS event, we add it with on()
-      if (this.code.children[i].attributes.type.substr(0,2) == 'on')
+      if (this.code[i].attributes.type.substr(0,2) == 'on')
       {
-        WA.Managers.event.on(this.code.children[i].attributes.type.substr(2), this.domNode, this.events[this.code.children[i].attributes.type], false);
+        WA.Managers.event.on(this.code[i].attributes.type.substr(2), this.domNode, this.events[this.code[i].attributes.type], false);
       }
-      if (this.code.children[i].attributes.type == 'globalerror')
+      if (this.code[i].attributes.type == 'globalerror')
       {
         WA.Managers.wa4gl.setGlobalError(this.events['globalerror']);
       }
-      if (this.code.children[i].attributes.type == 'globallogin')
+      if (this.code[i].attributes.type == 'globallogin')
       {
         WA.Managers.wa4gl.setGlobalLogin(this.events['globallogin']);
       }
@@ -823,14 +814,9 @@ WA.Managers.wa4gl._4glnode.prototype.propagate = function(type, params)
   if (type == 'stop')
     this.state = 6;
   result = this.callEvent(type, params?params:{id:this.xdomID[2]});
-  if (this.application)
-    this.application.propagate(type, params);
-  else
+  for (var i in this.children)
   {
-    for (var i in this.children)
-    {
-      result &= this.children[i].propagate(type, params);
-    }
+    result &= this.children[i].propagate(type, params);
   }
   if (type == 'start')
     this.state = 5;
@@ -998,7 +984,10 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
     catch (e)
     {
       self.state = 10; // bad error, we stop anything
-      WA.debug.log(e, 1);
+      if (typeof e == 'object')
+        WA.debug.explain(e.message);
+      else
+        WA.debug.explain('The application nodes structure had an error, it cannot be built. \n' + e);
       throw e;
     }
   }
@@ -1025,8 +1014,6 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
     if ( (code.tag == 'container' || code.tag == 'element') && !WA.checkAvailability(code.attributes.type) )
       self.availability = false;
 
-    if (!code.children) // nothing to propagate
-      return;
     // we propagate
     switch(code.tag)
     {
@@ -1036,15 +1023,17 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
           break;
       case 'container':
       case 'application':
-        for (var i=0, l=code.children.length; i < l; i++)
+        for (var i in code)
         {
-          checkNodes(code.children[i], noid);
+          if (i != 'tag' && i != 'attributes' && WA.isObject(code[i]))  // we are only interested by objects
+            checkNodes(code[i], noid);
         }
         break;
       case 'template':
-        for (var i=0, l=code.children.length; i < l; i++)
+        for (var i in code)
         {
-          checkNodes(code.children[i], true); // true = do not create nodes ID if missing
+          if (i != 'tag' && i != 'attributes' && WA.isObject(code[i]))  // we are only interested by objects
+            checkNodes(code[i], true); // true = do not create nodes ID if missing
         }
         break;
       default:
@@ -1060,12 +1049,12 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
   {
     try
     {
-      if (self.code.children)
+      for (var i in self.code)
       {
-        for (var i=0, l=self.code.children.length; i < l; i++)
+        if (i != 'attributes' && i != 'tag' && WA.isObject(self.code[i]))  // we are only interested by objects
         {
           // we create a 4glnode and link with appnode, then we return the new node
-          buildTree(self, self.code.children[i]); // true: code has already been checked
+          buildTree(self, self.code[i], true); // true: code has already been checked
         }
       }
       if (self.code.attributes.classname)
@@ -1074,7 +1063,10 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
     catch (e)
     {
       self.state = 10; // bad error, we stop anything
-      WA.debug.log(e, 1);
+      if (typeof e == 'object')
+        WA.debug.explain(e.message);
+      else
+        WA.debug.explain('The application nodes structure had an error, it cannot be built. \n' + e);
       throw e;
     }
   }
@@ -1087,18 +1079,18 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
       case 'container':
         if (!WA.Containers[code.attributes.type])
           throw 'Error, the container library has not been loaded: '+code.attributes.type;
-        WA.debug.log('Creating Container: ' + code.attributes.type + ' with ID=' + code.attributes.id, 3);
+        WA.debug.explain('Creating Container: ' + code.attributes.type + ' with ID=' + code.attributes.id);
         var node = new WA.Containers[code.attributes.type](fatherNode, self.prependID + code.attributes.id, code);
         break;
       case 'element':
         if (!WA.Elements[code.attributes.type])
           throw 'Error, the container library has not been loaded: '+code.attributes.type;
-        WA.debug.log('Creating Element: ' + code.attributes.type + ' with ID=' + code.attributes.id, 3);
+        WA.debug.explain('Creating Element: ' + code.attributes.type + ' with ID=' + code.attributes.id);
         var node = new WA.Elements[code.attributes.type](fatherNode, self.prependID + code.attributes.id, code);
         break;
       case 'zone':
         // creates the zone into our father
-        WA.debug.log('Creating zone with ID=' + code.attributes.id, 3);
+        WA.debug.explain('Creating zone with ID=' + code.attributes.id);
         var node = fatherNode.createZone(self.prependID + code.attributes.id, code);
         break;
       default:
@@ -1114,16 +1106,11 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
     }
     else
     {
-      if (code.children)
+      for (var i in code)
       {
-        for (var i=0, l=code.children.length; i < l; i++)
+        if (i != 'attributes' && i != 'tag' && WA.isObject(code[i]))  // we are only interested by objects
         {
-          var n = buildTree(node, code.children[i]);
-          if (node.state == 5)
-          {
-            n.propagate('start');
-            n.propagate('resize');
-          }
+          buildTree(node, code[i]);
         }
       }
     }
@@ -1153,17 +1140,15 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
   this.start = start;
   function start(params)
   {
-    WA.debug.log('start application, self = ', 3);
-    WA.debug.log(self, 3);
+    WA.debug.explain('self = ' + self);
     if (!self)
     {
-      WA.debug.log('Critical error: self is null !!!' + params, 1);
-      WA.debug.log(this, 1);
-      WA.debug.log(this.domID + ' - ' + this.prependID + this.applicationID, 1)
-      return;
+      WA.debug.explain('Critical error: self is null !!!' + params);
+      WA.debug.explain(this);
+      WA.debug.explain(this.domID + ' - ' + this.prependID + this.applicationID)
     }
-    WA.debug.log('app['+self.prependID+'].start: State=' + self.state, 3);
-    WA.debug.log('entering state: ' + self.state, 3);
+    WA.debug.explain('app['+self.prependID+'].start: State=' + self.state);
+    WA.debug.explain('entering state: ' + self.state);
 
     // if we come from a timer or reenter here, we reinit the timer
     if (self.timerlater)
@@ -1230,11 +1215,7 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
     if (self.state == 5)
     {
       // we ask for a full resize
-      if (self.code && self.code.attributes && self.code.attributes.style)
-        WA.applyStyle(self.domNode, self.code.attributes.style);
       self.propagate('resize');
-      if (self.father.father)
-        self.father.propagate('appstarted');
     }
     if (self.state == 10)
     {
@@ -1246,7 +1227,7 @@ WA.Managers.wa4gl._4glapplication = function(fatherNode, applicationID, instance
   this.stop = stop;
   function stop()
   {
-    WA.debug.log('we are stopping ' + self.domID + ' ' + self.prependID, 3);
+    WA.debug.explain('we are stopping ' + self.domID + ' ' + self.prependID);
     // we should unlink all generated code and events
     // we call onstop
     if (self.state == 5)

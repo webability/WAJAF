@@ -36,8 +36,7 @@ window.onload =
     // we load the debug system
     var popupdebug = window.open('', 'debug', 'scrollbars=1,width=400,height=600');
     popupdebug.moveTo(0,0);
-    WA.debug.Console = popupdebug.document;
-    WA.debug.Level = 1;
+    WA.debug.console = popupdebug.document;
 */
     // we load the styles sheets with the manager so we can play with dynamic skins reload
     ondemandManager.loadCSS('/wajaf/skin/css/reset.css', null, true);

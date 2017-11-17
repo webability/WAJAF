@@ -370,8 +370,8 @@ OJO: considerar scrollwidth si jail es overflow/scroll
       self.metrics.jailtop = self.container?WA.browser.getNodeDocumentTop(self.container) + WA.browser.getNodeBorderTopHeight(self.container):0;
       self.metrics.jailwidth = self.container?WA.browser.getNodeInnerWidth(self.container):WA.browser.getDocumentWidth();
       self.metrics.jailheight = self.container?WA.browser.getNodeInnerHeight(self.container):WA.browser.getDocumentHeight();
-      self.metrics.jailscrollleft = self.container.scrollWidth;
-      self.metrics.jailscrolltop = self.container.scrollHeight;
+      self.metrics.jailscrollleft = self.container.scrollLeft;
+      self.metrics.jailscrolltop = WA.browser.getNodeTotalScrollTop(self.container);
     }
     else
     {
@@ -428,10 +428,20 @@ OJO: considerar scrollwidth si jail es overflow/scroll
     self.domNodeLink = WA.browser.getCursorNode(e);
     if (!self.objects[self.domNodeLink.id])
     {
-      return null;
+      // search for parent nodes ??
+      while (self.domNodeLink != null && self.domNodeLink != window.document)
+      {
+        self.domNodeLink = self.domNodeLink.parentNode;
+        if (self.objects[self.domNodeLink.id])
+          break;
+      }
+      if (!self.objects[self.domNodeLink.id])
+        return null;
     }
+
     self.timer = setTimeout( function() { self.start(); }, self.timeoutdrag );
     WA.Managers.dd.groupid = self.id;
+
     return WA.browser.cancelEvent(e);
   }
 
@@ -460,6 +470,7 @@ OJO: considerar scrollwidth si jail es overflow/scroll
       case 'copy':
         // we make a full copy
         self.domNodeDrag = self.domNodeMain.cloneNode(true);
+        self.domNodeDrag.className += ' dragged';
         // we get absolute coords and set them
         self.domNodeDrag.style.position = 'absolute';
         self.domNodeDrag.style.left = self.metrics.dragdocumentleft + 'px';

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_gridContainer">
+
+  <!-- Note important: the min-width of the container should be always: max field size + 480px (help size) -->
+  <container type="gridContainer" id="mygrid" style="min-width: 880px;">
+    <zone type="column" size="300" field="key" title="Key">
+    </zone>
+    <zone type="column" size="400" field="name" title="Name">
+    </zone>
+    <dataset>
+    
+    </dataset>
+  </container>
+
+</application>

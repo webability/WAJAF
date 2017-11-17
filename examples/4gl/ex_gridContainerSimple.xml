@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<application id="ex_gridContainerSimple">
+
+  <!-- Note important: the min-width of the container should be always: max field size + 480px (help size) -->
+  <container type="gridContainer" id="mygrid" style="min-width: 880px;" width="max" height="max">
+    <zone type="column" size="300" field="key" title="Key">
+    </zone>
+    <zone type="column" size="400" field="name" title="Name">
+    </zone>
+    <zone type="column" size="800" field="field1" title="Field 1">
+    </zone>
+    <dataset>
+{row:[
+{key:1,name:'Name of 1',field1:'field of 1'},
+{key:2,name:'Name of 2',field1:'field of 2'},
+{key:3,name:'Name of 3',field1:'field of 3'},
+{key:4,name:'Name of 4',field1:'field of 4'},
+{key:5,name:'Name of 5',field1:'field of 5'},
+{key:6,name:'Name of 6',field1:'field of 6'},
+{key:7,name:'Name of 7',field1:'field of 7'},
+{key:8,name:'Name of 8',field1:'field of 8'},
+{key:9,name:'Name of 9',field1:'field of 9'},
+{key:10,name:'Name of 10',field1:'field of 10'},
+{key:11,name:'Name of 11',field1:'field of 11'},
+{key:12,name:'Name of 12',field1:'field of 12'},
+{key:13,name:'Name of 13',field1:'field of 13'},
+{key:14,name:'Name of 14',field1:'field of 14'},
+{key:15,name:'Name of 15',field1:'field of 15'},
+{key:16,name:'Name of 16',field1:'field of 16'},
+{key:17,name:'Name of 17',field1:'field of 17'},
+{key:18,name:'Name of 18',field1:'field of 18'},
+{key:19,name:'Name of 19',field1:'field of 19'},
+{key:20,name:'Name of 20',field1:'field of 10'},
+{key:21,name:'Name of 21',field1:'field of 11'},
+{key:22,name:'Name of 22',field1:'field of 12'},
+{key:23,name:'Name of 23',field1:'field of 13'},
+{key:24,name:'Name of 24',field1:'field of 14'},
+{key:25,name:'Name of 25',field1:'field of 15'},
+{key:26,name:'Name of 26',field1:'field of 16'},
+{key:27,name:'Name of 27',field1:'field of 17'},
+{key:28,name:'Name of 28',field1:'field of 18'},
+{key:29,name:'Name of 29',field1:'field of 19'},
+{key:30,name:'Name of 30',field1:'field of 10'},
+{key:31,name:'Name of 31',field1:'field of 11'},
+{key:32,name:'Name of 32',field1:'field of 12'},
+{key:33,name:'Name of 33',field1:'field of 13'},
+{key:34,name:'Name of 24',field1:'field of 14'},
+{key:35,name:'Name of 25',field1:'field of 15'},
+{key:36,name:'Name of 26',field1:'field of 16'},
+{key:37,name:'Name of 27',field1:'field of 17'},
+{key:38,name:'Name of 28',field1:'field of 18'},
+{key:39,name:'Name of 29',field1:'field of 19'},
+{key:40,name:'Name of 30',field1:'field of 10'},
+{key:41,name:'Name of 31',field1:'field of 11'},
+{key:42,name:'Name of 32',field1:'field of 12'},
+{key:43,name:'Name of 33',field1:'field of 13'}]
+}
+    </dataset>
+  </container>
+
+</application>

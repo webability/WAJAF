@@ -1,8 +1,8 @@
 
 /*
-    textfieldElement.js, WAJAF, the WebAbility(r) Javascript Application Framework
-    Contains element to control a simple text field
-    (c) 2008-2012 Philippe Thomassigny
+    datefieldElement.js, WAJAF, the WebAbility(r) Javascript Application Framework
+    Contains element to control a date field
+    (c) 2008-2010 Philippe Thomassigny
 
     This file is part of WAJAF
 
@@ -20,10 +20,10 @@
     along with WAJAF.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
+WA.Elements.datefieldElement = function(fatherNode, domID, code, listener)
 {
   var self = this;
-  WA.Elements.textfieldElement.sourceconstructor.call(this, fatherNode, domID, code, 'div', { classname:'textfield' }, listener);
+  WA.Elements.datefieldElement.sourceconstructor.call(this, fatherNode, domID, code, 'div', { classname:'textfield' }, listener);
 
   this.id = this.code.attributes.id; // name of field, to use to send to the server
 
@@ -133,11 +133,6 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
     this.group = this.father.father;
     this.group.registerField(this);
   }
-  else
-  {
-    if (this.defaultvalue)
-      this.domNodeField.value = this.defaultvalue;
-  }
 
   // If we control some other fields
   this.synchronizer = null;
@@ -149,7 +144,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
 
   function resize()
   {
-    WA.Elements.textfieldElement.source.resize.call(self);
+    WA.Elements.datefieldElement.source.resize.call(self);
     // size mode for responsive design, not activated for now
 /*
     var RW = WA.browser.getNodeOuterWidth(self.father.domNode);
@@ -445,18 +440,13 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   this.setValues = setValues;
   function setValues(values)
   {
-    if (self.group)
-    {
-      self.firstview = true;
-      self.value = self.domNodeField.value = values;
-      if (values != undefined && values != null)
-        self.domNodeValue.innerHTML = values;
-      else
-        reset();
-      checkAll();
-    }
+    self.firstview = true;
+    self.value = self.domNodeField.value = values;
+    if (values != undefined && values != null)
+      self.domNodeValue.innerHTML = values;
     else
-      self.domNodeField.value = values;
+      reset();
+    checkAll();
   }
 
   this.stop = stop;
@@ -472,7 +462,7 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
   this.destroy = destroy;
   function destroy(fast)
   {
-    WA.Elements.textfieldElement.source.destroy.call(self, fast);
+    WA.Elements.datefieldElement.source.destroy.call(self, fast);
 
     self.synchronizer = null;
     self.synchronizeelements = [];
@@ -496,4 +486,4 @@ WA.Elements.textfieldElement = function(fatherNode, domID, code, listener)
 }
 
 // Add basic element code
-WA.extend(WA.Elements.textfieldElement, WA.Managers.wa4gl._element);
+WA.extend(WA.Elements.datefieldElement, WA.Managers.wa4gl._element);

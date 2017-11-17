@@ -43,7 +43,7 @@ WA.Containers.tabContainer = function(domNodeFather, domID, code, listener)
   WA.Containers.tabContainer.sourceconstructor.call(this, domNodeFather, domID, code, 'div', { classname:'tab' }, listener);
   this.tabselectors = {};
   this.tabzones = {};
-  this.zoneactive = null;
+  this.zoneactive = this.code.attributes.startzone?this.code.attributes.startzone:null;
   this.selectoroffset = 0;
   this.selectorsize = 0;
   this.availablewidth = 0;
@@ -276,6 +276,7 @@ WA.Containers.tabContainer = function(domNodeFather, domID, code, listener)
       self.tabselectors[self.zoneactive].unselect();
       self.tabzones[self.zoneactive].hide();
       self.callEvent('posthide', self.tabzones[self.zoneactive].xdomID[2]);
+       self.tabzones[self.zoneactive].propagate('blur');
       self.zoneactive = null;
     }
 
@@ -284,6 +285,7 @@ WA.Containers.tabContainer = function(domNodeFather, domID, code, listener)
     self.tabzones[ldomID[2]].show();
     self.zoneactive = ldomID[2];
     self.callEvent('postshow', ldomID[2]);
+    self.tabzones[ldomID[2]].propagate('focus');
     if (self.state == 5)
     {
       self.resize();
@@ -410,12 +412,13 @@ WA.Containers.tabContainer = function(domNodeFather, domID, code, listener)
   {
     var ldomID = WA.parseID(id, self.xdomID);
     if (!ldomID)
-      throw 'Error: the zone id is not valid in tabContainer.showZone: id=' + id;
+      throw 'Error: the zone id is not valid in tabContainer.setTitle: id=' + id;
     // check the zone does not exists YET !
     if (!self.tabselectors[ldomID[2]])
-      throw 'Error: the zone does not exists in tabContainer.showZone: id=' + ldomID[2];
+      throw 'Error: the zone does not exists in tabContainer.setTitle: id=' + ldomID[2];
 
     self.tabselectors[ldomID[2]].setTitle(title);
+    self.propagate('resize');
   }
 
   this.disableTab = disableTab;

@@ -69,21 +69,18 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
   this.errormessages = {};
   this.firstview = true; // set to false when the field has been touched/modified. Used to know if we put the errors
 
-  for (var i in this.code)
+  for (var i = 0, l = code.children.length; i < l; i++)
   {
-    switch (code[i].tag)
+    switch (code.children[i].tag)
     {
-      case 'defaultvalue': this.defaultvalue = code[i].data?code[i].data:''; break;
-      case 'helpdescription': this.helpmessage = code[i].data; break;
-      case 'statusnotnull': this.errormessages.statusnotnull = code[i].data; this.errors.statusnotnull = false; break;
-      case 'statuscheck': this.errormessages.statuscheck = code[i].data; this.errors.statuscheck = false; break;
+      case 'defaultvalue': this.defaultvalue = code.children[i].data?code.children[i].data:''; break;
+      case 'helpdescription': this.helpmessage = code.children[i].data; break;
+      case 'statusnotnull': this.errormessages.statusnotnull = code.children[i].data; this.errors.statusnotnull = false; break;
+      case 'statuscheck': this.errormessages.statuscheck = code.children[i].data; this.errors.statuscheck = false; break;
       case 'options':
-        for (var j in this.code[i])
+        for (var j = 0, m = code.children[i].children.length; j < m; j++)
         {
-          if (j != 'tag' && WA.isObject(this.code[i][j]) && this.code[i][j].tag == 'option')
-          {
-            self.options[this.code[i][j].attributes.key] = this.code[i][j].data;
-          }
+          self.options[this.code.children[i].children[j].attributes.key] = this.code.children[i].children[j].data;
         }
         break;
     }

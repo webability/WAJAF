@@ -29,8 +29,10 @@
 // ====================================================================
 // Error class
 
+namespace wajaf;
+
 /* @@wajafError:Begin:throwables@@ */
-class wajafError extends Exception
+class wajafError extends \Exception
 {
   private $trace = null;
   public $message = null;
@@ -61,7 +63,7 @@ class wajafError extends Exception
 // Main Builder class
 
 /* @@wajaf:Begin:wajaf@@ */
-class wajaf extends WAClass
+class wajaf extends \core\WAClass
 {
   protected $tagname = '';
   protected $attributes = array();
@@ -243,7 +245,7 @@ class Xapplication extends wajaf
   public function __construct($id)
   {
     parent::__construct('application');
-    $this->registerAttributes( array('id', 'enforce') );
+    $this->registerAttributes( array('id', 'enforce', 'style') );
     $this->setId($id);
     $this->registerPossibleChildren( array('container', 'element') );
   }
@@ -470,11 +472,22 @@ class matrixContainer extends Xcontainer
   public function __construct($id = null)
   {
     parent::__construct('matrixContainer', $id);
-    $this->registerAttributes( array('columns', 'mode', 'classnamezone') );
+    $this->registerAttributes( array('columns', 'mode', 'classnamezone', 'preidbutton', 'defaultwidth', 'defaultheight') );
     $this->registerPossibleChildren( array('template', 'dataset') );
   }
 }
 /* @@matrixContainer:End@@ */
+
+/* @@matrixZone:Begin:wajaf@@ */
+class matrixZone extends Xzone
+{
+  public function __construct($id = null)
+  {
+    parent::__construct($id);
+    $this->registerAttributes();
+  }
+}
+/* @@matrixZone:End@@ */
 
 /* @@tableContainer:Begin:wajaf@@ */
 class tableContainer extends Xcontainer
@@ -1050,5 +1063,18 @@ class mmcfieldElement extends Xelement
   }
 }
 /* @@mmcfieldElement:End@@ */
+
+/* @@ggraphElement:Begin:wajaf@@ */
+class ggraphElement extends Xelement
+{
+  public function __construct($id = null)
+  {
+    parent::__construct('ggraphElement', $id);
+    $this->registerAttributes( array('haslistener') );
+    $this->registerPossibleChildren( array('dataset') );
+  }
+}
+/* @@ggraphElement:End@@ */
+
 
 ?>
