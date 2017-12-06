@@ -34,12 +34,15 @@ Thank you !
 
 ----
 
-This is the version 3, build 0.2
-
+This is the version 3, build 0.3
 
 Please read the 4glstructure.txt document for a resumed 4GL programmation guide
 
 ----
+
+v3.0.3
+------
+- Bug corrected in eventManager: if the key code is undefined, the key listener cannot be executed (keyup and keydown events may be called without real keys stokes)
 
 v3.0.2
 ------

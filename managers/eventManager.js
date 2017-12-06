@@ -231,6 +231,8 @@ WA.Managers.event = new function()
   function keycallback(e,type)
   {
     var code = WA.browser.getKey(e);
+    if (!code) // nothing to search
+      return;
     var c = String.fromCharCode(code).toLowerCase();
     var shift = WA.browser.ifShift(e);
     var ctrl = WA.browser.ifCtrl(e);
