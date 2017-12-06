@@ -43,7 +43,7 @@ WA.Containers.tabContainer = function(domNodeFather, domID, code, listener)
   WA.Containers.tabContainer.sourceconstructor.call(this, domNodeFather, domID, code, 'div', { classname:'tab' }, listener);
   this.tabselectors = {};
   this.tabzones = {};
-  this.zoneactive = null; //this.code.attributes.startzone?this.code.attributes.startzone:null;
+  this.zoneactive = this.code.attributes.startzone?this.code.attributes.startzone:null;
   this.selectoroffset = 0;
   this.selectorsize = 0;
   this.availablewidth = 0;
