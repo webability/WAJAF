@@ -2,14 +2,11 @@
 <application id="ex_gridContainer">
 
   <!-- Note important: the min-width of the container should be always: max field size + 480px (help size) -->
-  <container type="gridContainer" id="mygrid" style="min-width: 880px;">
+  <container type="gridContainer" id="mygrid" style="min-width: 700px;" height="max" width="max" haslistener="yes">
     <zone type="column" size="300" field="key" title="Key">
     </zone>
     <zone type="column" size="400" field="name" title="Name">
     </zone>
-    <dataset>
-    
-    </dataset>
   </container>
 
 </application>

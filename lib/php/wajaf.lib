@@ -300,7 +300,7 @@ class Xdataset extends wajaf
   public function __construct($data)
   {
     parent::__construct('dataset');
-    $this->setData($data, true);
+    $this->setData($data);
   }
 }
 /* @@Xdataset:End@@ */
@@ -762,6 +762,7 @@ class buttonElement extends Xelement
   {
     parent::__construct('buttonElement', $id);
     $this->registerAttributes( array('visible', 'action', 'status', 'extra') );
+    $this->registerPossibleMessages( array('titleinsert', 'titleupdate', 'titledelete', 'titleview') );
 
     $this->setData($text);
   }

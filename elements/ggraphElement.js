@@ -56,7 +56,7 @@ WA.Elements.ggraphElement = function(fatherNode, domID, code, listener)
   function googleloaded()
   {
     //console.log('googleloaded ' + self.domID);
-    google.charts.load('current', {packages: ['corechart', 'orgchart']});
+    google.charts.load('current', {packages: ['corechart', 'orgchart', 'table']});
     google.charts.setOnLoadCallback(googlecallback);
   }
   
@@ -162,11 +162,13 @@ WA.Elements.ggraphElement = function(fatherNode, domID, code, listener)
         var data = new google.visualization.DataTable();
         
         for(var i=0; i<self.data.cols.length; i++)
+        {
           data.addColumn({type: self.data.cols[i].t, label: self.data.cols[i].n});
-        
-        data.addRows(self.data.row);
+        }
 
-        var chart = new google.visualization.OrgChart(document.getElementById(self.domID));
+        data.addRows(self.data.row);
+        
+        var chart = new google.visualization.Table(document.getElementById(self.domID));
         chart.draw(data, self.data.options);
       }
   

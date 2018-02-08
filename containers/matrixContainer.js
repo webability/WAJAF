@@ -18,8 +18,8 @@ WA.Containers.matrixContainer = function(fatherNode, domID, code, listener)
   this.preidbutton = code.attributes.preidbutton?code.attributes.preidbutton:'';
 
   this.modo = 2;
-  this.defaultwidth = code.attributes.defaultwidth?code.attributes.defaultwidth:'';
-  this.defaultheight = code.attributes.defaultheight?code.attributes.defaultheight:'';
+  this.defaultwidth = code.attributes.defaultwidth?parseInt(code.attributes.defaultwidth, 10):0;
+  this.defaultheight = code.attributes.defaultheight?parseInt(code.attributes.defaultheight, 10):0;
 
   var listalineashorizontal = [];
   var listalineasvertical = [];
@@ -406,6 +406,39 @@ WA.Containers.matrixContainer = function(fatherNode, domID, code, listener)
      //quitar la imagen de loading 
   }
 
+  this.borradashboard = borradashboard;
+  function borradashboard()
+  {
+    var atributos = self.getValues();
+    console.log(atributos);
+
+    for(zona in atributos)
+    {
+      console.log(zona);
+      var req = WA.Managers.ajax.createRequest("/agregargraficas/borrarparamzona/json", "POST", null, respuestaborrardashboard, false);
+      req.addParameter("zonaid", zona);
+      req.send();    
+      
+    }
+    
+    /*
+    var req = WA.Managers.ajax.createRequest('dashboard/dashboardmatrix/json', 'POST', null, respuestaborrardashboard, false);
+    req.addParameter('Order', 'del');
+    req.addParameter('data', WA.JSON.encode(atributos));
+    req.send();
+    */
+  }
+
+  function respuestaborrardashboard(request)
+  {
+    var res = WA.JSON.decode(request.responseText);
+    if(res.estatus == "Ok")
+    {
+      WA.$N("dashboard|single|dashboardmatrix").destroyZone(res.zona);
+
+    }
+  }
+
   this.isClipping = isClipping;
   function isClipping(left, top, w, h, myself)
   {
@@ -470,10 +503,10 @@ WA.Containers.matrixContainer.matrixZone = function(father, domID, container, co
 
   container.appendChild(this.domNode);
 
-  this.top = code.attributes.top;
-  this.left = code.attributes.left;
-  this.width = code.attributes.width;
-  this.height = code.attributes.height;
+  this.top = parseInt(code.attributes.top, 10);
+  this.left = parseInt(code.attributes.left, 10);
+  this.width = parseInt(code.attributes.width, 10);
+  this.height = parseInt(code.attributes.height, 10);
 
   this.addEvent('start', start);
   this.addEvent('stop', stop);

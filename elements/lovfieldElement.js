@@ -170,16 +170,16 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
 
   function populate()
   {
-   var text = '';
+    var text = '';
     if (!self.notnull[self.mode])
     {
-      text += '<option value=""'+(!self.defaultvalue?' selected="selected"':'')+'></option>';
+      text += '<option value=""'+(!self.value?' selected="selected"':'')+'></option>';
     }
     for (var i in self.options)
     {
       // we intelligent populate based on option, select or search
       // is this the selected option ?
-      text += '<option value="'+i+'"'+(i==self.defaultvalue?' selected="selected"':'')+'>'+self.options[i]+'</option>';
+      text += '<option value="'+i+'"'+(i==self.value?' selected="selected"':'')+'>'+self.options[i]+'</option>';
     }
     self.domNodeField.innerHTML = text;
   }
@@ -344,7 +344,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
   this.setMode = setMode;
   function setMode(mode, keep)
   {
-   self.mode = mode;
+    self.mode = mode;
 
     // Set all the data based on the mode
     if (!self.isvisible[mode])
@@ -358,7 +358,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
     populate();
 
     if (keep)
-      self.domNodeValue.innerHTML = self.domNodeField.value;
+      self.domNodeValue.innerHTML = self.domNodeField.value + (self.options[self.domNodeField.value]?(' - ' + self.options[self.domNodeField.value]):'');
 
     self.domNodeValue.style.display = (self.info[mode]?'':'none');
 
@@ -439,7 +439,7 @@ WA.Elements.lovfieldElement = function(fatherNode, domID, code, listener)
     self.firstview = true;
     self.value = self.domNodeField.value = values;
     if (values != undefined && values != null)
-      self.domNodeValue.innerHTML = values;
+      self.domNodeValue.innerHTML = values + (self.options[values]?(' - ' + self.options[values]):'');
     else
       reset();
     checkAll();

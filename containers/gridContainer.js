@@ -38,21 +38,28 @@ WA.Containers.gridContainer = function(fatherNode, domID, code, listener)
       classnamefooter:'grid-footer', classnamefootercontent:'grid-footercontent',
     } );
 
+  this.haslistener = (code.attributes.haslistener==='yes');
+  this.minload = code.attributes.minload?parseInt(code.attributes.minload, 10):50;
+  this.params = code.attributes.params?'&'+code.attributes.params:'';
+  
   this.columns = {};        // all the columns (zones)
   this.lines = [];          // all the lines of data
 
-  this.data = null;
-  this.maxlines = 0;
-  this.loaded = false;
+  this.data = null;         // all the loaded data
+  this.total = -1;
+  this.fullloaded = false;
+  
+  this.populatemin = 0;
+  this.populatemax = this.minload-1;
+  
+  this.loading = false;
+  this.toptoload = 0;
   this.lineheight = 0;
   this.offset = 0;
   this.firstfield = null;
   var currentcolumn = null;
   var currentline = null;
 
-  this.haslistener = (code.attributes.haslistener==='yes');
-  this.params = code.attributes.params?'&'+code.attributes.params:'';
-  
   // DOM
   this.domNode.className = this.classes.classname;
 
@@ -115,13 +122,15 @@ classnamecellmodified:'grid-cellmodified',
   
   WA.Managers.event.on('mouseover', self.domNode, findcell, true);
   WA.Managers.event.on('click', self.domNode, click, true);
+  WA.Managers.event.on('scroll', self.domNodeBody, scrollBody, true);
 
   function sendServer(order, code, feedback)
   {
     if (!self.haslistener)
       return;
     // send information to server based on mode
-    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url+'?P='+self._4glNode.application.appID + '.' + self._4glNode.id + '.json', 'POST', 'Order='+order+(self.parameters?'&'+self.parameters:''), feedback, false);
+    var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', 'Order='+order+(self.params?'&'+self.params:''), feedback, false);
+
     if (request)
     {
       for (var i in code)
@@ -214,85 +223,150 @@ classnamecellmodified:'grid-cellmodified',
   {
 
   }
-
-  function getData(r)
+  
+  function scrollBody(event)
   {
-    self.data = WA.JSON.decode(r.responseText);
-    self.loaded = true;
+    if (!self.lineheight)
+      return;
+    var pos = self.domNodeBody.scrollTop;
+    var line = Math.floor(pos / self.lineheight);
+    self.populatemin = line;
+    self.populatemax = line + self.minload-1;
     fillData();
   }
-
-  function fillData(newdataset)
+  
+  function getData(r)
   {
-    if (!newdataset && !self.loaded && self.serverlistener)
-    {
-      if (self.countload++ > 3)
-      {
-        alert('Error getting the record from the server.');
-        return;
-      }
-
-      // ask to the server the data
-      var request = WA.Managers.ajax.createRequest(WA.Managers.wa4gl.url + WA.Managers.wa4gl.prelib + self.app.applicationID + WA.Managers.wa4gl.premethod + self.id + WA.Managers.wa4gl.preformat + WA.Managers.wa4gl.format, 'POST', 'Order=get'+self.params, getData, true);
-
-      // we put the "loading"
-
-      return;
-    }
+    self.loading = false;
+    removeLoading();
     
-    var dataset = null;
-    if (newdataset)
+    self.countload = 0;
+    var code = WA.JSON.decode(r.responseText);
+
+    if (code.row.length && !self.data)
     {
-      dataset = newdataset;
-      if (self.data && self.data.row)
-        self.data.row.concat(newdataset);
-      else
-      {
-        if (!self.data) self.data = {};
-        self.data.row = newdataset;
-      }
+      self.data = code.row;
+      self.total = code.total;
     }
     else
     {
-      if (self.data && self.data.row)
-        dataset = self.data.row;
-      if (self.data && self.data.maxlines)
-        self.maxlines = self.data.maxlines;
-      else if (self.data)
-        self.maxlines = self.data.row.length;
-        
+      for (var i in code.row)
+      {
+        self.data[parseInt(i, 10)] = code.row[i];
+      }
     }
-    populate();
+    fillData();
+  }
+
+  function fillData()
+  {
+    // 2 levels: lines and data. 
+    // If lines are not defined, try to define them and fill
+    // if data is not set, try to load it (delayed)
+    
+    var mintoload = -1;
+    var maxtoload = -1;
+    var settoload = [];
+    
+    for (var i = self.populatemin; i <= self.populatemax; i++)
+    {
+      // we are at the end of the total lines, nothing more to do
+      if (self.total != -1 && i >= self.total)
+        break;
+      // If the line has already been populated, nothing to do
+      if (self.lines[i])
+        continue;
+      
+      // If the data exists, just populate it
+      if (self.data && self.data[i])
+      {
+        createLine(self.data[i], i);
+        continue;
+      }
+      
+      // creates the array to load
+      if (mintoload == -1) mintoload = maxtoload = i;
+      else if (maxtoload == i-1) maxtoload++;
+      else
+      { // new segment
+        settoload.push([mintoload,maxtoload]);
+        mintoload = maxtoload = i;
+      }
+    }
+    if (mintoload != -1)
+    {
+      settoload.push([mintoload,maxtoload]);
+      putLoading();
+      // put "Loading...."
+    }
+    
+    if (mintoload != -1 && !self.loading && self.serverlistener)
+    {
+      if (self.countload++ > 3)
+      {
+        console.log('Error getting the record from the server.');
+        return;
+      }
+
+      self.loading = true;
+      // ask to the server the data
+      sendServer('get', {data:WA.JSON.encode(settoload)}, getData);
+    }
+    adjustHeight();
     self.footer.populate();
   }
   
-  function populate()
-  {
-//    console.log('populate...');
-//    console.log(self.data);
-    // do we populate data from here ?
-    if (self.data && self.data.row)
-    {
-      // we fill the grid
-      for (var i = 0; i < self.data.row.length; i++)
-      {
-        createLine(self.data.row[i], i);
-      }
-    }
-  }
-
   function createLine(data, index)
   {
     // desplazar esto
     var size = self.calculateWidth();
     self.domNodeBodyContent.style.width = size + 'px';
 
+    // first cell of first line will set lineheight (very important !)
     var line = new WA.Containers.gridContainer.gridLine(self, self.domID+'_l-'+index, data, index);
     line.start();
     self.lines[index] = line;
+    
     return line;
   }
+  
+  function adjustHeight()
+  {
+    if (!self.lineheight)
+      return;
+    
+    // adjust the height of the container
+    // based on data.total
+    // get the height of a row
+    for (var i in self.zones)
+    {
+      self.zones[i].domNode.style.height = (self.total * self.lineheight) + 'px';
+    }
+  }
 
+  this.unpopulate = unpopulate;
+  function unpopulate()
+  {
+    for (var i in self.lines)
+      self.lines[i].destroy();
+    for (var i in self.zones)
+      WA.browser.setInnerHTML(self.zones[i].domNode, '');
+//    WA.browser.setInnerHTML(self.domNodeBodyContent, '');
+    self.linecount = 0;
+    self.lines = [];
+  }
+
+  function putLoading()
+  {
+    
+  }
+  
+  function removeLoading()
+  {
+    
+  }
+  
+  
   function findcell(event)
   {
     // gets the target and hover the things
@@ -336,7 +410,7 @@ classnamecellmodified:'grid-cellmodified',
     var line = node.line;
 
     // send data line
-    self.propagate('click', {column:column,line:line,data:self.data.row[line]});
+    self.propagate('click', {column:column,line:line,data:self.data[line]});
   }
   
   
@@ -355,14 +429,14 @@ classnamecellmodified:'grid-cellmodified',
     self.countload = 0;
     fillData();
     self.footer.start();
-    WA.Managers.event.on('scroll', self.domNodeBody, scroll, true);
   }
 
   this.reload = reload;
   function reload()
   {
     unpopulate();
-    self.loaded = false;
+    self.data = null;
+    self.fullloaded = false;
     self.countload = 0;
     fillData();
   }
@@ -386,7 +460,7 @@ classnamecellmodified:'grid-cellmodified',
     var height = 0;
     if (self.lines[0])
     {
-      height = self.maxlines * WA.browser.getNodeHeight(self.lines[0].cells[self.firstfield]);
+      height = self.total * WA.browser.getNodeHeight(self.lines[0].cells[self.firstfield]);
     }
 
     self.domNodeBodyContent.style.height = height + 'px';
@@ -479,6 +553,19 @@ classnamecellmodified:'grid-cellmodified',
 
 
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   function scroll(e)
   {
     var left = WA.browser.getNodeScrollLeft(self.domNodeBody);
@@ -525,7 +612,7 @@ classnamecellmodified:'grid-cellmodified',
     {
       if (self.lines[i].selected)
       {
-        self.data.row.splice(self.lines[i].index,1);
+        self.data.splice(self.lines[i].index,1);
         self.lines[i].destroy();
         self.lines.splice(i,1);
       }
@@ -568,24 +655,12 @@ classnamecellmodified:'grid-cellmodified',
   }
 
 
-  this.unpopulate = unpopulate;
-  function unpopulate()
-  {
-    for (var i in self.lines)
-      self.lines[i].destroy();
-    for (var i in self.zones)
-      WA.browser.setInnerHTML(self.zones[i].domNode, '');
-//    WA.browser.setInnerHTML(self.domNodeBodyContent, '');
-    self.linecount = 0;
-    self.lines = [];
-  }
-
   this.swap = swap;
   function swap(i, j)
   {
-    var buf = self.data.row[i];
-    self.data.row[i] = self.data.row[j];
-    self.data.row[j] = buf;
+    var buf = self.data[i];
+    self.data[i] = self.data[j];
+    self.data[j] = buf;
   }
 
   this.compasc = compasc;
@@ -619,13 +694,13 @@ classnamecellmodified:'grid-cellmodified',
 
     if ( hi0 > lo0)
     {
-      value = self.data.row[ Math.ceil((lo0 + hi0 ) / 2) ][field];
+      value = self.data[ Math.ceil((lo0 + hi0 ) / 2) ][field];
       while( lo <= hi )
       {
-        while( ( lo < hi0 ) && ( comp(self.data.row[lo][field], value) == -1 ) )
+        while( ( lo < hi0 ) && ( comp(self.data[lo][field], value) == -1 ) )
           ++lo;
 
-        while( ( hi > lo0 ) && ( comp(self.data.row[hi][field], value) == 1 ) )
+        while( ( hi > lo0 ) && ( comp(self.data[hi][field], value) == 1 ) )
           --hi;
 
         if( lo <= hi )
@@ -655,7 +730,7 @@ classnamecellmodified:'grid-cellmodified',
       }
     }
     self.unpopulate();
-    self.quickSort(0, self.data.row.length-1, (asc?self.compasc:self.compdesc), field);
+    self.quickSort(0, self.data.length-1, (asc?self.compasc:self.compdesc), field);
     self.populate();
   }
 
@@ -689,7 +764,16 @@ classnamecellmodified:'grid-cellmodified',
     {
       if (code.children[i].tag == 'dataset')
       {
-        self.data = WA.JSON.decode(code.children[i].data);
+        var data = WA.JSON.decode(code.children[i].data);
+        self.data = data.row;
+        if (data.total)
+          self.total = data.total
+        else
+          self.total = self.data.length;
+        if (data.fullloaded)
+          self.fullloaded = data.fullloaded;
+        else if (!self.haslistener)
+          self.fullloaded = true;
       }
     }
 
@@ -1004,6 +1088,14 @@ WA.Containers.gridContainer.gridLine = function(father, domID, data, index)
     domNodeCell.column = c;
     domNodeCell.line = self.index;
     
+    if (!self.father.lineheight)
+      self.father.lineheight = WA.browser.getNodeOuterHeight(domNodeCell);
+    
+    // top should be index * lineheight
+    domNodeCell.style.position = 'absolute';
+    domNodeCell.style.left = '0';
+    domNodeCell.style.top = (self.index * self.father.lineheight) + 'px';
+    domNodeCell.style.width = '100%';
 
     // Considerar los TEMPLATES tambien
     
@@ -1020,9 +1112,6 @@ WA.Containers.gridContainer.gridLine = function(father, domID, data, index)
 
   function populate()
   {
-//    console.log('populate line');
-//    console.log(self.father.zones);
-    
     for (var i in self.father.zones)
     {
       if (data[i] != undefined)
@@ -1378,6 +1467,6 @@ WA.Containers.gridContainer.gridFooter = function(father, domID, container)
   function populate()
   {
     // agregar la cantidad total de renglones en el footer
-    self.domNodeQuantity.innerHTML = self.father.data.total;
+    self.domNodeQuantity.innerHTML = self.father.total;
   }
 }

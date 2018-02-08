@@ -794,42 +794,42 @@ WA.Containers.tabContainer.tabSelector = function(maincontainer, domID, domIDCon
   function select()
   {
     self.active = true;
-    self.resize();
+    resize();
   }
 
   this.unselect = unselect;
   function unselect()
   {
     self.active = false;
-    self.resize();
+    resize();
   }
 
   this.enable = enable;
   function enable()
   {
     self.enabled = true;
-    self.resize();
+    resize();
   }
 
   this.disable = disable;
   function disable()
   {
     self.enabled = false;
-    self.resize();
+    resize();
   }
 
   this.enableClose = enableClose;
   function enableClose()
   {
     self.closeable = true;
-    self.resize();
+    resize();
   }
 
   this.disableClose = disableClose;
   function disableClose()
   {
     self.closeable = false;
-    self.resize();
+    resize();
   }
 
   function stop()

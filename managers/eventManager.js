@@ -117,10 +117,9 @@ WA.Managers.event = new function()
     else if (eventnode.addEventListener)
     {
       if (eventname == 'mousewheel') // special incompatible mousewheel
-      {
-        eventnode.addEventListener('DOMMouseScroll', thefunction, eventcapture);
-      }
-      eventnode.addEventListener(eventname, thefunction, eventcapture);
+        eventnode.addEventListener('DOMMouseScroll', thefunction, {passive:true});
+      else
+        eventnode.addEventListener(eventname, thefunction, eventcapture);
     }
     else if (eventnode.attachEvent)
     {
@@ -161,9 +160,10 @@ WA.Managers.event = new function()
     {
       if (eventname == 'mousewheel')
       {
-        eventnode.removeEventListener('DOMMouseScroll', events[eventnode.listeneruid][eventname][eventfunction.functionuid], eventcapture);
+        eventnode.removeEventListener('DOMMouseScroll', events[eventnode.listeneruid][eventname][eventfunction.functionuid], {passive:true});
       }
-      eventnode.removeEventListener(eventname, events[eventnode.listeneruid][eventname][eventfunction.functionuid], eventcapture);
+      else
+        eventnode.removeEventListener(eventname, events[eventnode.listeneruid][eventname][eventfunction.functionuid], eventcapture);
     }
     else if (eventnode.detachEvent)
     {
@@ -322,9 +322,10 @@ WA.Managers.event = new function()
           {
             if (j == 'mousewheel')
             {
-              events[i][j][k][0].removeEventListener('DOMMouseScroll', events[i][j][k][1], events[i][j][k][2]);
+              events[i][j][k][0].removeEventListener('DOMMouseScroll', events[i][j][k][1], {passive:true});
             }
-            events[i][j][k][0].removeEventListener(j, events[i][j][k][1], events[i][j][k][2]);
+            else
+              events[i][j][k][0].removeEventListener(j, events[i][j][k][1], events[i][j][k][2]);
           }
           else if (events[i][j][k][0].detachEvent)
           {

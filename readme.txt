@@ -40,9 +40,20 @@ Please read the 4glstructure.txt document for a resumed 4GL programmation guide
 
 ----
 
+v3.0.4
+------
+- tabContainer corrected: the tabSelector was not resizing correctly (broken code) in case of disable, enable, move, etc.
+- groupContainer modified to support a listener called when the form changes its mode or viewed data.
+- groupContainer modified to clear the currentkey in case of insert mode with posibility to cancel and return to last viewed key.
+- groupContainer modified to load first record in case of cancel of first insert (does not stay blanck anymore if no currentkey was activated before going to insert mode).
+- groupContainer does not need anymore UTF8 encoding of fields variables.
+- eventManager modified to support passive events for mousewheels events. Bug corrected (do not setup anymore 2 events for mousewheel events).
+- Attributes added to lib/PHP/buttonElement tu support different titles based on group mode.
+
 v3.0.3
 ------
 - Bug corrected in eventManager: if the key code is undefined, the key listener cannot be executed (keyup and keydown events may be called without real keys stokes)
+- Bug corrected in lib/PHP/XDdataset: the dataset may include anything so need to be CDATA'ed
 
 v3.0.2
 ------

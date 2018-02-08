@@ -94,6 +94,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   this.varkey = this.code.attributes.varkey?this.code.attributes.varkey:'groupkey';
   // key of the current record on screen
   this.currentkey = this.code.attributes.key!=undefined?this.code.attributes.key:null;
+  this.lastkey = null;
 
   // mode is 1: insert, 2: modif, 3: delete, 4: see (read only)
   this.mode = 0;    // no mode at start, pending
@@ -105,6 +106,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     this.authmodes[i] = (this.code.attributes.authmodes?this.code.attributes.authmodes.indexOf(''+i)!=-1:true);
   }
 
+  this.actionlistener = null;
   this.fields = [];
   this.data = {};
   this.dataloaded = false;
@@ -179,6 +181,12 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
 
   // ========================================================================================
   // local private methods
+  
+  function callListener(action)
+  {
+    if (self.actionlistener)
+      self.actionlistener(action, self.mode, self.currentkey, self.data[self.currentkey]);
+  }
 
   // Mode Controler
   function changeMode(newmode, keep)
@@ -193,6 +201,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
     }
     self.domNodeTitle.innerHTML = self.title[newmode];
     // remove messages, errors, etc
+    callListener('mode');
   }
 
   // Data Controler
@@ -211,6 +220,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
         }
       }
       fillData();
+      callListener('fill');
     }
     catch (e)
     {
@@ -428,6 +438,13 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
 
   // ========================================================================================
   // specific container functions
+  this.addListener = addListener;
+  function addListener(listener)
+  {
+    // Send actions of the group to the listener
+    self.actionlistener = listener;
+    callListener('add');
+  }
 
   // asked by children when there is status change
   this.pleaseCheck = pleaseCheck;
@@ -516,7 +533,8 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   function doInsert()
   {
     // we keep the current key for if we cancel the insert mode
-    // self.currentkey = null;
+    self.lastkey = self.currentkey;
+    self.currentkey = null;
     changeMode(1);
     self.status = 1;
     pleaseCheck();
@@ -551,11 +569,23 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
   this.doView = doView;
   function doView()
   {
+    if (self.lastkey)
+    {
+      // we cancel a doInser
+      self.currentkey = self.lastkey;
+      self.lastkey = null;
+    }
     if (self.currentkey)
     {
       changeMode(4);
       self.countload = 0;
       fillData();
+    }
+    else
+    {
+      changeMode(4);
+      self.countload = 0;
+      doFirst();
     }
   }
 
@@ -593,12 +623,17 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
         {
           // go to dataloaded = true and set the record based on the values of each fields
           // the record should be in a temporal record ready to apply with the primary key if any
-          self.data[self.currentkey] = self.datatemporal;
-
+          if (self.mode == 1 && result.key)
+          {
+            self.currentkey = result.key;
+          }
+          if (self.currentkey)
+            self.data[self.currentkey] = self.datatemporal;
           changeMode(4, true);
         }
         else
         {
+          // delete mode (only available for submit: 1,2,3)
           // If there is no view mode available, we just stay here ?
           if (self.authmodes[4] && rest)
           {
@@ -646,7 +681,10 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
       if (self.fields[i].formtype == 'field')
       {
         if (self.fields[i].edition)
+        {
           result &= ((self.fields[i].status==0 || self.fields[i].status==1)?true:false);
+//          console.log('i = ' + i + ' status = ' + self.fields[i].status);
+        }
       }
     }
 
@@ -670,7 +708,7 @@ WA.Containers.groupContainer = function(fatherNode, domID, code, listener)
           continue;
         if (!self.fields[i].editable || !self.fields[i].edition)
           continue;
-        var values = WA.UTF8.encode(self.fields[i].getValues());
+        var values = self.fields[i].getValues();
         // if values is an array, please loop !
         if (typeof values == 'object' || typeof values == 'array')
         {

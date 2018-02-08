@@ -124,6 +124,9 @@
 
 .grid .grid-footer { position: absolute; left: 0px; right: 0px; height: 20px; bottom: 0px; background-color: #ddd; border-top: 1px solid black; }
 
+.grid .grid-footer .quantity-title { float: left; }
+.grid .grid-footer .quantity { float: left; }
+
 
 
 /* 1. SIMPLE ELEMENTS */

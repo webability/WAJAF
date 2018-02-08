@@ -21,7 +21,7 @@
 */
 
 // WA is the main WAJAF Object that will contain anything else (except for the native JS object prototypes)
-var WA = { version: '3.0.3',
+var WA = { version: '3.0.4',
            running: false };
 
 WA.Function = {};

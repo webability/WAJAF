@@ -103,7 +103,7 @@ class XMLtoArray
 {
   private static function convert($xml)
   {
-    if (!($xml instanceof SimpleXMLElement))
+    if (!($xml instanceof \SimpleXMLElement))
       return $xml;
 
     $nodename = $xml->getName();
