@@ -258,7 +258,7 @@ WA.Containers.separatorContainer = function(fatherNode, domID, code, listener)
   {
     // get the max size
     var max = self.mode?WA.browser.getNodeHeight(self.domNode):WA.browser.getNodeWidth(self.domNode);
-    if (max < 0) // something wrong, we cannot calculate sizes
+    if (max <= 0) // something wrong, we cannot calculate sizes (i.e. container is hidden)
       return;
 
     // PASS 1: take fized size

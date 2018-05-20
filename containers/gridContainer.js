@@ -231,7 +231,7 @@ classnamecellmodified:'grid-cellmodified',
     var pos = self.domNodeBody.scrollTop;
     var line = Math.floor(pos / self.lineheight);
     self.populatemin = line;
-    self.populatemax = line + self.minload-1;
+    self.populatemax = line + self.minload - 1;
     fillData();
   }
   
@@ -250,12 +250,15 @@ classnamecellmodified:'grid-cellmodified',
     }
     else
     {
+      if (!self.data)
+        self.data = [];
       for (var i in code.row)
       {
         self.data[parseInt(i, 10)] = code.row[i];
       }
     }
-    fillData();
+    if (self.total > 0)
+      fillData();
   }
 
   function fillData()
